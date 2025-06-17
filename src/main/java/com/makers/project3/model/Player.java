@@ -12,9 +12,13 @@ public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "user_id")
     private Long playerUserId;
-    private Integer currentScore;
     @Column(name="current_card")
     private Long currentCardId;
+    @Column(name="current_stat")
+    private Long currentStat;
+    @Column(name = "current_score")
+    private Integer currentScore;
 
 }

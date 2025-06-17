@@ -13,6 +13,7 @@ public class Deck {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Column(name= "unique_stat_name")
     private String uniqueStatName;
     private String thumbnail;
 

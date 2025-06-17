@@ -7,12 +7,15 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlayerCards {
+@Table(name="player_cards")
+public class PlayerCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "player_id")
     private Long playerUserId;
+    @Column(name="card_id")
     private Long cardId;
     private Boolean discarded;
 

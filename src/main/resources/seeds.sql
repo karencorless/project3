@@ -22,9 +22,9 @@ VALUES
 INSERT INTO decks (name, unique_stat_name, thumbnail)
 VALUES ('test deck', 'testing', 'test/test');
 
-INSERT INTO cards (deck_id, name, strength, intelligence, defense, unique_stat, luck, flavour_text, image)
+INSERT INTO cards (deck_id, name, strength, wisdom, defence, unique_stat, luck, flavour_text, image)
 VALUES
-(1, 'test card', 1, 1, 1, 1, 1, 'this is test card 1', 'test/test'),
+(1, 'test card1', 1, 1, 1, 1, 1, 'this is test card 1', 'test/test'),
 (1, 'test card2', 1, 1, 1, 1, 1, 'this is test card 2', 'test/test'),
 (1, 'test card3', 1, 1, 1, 1, 1, 'this is test card 3', 'test/test'),
 (1, 'test card4', 1, 1, 1, 1, 1, 'this is test card 4', 'test/test');

@@ -1,72 +1,66 @@
 package com.makers.project3.Service;
 
-import com.makers.project3.model.Player;
-import com.makers.project3.model.PlayerCards;
+import com.makers.project3.model.PlayerCard;
 import com.makers.project3.repository.CardRepository;
-import com.makers.project3.repository.DeckRepository;
-import com.makers.project3.repository.GameRepository;
 import com.makers.project3.model.Card;
-import com.makers.project3.model.Deck;
-import com.makers.project3.repository.PlayerCardsRepository;
+import com.makers.project3.repository.PlayerCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class GameService {
-    @Autowired
-    GameRepository gameRepository;
-    @Autowired
-    DeckRepository deckRepository;
+
     @Autowired
     CardRepository cardRepository;
     @Autowired
-    PlayerCardsRepository playerCardsRepository;
+    PlayerCardRepository playerCardsRepository;
 
 
-    public HashMap<Long, List<Card>> getRandomHandsFromDeck(List<Deck> decksChosen, Integer pointsToWin, Long playerOneId, Long playerTwoId){
-        List<Card> playerOneCards = new ArrayList<Card>();
-        List<Card> playerTwoCards = new ArrayList<Card>();
-        List<Card> allCardsInPlay = new ArrayList<Card>();
-        HashMap<Long, List<Card>> newGameStartingHands = new HashMap<>();
-
-//        list of all available cards
-        for (Deck deck : decksChosen) {
-            List<Card> deckCards = new ArrayList<>(cardRepository.findAllByParentDeckId(deck.getId()));
+//        Randomly deal cards from the active decks
+    public void dealCards(List<Long> decksChosen, Integer pointsToWin, Long playerOneId, Long playerTwoId){
+        List<Card> allCardsInPlay = new ArrayList<>();
+        //      list of all available cards
+        for (Long deckId : decksChosen) {
+            List<Card> deckCards = new ArrayList<>(cardRepository.findAllByParentDeckId(deckId));
             allCardsInPlay.addAll(deckCards);
-        };
+        }
+        //      Random draw, alternating between players
+        boolean playerOneDraw = true;
+        for (int i = 0; i <(pointsToWin * 4); i ++) {
+            Collections.shuffle(allCardsInPlay);
+            Card card = allCardsInPlay.removeFirst();
+            PlayerCard newCard;
 
-//        random draw, alternating between players
-        Boolean playerOneDraw = true;
-        for (int i = 0; i <(pointsToWin * 2); i ++) {
-            Random random = new Random();
             if (playerOneDraw) {
-                playerOneCards.add(allCardsInPlay.remove(random.nextInt(allCardsInPlay.size())));
+                newCard = new PlayerCard(null, playerOneId, card.getId(), null);
             }
             else {
-                playerTwoCards.add(allCardsInPlay.remove(random.nextInt(allCardsInPlay.size())));
+                newCard = new PlayerCard(null, playerTwoId, card.getId(), null);
             }
+            playerCardsRepository.save(newCard);
             playerOneDraw = !playerOneDraw;
         }
-//        update playerCards repo
-        for (Card card : playerOneCards) {
-            PlayerCards newCard = new PlayerCards(null, playerOneId, card.getId(), null);
-            playerCardsRepository.save(newCard);
-        }
-        for (Card card : playerTwoCards) {
-            PlayerCards newCard = new PlayerCards(null, playerTwoId, card.getId(), null);
-            playerCardsRepository.save(newCard);
-        }
-
-        newGameStartingHands.put(playerOneId, playerOneCards);
-        newGameStartingHands.put(playerTwoId, playerTwoCards);
-        return newGameStartingHands;
     }
 
 
+//    Return a list of cards currently in the player's hand
+    public List<Card> showPlayerHand(Long playerUserId){
+        List<PlayerCard> cardIds = playerCardsRepository.findByPlayerUserId(playerUserId);
+        List<Card> playerHand = new ArrayList<>();
+        for (PlayerCard crd : cardIds) {
+            cardRepository.findById(crd.getCardId()).ifPresent(playerHand :: add);
+        }
+        return playerHand;
+    }
+
+
+//    Delete all playerCards currently in player's hand
+    @Transactional
+    public void clearHand(Long playerUserId){
+        playerCardsRepository.deleteAllByPlayerUserId(playerUserId);
+    }
 }
+

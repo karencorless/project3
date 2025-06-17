@@ -16,6 +16,7 @@ public class Game {
     private Long playerOneId;
     @Column(name="player_2_id")
     private Long playerTwo;
+    @Column(name = "points_to_win")
     private int pointsToWin;
 
 }

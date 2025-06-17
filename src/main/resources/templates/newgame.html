@@ -5,9 +5,10 @@
     <title>New Game</title>
 </head>
 <body>
-    <div th:each="entry: ${cardsInPlay}">
-        <strong th:text="${entry.key}"></strong>
-        <strong th:text="${entry.value}"></strong>
-    </div>
+    <ul th:if="${playerHand != null and #lists.size(playerHand) > 0}" th:each="card: ${playerHand}">
+        <li th:text="${card.name}"></li>
+    </ul>
+    <p th:if="${playerHand == null or #lists.size(playerHand) == 0}">No cards to display.</p>
+    <a  th:href="@{/game/reset}" type="submit" class="button">Reset Hand</a>
 </body>
 </html>

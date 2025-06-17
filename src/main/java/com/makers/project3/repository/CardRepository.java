@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface CardRepository extends CrudRepository<Card, Long> {
     List<Card> findAllByParentDeckId(Long parentDeckId);
-
 }

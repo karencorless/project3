@@ -16,9 +16,12 @@ public class User {
     private Integer id;
     private String email;
     private String username;
-    private String image_source;
+    @Column(name = "profile_pic")
+    private String imageSource;
     private Date birthday;
-    private Integer games_won;
-    private Integer games_played;
+    @Column(name = "games_won")
+    private Integer gamesWon;
+    @Column(name = "games_played")
+    private Integer gamesPlayed;
 
 }
