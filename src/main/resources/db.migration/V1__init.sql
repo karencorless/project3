@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS games;
-DROP TABLE IF EXISTS players;
-DROP TABLE IF EXISTS player_hands;
+DROP TABLE IF EXISTS players CASCADE;
+DROP TABLE IF EXISTS player_cards CASCADE;
 DROP TABLE IF EXISTS cards;
 DROP TABLE IF EXISTS decks;
 DROP TABLE IF EXISTS users;
@@ -37,22 +37,24 @@ CREATE TABLE cards (
     FOREIGN KEY (deck_id) REFERENCES decks(id) ON DELETE CASCADE
     );
 
-CREATE TABLE player_hands (
-	id bigserial PRIMARY KEY,
-	player_id BIGINT NOT NULL,
-	card_id BIGINT,
-	discarded BOOLEAN DEFAULT false
-	);
-
 CREATE TABLE players (
   id bigserial PRIMARY KEY,
   user_id BIGINT NOT NULL,
   current_card BIGINT,
   current_stat VARCHAR,
-  current_score SMALLINT DEFAULT 0,
-
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  current_score SMALLINT DEFAULT 0
   );
+
+--  join table
+  CREATE TABLE player_cards (
+  	player_id BIGINT NOT NULL,
+  	card_id BIGINT,
+  	discarded BOOLEAN DEFAULT false,
+
+  	CONSTRAINT fk_players FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE,
+  	CONSTRAINT fk_cards FOREIGN KEY (card_id) REFERENCES cards(id) ON DELETE CASCADE,
+  	PRIMARY KEY (player_id, card_id)
+  	);
 
 CREATE TABLE games (
     id BIGSERIAL PRIMARY KEY,
