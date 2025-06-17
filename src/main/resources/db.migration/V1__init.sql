@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
   id bigserial PRIMARY KEY,
-  username varchar(50) NOT NULL UNIQUE,
+  username VARCHAR(50) NOT NULL UNIQUE,
   email VARCHAR(50) NOT NULL UNIQUE,
   birthday DATE,
   games_won BIGINT DEFAULT 0,
@@ -17,7 +17,7 @@ CREATE TABLE users (
 
 CREATE TABLE decks (
     id bigserial PRIMARY KEY,
-    name varchar(255),
+    name VARCHAR(255),
     unique_stat_name VARCHAR(255),
     thumbnail text
     );
@@ -25,35 +25,40 @@ CREATE TABLE decks (
 CREATE TABLE cards (
     id bigserial PRIMARY KEY,
     deck_id BIGINT,
-    FOREIGN KEY (deck_id) REFERENCES decks(id) ON DELETE CASCADE,
     name VARCHAR(255),
-    strength smallint,
-    intelligence smallint,
-    defense smallint,
-    unique_stat smallint,
-    luck smallint,
+    strength SMALLINT,
+    intelligence SMALLINT,
+    defense SMALLINT,
+    unique_stat SMALLINT,
+    luck SMALLINT,
     flavour_text VARCHAR(255),
-    image text
+    image text,
+
+    FOREIGN KEY (deck_id) REFERENCES decks(id) ON DELETE CASCADE
     );
 
 CREATE TABLE player_hands (
 	id bigserial PRIMARY KEY,
-	player_id BIGINT,
+	player_id BIGINT NOT NULL,
 	card_id BIGINT,
 	discarded BOOLEAN DEFAULT false
 	);
 
 CREATE TABLE players (
   id bigserial PRIMARY KEY,
-  user_id BIGINT,
+  user_id BIGINT NOT NULL,
+  current_card BIGINT,
+  current_stat VARCHAR,
+  current_score SMALLINT DEFAULT 0,
+
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
   );
 
 CREATE TABLE games (
     id BIGSERIAL PRIMARY KEY,
-    player_1_id BIGSERIAL,
-    player_2_id BIGSERIAL,
-    points_to_win SMALLINT,
+    player_1_id BIGINT NOT NULL,
+    player_2_id BIGINT NOT NULL,
+    points_to_win SMALLINT DEFAULT 5,
 
     FOREIGN KEY (player_1_id) REFERENCES players(id) ON DELETE CASCADE,
     FOREIGN KEY (player_2_id) REFERENCES players(id) ON DELETE CASCADE,

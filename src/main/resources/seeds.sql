@@ -32,8 +32,8 @@ VALUES
 INSERT INTO player_hands (player_id, card_id)
 VALUES (1,1), (2,2), (1, 3), (2,4);
 
-INSERT INTO players (user_id)
-VALUES (1), (2);
+INSERT INTO players (user_id, current_card)
+VALUES (1, 1), (2, 2);
 
 INSERT INTO games (player_1_id, player_2_id, points_to_win)
 VALUES (1, 2, 10);
