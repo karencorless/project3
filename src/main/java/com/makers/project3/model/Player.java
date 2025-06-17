@@ -1,15 +1,20 @@
 package com.makers.project3.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Player {
 
-    private Integer playerUserId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long playerUserId;
     private Integer currentScore;
-    private Card currentCard;
+    @Column(name="current_card")
+    private Long currentCardId;
+
 }

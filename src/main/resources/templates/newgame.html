@@ -5,6 +5,9 @@
     <title>New Game</title>
 </head>
 <body>
-
+    <div th:each="entry: ${cardsInPlay}">
+        <strong th:text="${entry.key}"></strong>
+        <strong th:text="${entry.value}"></strong>
+    </div>
 </body>
 </html>

@@ -29,15 +29,15 @@ public class GameService {
     PlayerCardsRepository playerCardsRepository;
 
 
-    public HashMap<Player, List<Card>> getRandomHandsFromDeck(List<Deck> decksChosen, Integer pointsToWin, Player playerOne, Player playerTwo){
+    public HashMap<Long, List<Card>> getRandomHandsFromDeck(List<Deck> decksChosen, Integer pointsToWin, Long playerOneId, Long playerTwoId){
         List<Card> playerOneCards = new ArrayList<Card>();
         List<Card> playerTwoCards = new ArrayList<Card>();
         List<Card> allCardsInPlay = new ArrayList<Card>();
-        HashMap<Player, List<Card>> newGameStartingHands = new HashMap<>();
+        HashMap<Long, List<Card>> newGameStartingHands = new HashMap<>();
 
 //        list of all available cards
         for (Deck deck : decksChosen) {
-            List<Card> deckCards = new ArrayList<>(cardRepository.findAllByParentDeck(deck.getName()));
+            List<Card> deckCards = new ArrayList<>(cardRepository.findAllByParentDeckId(deck.getId()));
             allCardsInPlay.addAll(deckCards);
         };
 
@@ -55,16 +55,16 @@ public class GameService {
         }
 //        update playerCards repo
         for (Card card : playerOneCards) {
-            PlayerCards newCard = new PlayerCards(playerOne.getPlayerUserId(), card.getId(), null);
+            PlayerCards newCard = new PlayerCards(null, playerOneId, card.getId(), null);
             playerCardsRepository.save(newCard);
         }
         for (Card card : playerTwoCards) {
-            PlayerCards newCard = new PlayerCards(playerTwo.getPlayerUserId(), card.getId(), null);
+            PlayerCards newCard = new PlayerCards(null, playerTwoId, card.getId(), null);
             playerCardsRepository.save(newCard);
         }
 
-        newGameStartingHands.put(playerOne, playerOneCards);
-        newGameStartingHands.put(playerTwo, playerTwoCards);
+        newGameStartingHands.put(playerOneId, playerOneCards);
+        newGameStartingHands.put(playerTwoId, playerTwoCards);
         return newGameStartingHands;
     }
 

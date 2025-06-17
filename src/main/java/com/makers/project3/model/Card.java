@@ -1,10 +1,9 @@
 package com.makers.project3.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
+@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,9 +11,8 @@ public class Card {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    private String parentDeck;
+    private Long id;
+    private Long parentDeckId;
     private String name;
     private String flavourText;
     private String imageSource;
@@ -23,4 +21,5 @@ public class Card {
     private Integer defence;
     private Integer luck;
     private Integer customStat;
+
 }
