@@ -67,7 +67,6 @@ public class GameController {
         return new RedirectView("/game/play");
     }
 
-
 //    For displaying gameplay. More to add.
     @GetMapping("/game/play")
     public String playGame(Model model){
