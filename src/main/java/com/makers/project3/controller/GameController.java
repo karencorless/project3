@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
@@ -37,7 +36,7 @@ public class GameController {
 
     //   To start a new game. Will take input for chosen decks and points to win
     @PostMapping("/game/new")
-    public RedirectView setupGame(@ModelAttribute Deck deck, @RequestParam List<String> chosenDeckIds, @RequestParam Integer pointsToWin){
+    public RedirectView setupGame(@RequestParam List<String> chosenDeckIds, @RequestParam Integer pointsToWin){
         List<Long> chosenDecks = new ArrayList<>();
 //                chosenDeckIds.forEach(Long.parseLong(String id));
         for (String deckId : chosenDeckIds) {
@@ -61,7 +60,7 @@ public class GameController {
         // need to create new game object
 
         if (chosenDecks == null || chosenDeckIds.isEmpty()){
-            return new RedirectView("/game/start");
+            return new RedirectView("/game/new");
         }
         gameService.dealCards(chosenDecks, pointsToWin, playerOne, playerTwo);
         return new RedirectView("/game/play");
@@ -74,6 +73,7 @@ public class GameController {
         model.addAttribute("playerHand", playerHand);
         return "newgame";
     }
+
 
 //    For the end of the game. Currently just being used to reset the hand.
     @GetMapping("/game/reset")
