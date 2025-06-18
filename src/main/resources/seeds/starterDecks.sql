@@ -21,7 +21,7 @@ VALUES
 
 -- Insert cards
 INSERT INTO cards
-(deck_id, name, strength, intelligence, defense, unique_stat, luck, flavour_text, image)
+(deck_id, name, strength, wisdom, defense, unique_stat, luck, flavour_text, image)
 VALUES
 ((SELECT id FROM decks WHERE name = 'The Simpsons'), 'Homer Simpson', 65, 30, 50, 95, 40, 'Loves donuts. Frequently causes his own disasters.', '/deckImages/simpsons/homer.jpg'),
 ((SELECT id FROM decks WHERE name = 'The Simpsons'), 'Marge Simpson', 50, 70, 65, 20, 60, 'The patient glue holding the family together.', '/deckImages/simpsons/marge.jpg'),
