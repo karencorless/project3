@@ -63,12 +63,16 @@ public class GameService {
         playerCardsRepository.deleteAllByPlayerUserId(playerUserId);
     }
 
-    // Allows user to pick a card to play from their hand.
     @Transactional
     public Card pickCardFromHand(Long playerUserId, Long selectedCardId) {
+        if (playerUserId == null || selectedCardId == null) {
+            System.out.println("Error: Player ID or Selected Card ID is null in pickCardFromHand.");
+            return null;
+        }
+
         List<PlayerCard> playerCardsActiveInHand = playerCardsRepository.findByPlayerUserId(playerUserId);
 
-        // Find the card in the playerCards and store it
+        // Find the card id from playercards and store it
         PlayerCard selectedCardInPlayerCards = null;
         for (PlayerCard playerCard : playerCardsActiveInHand) {
             if (playerCard.getCardId().equals(selectedCardId)) {
@@ -77,10 +81,18 @@ public class GameService {
             }
         }
 
-        Card selectedCard = cardRepository.findById(selectedCardInPlayerCards.getCardId()).orElse(null);
-        playerCardsRepository.delete(selectedCardInPlayerCards);
+        // If card not found, prints warnign
+        if (selectedCardInPlayerCards == null) {
+            System.out.println("Warning: Card with ID " + selectedCardId + " not found in hand for player " + playerUserId);
+            return null; // Indicate that the operation failed
+        }
 
-        return selectedCard;
+        Optional<Card> optionalCard = cardRepository.findById(selectedCardInPlayerCards.getCardId());
+
+        Card playedCard = optionalCard.get();
+        playerCardsRepository.delete(selectedCardInPlayerCards); // Remove the card from player's hand
+
+        return playedCard;
     }
 
     public boolean coinFlip() {
