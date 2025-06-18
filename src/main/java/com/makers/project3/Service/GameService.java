@@ -56,6 +56,7 @@ public class GameService {
         return playerHand;
     }
 
+
 //    Delete all playerCards currently in player's hand
     @Transactional
     public void clearHand(Long playerUserId){
@@ -63,9 +64,28 @@ public class GameService {
     }
 
 
+    // Allows user to pick a card to play from their hand.
+    @Transactional
+    public Card pickCardFromHand(Long playerUserId, Long selectedCardId) {
+        List<PlayerCard> playerCardsActiveInHand = playerCardsRepository.findByPlayerUserId(playerUserId);
+
+        // Find the card in the playerCards and store it
+        PlayerCard selectedCardInPlayerCards = null;
+        for (PlayerCard playerCard : playerCardsActiveInHand) {
+            if (playerCard.getCardId().equals(selectedCardId)) {
+                selectedCardInPlayerCards = playerCard;
+                break;
+            }
+        }
+
+        Card selectedCard = cardRepository.findById(selectedCardInPlayerCards.getCardId()).orElse(null);
+        playerCardsRepository.delete(selectedCardInPlayerCards);
+
+        return selectedCard;
+    }
+
     public boolean coinFlip() {
         Random random = new Random();
         return random.nextBoolean();
     }
 }
-

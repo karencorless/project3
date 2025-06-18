@@ -33,6 +33,10 @@ build/
 .vscode/
 
 mvnw.cmd
+<<<<<<< HEAD
+.run
+=======
 .run
 
 .run
+>>>>>>> 47da8139224f3b656b25f116b9fccca5abf4a2c9
