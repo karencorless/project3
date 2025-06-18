@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Play Game</title>
+</head>
+<body>
+<ul th:if="${playerHand != null and #lists.size(playerHand) > 0}" th:each="card: ${playerHand}">
+    <li th:text="${card.name}"></li>
+</ul>
+<p th:if="${playerHand == null or #lists.size(playerHand) == 0}">No cards to display.</p>
+<a  th:href="@{/game/reset}" type="submit" class="button">Reset Hand</a>
+</body>
+</html>

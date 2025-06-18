@@ -56,11 +56,16 @@ public class GameService {
         return playerHand;
     }
 
-
 //    Delete all playerCards currently in player's hand
     @Transactional
     public void clearHand(Long playerUserId){
         playerCardsRepository.deleteAllByPlayerUserId(playerUserId);
+    }
+
+
+    public boolean coinFlip() {
+        Random random = new Random();
+        return random.nextBoolean();
     }
 }
 
