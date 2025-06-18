@@ -9,6 +9,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User {
 
     @Id
@@ -21,7 +22,8 @@ public class User {
     private Date birthday;
     @Column(name = "games_won")
     private Integer gamesWon;
-    @Column(name = "games_played")
+    @Column(name = "total_games_played")
     private Integer gamesPlayed;
-
+    @Column(name = "auth0_id", unique = true)
+    private String auth0id;
 }
