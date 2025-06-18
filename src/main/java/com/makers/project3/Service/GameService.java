@@ -1,9 +1,7 @@
 package com.makers.project3.Service;
 
-import com.makers.project3.model.PlayerCard;
-import com.makers.project3.repository.CardRepository;
-import com.makers.project3.model.Card;
-import com.makers.project3.repository.PlayerCardRepository;
+import com.makers.project3.model.*;
+import com.makers.project3.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +14,75 @@ public class GameService {
     @Autowired
     CardRepository cardRepository;
     @Autowired
-    PlayerCardRepository playerCardsRepository;
+    PlayerCardRepository playerCardRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    PlayerRepository playerRepository;
+    @Autowired
+    GameRepository gameRepository;
+    @Autowired
+    UserService userService;
+
+
+                        //   Security related methods:
+
+//          Verify that currentUser is in the game
+    public boolean checkCurrentUserIsPlayerInGame(Long gameId) {
+        Long currentUserId = userService.getCurrentUserId();
+        Player[] players = getPlayersFromGame(gameId);
+        return Objects.equals(currentUserId, players[0].getPlayerUserId()) || Objects.equals(currentUserId, players[1].getPlayerUserId());
+    }
+            //  should update or add a method to compare with robo user,
+            //  so we can add it to winPoint and getScore.
+
+//          Verify that currentUser is player
+    public boolean checkCurrentUserIsPlayer(Long playerId){
+        Long currentUserId = userService.getCurrentUserId();
+        Player player = playerRepository.findById(playerId).orElse(null);
+        assert player != null;
+        return Objects.equals(currentUserId, player.getPlayerUserId());
+    }
+
+
+                    //  Creation/game start related methods:
+
+//       Creates new Game
+    public Game newGame(int pointsToWin, List<String> chosenDeckIds){
+        Long currentUserId = userService.getCurrentUserId();
+        User opp = userRepository.findUserByUsername("robouser1");
+        Long oppId = opp.getId();
+        Game game;
+
+        // creates player objects for the user and opponent
+        Player player = newPlayer(currentUserId);
+        Player opponent = newPlayer(oppId);
+
+        // parses the list of strings from newgame.html, uses the long ID's to deal the hands
+        List<Long> chosenDecks = parseLongIdsFromString(chosenDeckIds);
+        dealCards(chosenDecks, player.getId(), opponent.getId(), pointsToWin);
+
+        // determines who goes first and creates the Game object
+        if (coinFlip()) {
+            game = new Game(null, player.getId(), opponent.getId(), pointsToWin);
+        } else {
+            game = new Game(null, opponent.getId(), player.getId(), pointsToWin);
+        }
+        gameRepository.save(game);
+        return game;
+    }
+
+
+//          Creates new Player object
+    public Player newPlayer(Long userId){
+        Player player = new Player(userId);
+        playerRepository.save(player);
+        return player;
+    }
 
 
 //        Randomly deal cards from the active decks
-    public void dealCards(List<Long> decksChosen, Integer pointsToWin, Long playerOneId, Long playerTwoId){
+    public void dealCards(List<Long> decksChosen, Long playerOneId, Long playerTwoId, Integer pointsToWin){
         List<Card> allCardsInPlay = new ArrayList<>();
         //      list of all available cards
         for (Long deckId : decksChosen) {
@@ -40,32 +102,119 @@ public class GameService {
             else {
                 newCard = new PlayerCard(null, playerTwoId, card.getId(), null);
             }
-            playerCardsRepository.save(newCard);
+            playerCardRepository.save(newCard);
             playerOneDraw = !playerOneDraw;
         }
     }
 
 
-//    Return a list of cards currently in the player's hand
-    public List<Card> showPlayerHand(Long playerUserId){
-        List<PlayerCard> cardIds = playerCardsRepository.findByPlayerUserId(playerUserId);
+//      Takes the String deckIds from newgame.html, parses the usable Long values, and returns that list
+    public List<Long> parseLongIdsFromString(List<String>chosenDeckIds){
+        List<Long> chosenDecks = new ArrayList<>();
+        for (String deckId : chosenDeckIds) {
+            Long id = Long.parseLong(deckId);
+            chosenDecks.add(id);
+        }
+        return chosenDecks;
+    }
+
+
+                                 //    Game Play related methods:
+
+//          Returns the player's current score
+    public Integer getScore(Long playerId) {
+        return (Objects.requireNonNull(playerRepository.findById(playerId).orElse(null))).getCurrentScore();
+    }
+
+
+//          Updates player's currentScore
+    @Transactional
+    public void winPoint(Long playerId) {
+        playerRepository.incrementCurrentScore(playerId);
+    }
+
+
+//          Compare scores
+    public Long compareCurrentScores(Long playerOneId, Long playerTwoId){
+        assert checkCurrentUserIsPlayer(playerOneId) || checkCurrentUserIsPlayer(playerTwoId);
+
+        Integer playerOneScore = getScore(playerOneId);
+        Integer playerTwoScore = getScore(playerTwoId);
+        if (playerOneScore > playerTwoScore) {
+            return playerOneId;
+        } else if (playerTwoScore > playerOneScore) {
+            return playerTwoId;
+        } else {
+            return null; // need error handling
+        }
+    }
+
+
+//          Return list of the cards currently in the player's hand
+    public List<Card> showPlayerHand(Long playerId){
+        assert checkCurrentUserIsPlayer(playerId);
+
+        List<PlayerCard> cardIds = playerCardRepository.findByPlayerId(playerId);
         List<Card> playerHand = new ArrayList<>();
-        for (PlayerCard crd : cardIds) {
-            cardRepository.findById(crd.getCardId()).ifPresent(playerHand :: add);
+        for (PlayerCard card : cardIds) {
+            cardRepository.findById(card.getCardId()).ifPresent(playerHand :: add);
         }
         return playerHand;
     }
 
-//    Delete all playerCards currently in player's hand
-    @Transactional
-    public void clearHand(Long playerUserId){
-        playerCardsRepository.deleteAllByPlayerUserId(playerUserId);
-    }
 
-
+//      Random Boolean Generator
     public boolean coinFlip() {
         Random random = new Random();
         return random.nextBoolean();
     }
-}
 
+
+//      Return Array[2] with the players, derived from the Game id
+    public Player[] getPlayersFromGame(Long gameId){
+        assert checkCurrentUserIsPlayerInGame(gameId);
+
+        Game game = gameRepository.findById(gameId).orElse(null);
+        assert game != null;
+        Player playerOne = playerRepository.findById(game.getPlayerOneId()).orElse(null);
+        Player playerTwo = playerRepository.findById(game.getPlayerTwoId()).orElse(null);
+        return new Player[]{playerOne, playerTwo};
+    }
+
+
+                    //  Deletion/ end game related methods:
+
+//        End Game, determine winner
+    public boolean endGame(Long gameId) {
+        assert checkCurrentUserIsPlayerInGame(gameId);
+
+        Long currentUserId = userService.getCurrentUserId();
+        Player[] players = getPlayersFromGame(gameId);
+        Long winnerPlayerId = compareCurrentScores(players[0].getId(), players[1].getId());
+        if (winnerPlayerId == null){
+            return false;
+        }
+        Long winnerUserId = playerRepository.findById(winnerPlayerId).get().getPlayerUserId();
+        return Objects.equals(winnerUserId, currentUserId);
+    }
+
+
+//          Clears the game from the DB, deleting the playerCard, player, and game objects.
+    @Transactional
+    public void deleteGame(Long gameId){
+        assert checkCurrentUserIsPlayerInGame(gameId);
+
+        Game game = gameRepository.findById(gameId).orElse(null);
+        assert game != null;
+
+        Long playerOneId = game.getPlayerOneId();
+        Long playerTwoId = game.getPlayerTwoId();
+
+        playerCardRepository.deleteAllByPlayerId(playerOneId);
+        playerCardRepository.deleteAllByPlayerId(playerTwoId);
+        playerRepository.deleteAllById(playerOneId);
+        playerRepository.deleteAllById(playerTwoId);
+        gameRepository.deleteAllById(gameId);
+    }
+
+}

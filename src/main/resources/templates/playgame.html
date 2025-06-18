@@ -5,10 +5,10 @@
     <title>Play Game</title>
 </head>
 <body>
-<ul th:if="${playerHand != null and #lists.size(playerHand) > 0}" th:each="card: ${playerHand}">
+<ul th:if="${userHand != null and #lists.size(userHand) > 0}" th:each="card: ${userHand}">
     <li th:text="${card.name}"></li>
 </ul>
-<p th:if="${playerHand == null or #lists.size(playerHand) == 0}">No cards to display.</p>
-<a  th:href="@{/game/reset}" type="submit" class="button">Reset Hand</a>
+<p th:if="${userHand == null or #lists.size(userHand) == 0}">No cards to display.</p>
+<a  th:href="@{/game/reset/{gameId}(gameId=${gameId})}" type="submit" class="button">New Game</a>
 </body>
 </html>

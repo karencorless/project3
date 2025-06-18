@@ -7,6 +7,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name="players")
 public class Player {
 
     @Id
@@ -15,9 +16,15 @@ public class Player {
     @Column(name = "user_id")
     private Long playerUserId;
     @Column(name="current_card")
-    private Long currentCardId;
+    private Long currentCardId = null;
     @Column(name="current_stat")
-    private Long currentStat;
+    private Long currentStat = null;
     @Column(name = "current_score")
-    private Integer currentScore;
+    private Integer currentScore = 0;
+
+
+    public Player(Long userId) {
+        this.playerUserId = userId;
+    }
+
 }
