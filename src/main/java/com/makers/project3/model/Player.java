@@ -20,5 +20,4 @@ public class Player {
     private Long currentStat;
     @Column(name = "current_score")
     private Integer currentScore;
-    private Card currentCard;
 }
