@@ -5,10 +5,30 @@
     <title>New Game</title>
 </head>
 <body>
-    <ul th:if="${playerHand != null and #lists.size(playerHand) > 0}" th:each="card: ${playerHand}">
-        <li th:text="${card.name}"></li>
-    </ul>
-    <p th:if="${playerHand == null or #lists.size(playerHand) == 0}">No cards to display.</p>
-    <a  th:href="@{/game/reset}" type="submit" class="button">Reset Hand</a>
+    <h1>Game Setup</h1>
+
+    <form id="game-setup" th:action="@{/game/new}" method="post">
+        <div id="deck-selection">
+            <!--    deck selection-->
+            <div th:each="deck: ${decks}">
+                <input type="checkbox" th:id="'deck-' + ${deck.id}" th:name="chosenDeckIds" th:value="${deck.id}">
+                <label th:for="'deck-' + ${deck.id}">
+                    <img th:src="${deck.thumbnail}" alt="Deck thumbnail" width="100"/>
+                    <strong th:text="${deck.name}"></strong>
+                </label>
+            </div>
+        </div>
+        <div id="points-picker">
+            <label for="pointsToWin">Points to win (max 5):</label>
+            <input type="range" id="pointsToWin" name="pointsToWin" min="1" max="5" value="2" oninput="this.nextElementSibling.value = this.value">
+            <output>2</output>
+        </div>
+        <div id="buttons">
+            <input type="submit" id="submit" name="submit" value="Start Game">
+            <input type="reset" id="reset" name="reset" value="Clear Choices">
+            <!--    buttons: start game,  clear choices-->
+        </div>
+    </form>
+
 </body>
 </html>
