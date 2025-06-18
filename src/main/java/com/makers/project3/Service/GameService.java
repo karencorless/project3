@@ -63,7 +63,6 @@ public class GameService {
         playerCardsRepository.deleteAllByPlayerUserId(playerUserId);
     }
 
-
     // Allows user to pick a card to play from their hand.
     @Transactional
     public Card pickCardFromHand(Long playerUserId, Long selectedCardId) {
