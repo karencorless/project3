@@ -1,10 +1,126 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Tutorial</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Tutorial</title>
 
-</body>
+        <style>
+            .overlay {
+                height: 0%;
+                width: 40%;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform:translate(-50%, -50%);
+                background-color: rgba(0, 0, 0, 0.75);
+                overflow-x: hidden;
+                transition: 0.1s;
+                text-align: center;
+            }
+
+            .overlay-content {
+                position: relative;
+                width: 90%;
+                text-align: center;
+                overflow: auto;
+                display: inline-block;
+                margin-top: 1px;
+            }
+
+            .overlay a {
+                text-decoration: none;
+                font-size: 20px;
+                line-height: 20px;
+                color: #9b9b9b;
+                display: block;
+                transition: 0.1s;
+                text-align: right;
+                margin-right: 5px;
+            }
+
+            .overlay p , .overlay h2 {
+                color: #E3E4E3;
+            }
+
+            .entry {
+              text-align: left;
+              padding-top: 0px;
+              padding-bottom: 1px;
+              padding-left: 10px;
+              padding-right: 10px;
+              font-size: 15px;
+              font-family: Book Antiqua;
+              overflow:auto;
+              margin: auto;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <div id="banner">
+            <span style="font-size:30px;cursor:pointer;color:black" onclick="openTuto()">Tutorial</span>
+        </div>
+
+        <div id="tutorial" class="overlay">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeTuto()">&times;</a>
+            <div class="overlay-content">
+                <div class="tutorial-content">
+                    <div class="pve">
+                        <div class="entry">
+                            <h2> Before The Game </h2>
+                            <p> Prior to each game, you'll be prompted with a lobby configuration menu. Here you can select which card decks you'd like to play with as well as how many points you need to win the game. </p>
+                            <button class="next">Next</button>
+                        </div>
+
+                        <div class="entry" style="display:none;">
+                            <h2> How To Play </h2>
+                            <p> Each of the decks you selected will be shuffled together, and you will be dealt a hand of cards. This hand will be the cards you get to choose from for each round. </p>
+                            <button id="back">Back</button>
+                            <button id="next">Next</button>
+                        </div>
+                        <div class="entry" style="display:none;">
+                            <p> One player will choose a card they wish to play, and the following sub-stat to go with it. For example, SpongeBob and Luck. The opponent will be told the substat in play, and choose one of their own cards to fight it. Whichever card has the highest value of that stat will win the round, with a point going towards the winner. </p>
+                            <button id="back">Back</button>
+                            <button id="next">Next</button>
+                        </div>
+                        <div class="entry" style="display:none;">
+                            <p> Once a card has been played, it will be removed from the players hand and added to the discard pile. The game keeps going until someone hits the points to win target as selected prior to the game starting. </p>
+                            <button id="back">Back</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            function openTuto() {
+              document.getElementById("tutorial").style.height = "auto";
+            }
+
+
+            function closeTuto() {
+              document.getElementById("tutorial").style.height = "0%";
+            }
+        </script>
+
+        <script>
+            document.getElementById("nextButton").addEventListener("click", function () {
+              const parentDiv = document.getElementById("parentDiv");
+              const children = parentDiv.querySelectorAll(".child");
+
+              for (let i = 0; i < children.length; i++) {
+                if (children[i].style.display === "none") {
+                  children[i].style.display = "block";
+                  break;
+                }
+              }
+            });
+
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </body>
 </html>
+
