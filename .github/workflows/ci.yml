@@ -15,22 +15,12 @@ jobs:
         maven: [3.9.6]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
       - name: Setup Maven Action
-        uses: s4u/setup-maven-action@v1.3.0
+        uses: s4u/setup-maven-action@v1.18.0
         with:
-          java-version: 8
+          java-version: 21
+          distribution: 'temurin'
           maven-version: ${{ matrix.maven }}
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven
 
       - name: Build and test with Maven
         run: mvn clean install
