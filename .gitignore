@@ -33,4 +33,6 @@ build/
 .vscode/
 
 mvnw.cmd
+.run
 
+.run
