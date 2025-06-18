@@ -7,16 +7,16 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Game {
+@Table(name="player_cards")
+public class PlayerCard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="player_1_id")
-    private Long playerOneId;
-    @Column(name="player_2_id")
-    private Long playerTwo;
-    @Column(name = "points_to_win")
-    private int pointsToWin;
+    @Column(name = "player_id")
+    private Long playerUserId;
+    @Column(name="card_id")
+    private Long cardId;
+    private Boolean discarded;
 
 }
