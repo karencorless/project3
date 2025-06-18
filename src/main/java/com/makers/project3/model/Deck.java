@@ -1,16 +1,20 @@
 package com.makers.project3.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
+@Entity
 @Data
 @NoArgsConstructor
-@Entity
+@AllArgsConstructor
 public class Deck {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
+    @Column(name= "unique_stat_name")
     private String uniqueStatName;
     private String thumbnail;
+
 }

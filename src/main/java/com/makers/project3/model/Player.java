@@ -1,18 +1,24 @@
 package com.makers.project3.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class Player {
+
     @Id
-    private Integer playerUserId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "user_id")
+    private Long playerUserId;
+    @Column(name="current_card")
+    private Long currentCardId;
+    @Column(name="current_stat")
+    private Long currentStat;
+    @Column(name = "current_score")
     private Integer currentScore;
-    @ManyToOne
     private Card currentCard;
 }
