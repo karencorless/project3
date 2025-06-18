@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.*;
@@ -45,6 +47,13 @@ public class GameController {
         gameService.clearHand(2L);  // will replace with parsed currentUserId
         gameService.clearHand(1L);
         return new RedirectView("/game/start");
+    }
+
+    //    For displaying gameplay. More to add.
+    @PostMapping("/game/play")
+    public String selectCard(@RequestParam Long playerId, @RequestParam Long cardId, Model model){
+
+        return "newgame";
     }
 }
 
