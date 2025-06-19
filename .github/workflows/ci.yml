@@ -2,9 +2,11 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - QE
   pull_request:
-    branches: [ main ]
+    branches:
+      - QE
 
 jobs:
   build:
