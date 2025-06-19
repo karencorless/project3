@@ -5,8 +5,10 @@ import com.makers.project3.Service.UserService;
 import com.makers.project3.model.Card;
 import com.makers.project3.model.Deck;
 import com.makers.project3.model.Game;
+import com.makers.project3.model.User;
 import com.makers.project3.repository.DeckRepository;
 import com.makers.project3.repository.PlayerRepository;
+import com.makers.project3.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,12 +30,16 @@ public class GameController {
     PlayerRepository playerRepository;
     @Autowired
     DeckRepository deckRepository;
+    @Autowired
+    UserRepository userRepository;
 
 
 //          GET -- New game setup page
     @GetMapping("/game/new")
     public String newGame(Model model) {
         Iterable<Deck> decks = deckRepository.findAll();
+        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("decks", decks);
         return "newgame";
     }
@@ -51,8 +57,10 @@ public class GameController {
 //          GET -- Display gameplay.
     @GetMapping("/game/play")
     public String playGame(Model model){
+        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
         Game currentGame = gameService.findCurrentUserGame();
         Long gameId = currentGame.getId();
+
 
         if (currentGame == null){  // needs error mapping
             return "errorpage";
@@ -70,6 +78,7 @@ public class GameController {
 
         List<Card> playerHand = gameService.showPlayerHand(currentPlayerId);
         model.addAttribute("currentPlayerId", currentPlayerId);
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("playerHand", playerHand);
         model.addAttribute("gameId", gameId);
         return "playgame";
@@ -79,6 +88,8 @@ public class GameController {
     // Allows user to select a card from their hand and updates the hand
     @PostMapping("/game/play")
     public String selectCard(@RequestParam("currentPlayerId") Long currentPlayerId, @RequestParam("cardId") Long cardId, @RequestParam("gameId") Long gameId, Model model) {
+        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("currentPlayerId", currentPlayerId);
         model.addAttribute("gameId", gameId);
 
