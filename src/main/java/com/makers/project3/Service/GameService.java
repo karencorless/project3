@@ -89,32 +89,6 @@ public class GameService {
         return player;
     }
 
-////                ----------- KAREN CODE --------------
-////        Randomly deal cards from the active decks
-//public void dealCards(List<Long> decksChosen, Integer pointsToWin, Long playerOneId, Long playerTwoId){
-//    List<Card> allCardsInPlay = new ArrayList<>();
-//    //      list of all available cards
-//    for (Long deckId : decksChosen) {
-//        List<Card> deckCards = new ArrayList<>(cardRepository.findAllByParentDeckId(deckId));
-//        allCardsInPlay.addAll(deckCards);
-//    }
-//    //      Random draw, alternating between players
-//    boolean playerOneDraw = true;
-//    for (int i = 0; i <(pointsToWin * 4); i ++) {
-//        Collections.shuffle(allCardsInPlay);
-//        Card card = allCardsInPlay.removeFirst();
-//        PlayerCard newCard;
-//
-//        if (playerOneDraw) {
-//            newCard = new PlayerCard(null, playerOneId, card.getId(), null);
-//        }
-//        else {
-//            newCard = new PlayerCard(null, playerTwoId, card.getId(), null);
-//        }
-//        playerCardsRepository.save(newCard);
-//        playerOneDraw = !playerOneDraw;
-//    }
-//}
 
 ////                    --AVIAN--
 //        Randomly deal cards from the active decks
@@ -133,10 +107,10 @@ public class GameService {
             PlayerCard newCard;
 
             if (playerOneDraw) {
-                newCard = new PlayerCard(null, playerOneId, card.getId(), null);
+                newCard = new PlayerCard(null, playerOneId, card.getId(), false);
             }
             else {
-                newCard = new PlayerCard(null, playerTwoId, card.getId(), null);
+                newCard = new PlayerCard(null, playerTwoId, card.getId(), false);
             }
             playerCardRepository.save(newCard);
             playerOneDraw = !playerOneDraw;
@@ -163,45 +137,48 @@ public class GameService {
 
 
                                  //    Game Play related methods:
-////            --------  KAREN ----------
-@Transactional
-public Card pickCardFromHand(Long playerUserId, Long selectedCardId) {
-    if (playerUserId == null || selectedCardId == null) {
-        System.out.println("Error: Player ID or Selected Card ID is null in pickCardFromHand.");
-        return null;
-    }
 
-    List<PlayerCard> playerCardsActiveInHand = playerCardsRepository.findByPlayerUserId(playerUserId);
-
-    // Find the card id from playercards and store it
-    PlayerCard selectedCardInPlayerCards = null;
-    for (PlayerCard playerCard : playerCardsActiveInHand) {
-        if (playerCard.getCardId().equals(selectedCardId)) {
-            selectedCardInPlayerCards = playerCard;
-            break;
+//          Allows player to select card from hand, updates playerCards accordingly.
+    @Transactional
+    public Card pickCardFromHand(Long playerId, Long selectedCardId) {
+        if (playerId == null || selectedCardId == null) {
+            System.out.println("Error: Player ID or Selected Card ID is null in pickCardFromHand.");
+            return null;
         }
+
+        List<PlayerCard> playerCardsActiveInHand = playerCardRepository.findByPlayerId(playerId);
+        System.out.println(playerCardsActiveInHand);
+        // -- filter by boolean discarded also, "AND"??
+
+        // Find the card id from playercards and store it
+        PlayerCard selectedCardInPlayerCards = null;
+        for (PlayerCard playerCard : playerCardsActiveInHand) {
+            if (playerCard.getCardId().equals(selectedCardId)) {
+                selectedCardInPlayerCards = playerCard;
+                break;
+            }
+        }
+
+        // If card not found, prints warning
+        if (selectedCardInPlayerCards == null) {
+            System.out.println("Warning: Card with ID " + selectedCardId + " not found in hand for player " + playerId);
+            return null; // Indicate that the operation failed
+        }
+
+        Optional<Card> optionalCard = cardRepository.findById(selectedCardInPlayerCards.getCardId());
+
+        Card playedCard = optionalCard.get();
+        Player currentPlayer = playerRepository.findById(playerId).orElse(null);
+
+        ///  Change bool discarded to true and set currentCard
+        currentPlayer.setCurrentCardId(selectedCardId);
+        selectedCardInPlayerCards.setDiscarded(true);
+
+
+        return playedCard;
     }
 
-    // If card not found, prints warnign
-    if (selectedCardInPlayerCards == null) {
-        System.out.println("Warning: Card with ID " + selectedCardId + " not found in hand for player " + playerUserId);
-        return null; // Indicate that the operation failed
-    }
 
-    Optional<Card> optionalCard = cardRepository.findById(selectedCardInPlayerCards.getCardId());
-
-    Card playedCard = optionalCard.get();
-    playerCardsRepository.delete(selectedCardInPlayerCards); // Remove the card from player's hand
-
-    return playedCard;
-}
-
-
-
-
-
-
-///         ---- AVIAN ----
 //          Returns the player's current score
     public Integer getScore(Long playerId) {
         return (Objects.requireNonNull(playerRepository.findById(playerId).orElse(null))).getCurrentScore();
@@ -215,7 +192,7 @@ public Card pickCardFromHand(Long playerUserId, Long selectedCardId) {
     }
 
 
-//          Compare scores
+//          Compare players' scores
     public Long compareCurrentScores(Long playerOneId, Long playerTwoId){
         assert checkCurrentUserIsPlayer(playerOneId) || checkCurrentUserIsPlayer(playerTwoId);
 
@@ -235,10 +212,12 @@ public Card pickCardFromHand(Long playerUserId, Long selectedCardId) {
     public List<Card> showPlayerHand(Long playerId){
         assert checkCurrentUserIsPlayer(playerId);
 
-        List<PlayerCard> cardIds = playerCardRepository.findByPlayerId(playerId);
+        List<PlayerCard> playerCardsInHand = playerCardRepository.findByPlayerId(playerId);
         List<Card> playerHand = new ArrayList<>();
-        for (PlayerCard card : cardIds) {
-            cardRepository.findById(card.getCardId()).ifPresent(playerHand :: add);
+        for (PlayerCard card : playerCardsInHand) {
+            if (!card.getDiscarded()) {
+                cardRepository.findById(card.getCardId()).ifPresent(playerHand::add);
+            }
         }
         return playerHand;
     }
@@ -256,7 +235,7 @@ public Card pickCardFromHand(Long playerUserId, Long selectedCardId) {
     }
 
 
-                    //  Deletion/ end game related methods:
+                    //  Deletion and end game related methods:
 
 //        End Game, determine winner
     public boolean endGame(Long gameId) {

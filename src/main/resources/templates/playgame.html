@@ -23,9 +23,8 @@
 <div class="hand-container" th:if="${playerHand != null and #lists.size(playerHand) > 0}">
     <div class="card-item" th:each="card: ${playerHand}">
         <p class="card-name" th:text="${card.name}"></p>
-
-        <form th:action="@{/game/play}" method="post">
-            <input type="hidden" name="playerId" th:value="${currentPlayerId}" />
+        <form th:action="@{/game/play/{gameId}(gameId=${gameId})}" method="post">
+            <input type="hidden" name="currentPlayerId" th:value="${currentPlayerId}" />
             <input type="hidden" name="cardId" th:value="${card.id}" />
             <button type="submit" class="play-button">Play</button>
         </form>

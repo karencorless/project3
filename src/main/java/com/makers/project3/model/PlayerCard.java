@@ -17,6 +17,6 @@ public class PlayerCard {
     private Long playerId;
     @Column(name="card_id")
     private Long cardId;
-    private Boolean discarded;
+    private Boolean discarded = false;
 
 }

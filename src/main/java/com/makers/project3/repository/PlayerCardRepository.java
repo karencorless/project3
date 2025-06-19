@@ -8,4 +8,5 @@ import java.util.List;
 public interface PlayerCardRepository extends CrudRepository<PlayerCard, Long> {
     List<PlayerCard> findByPlayerId(Long playerUserId);
     void deleteAllByPlayerId(Long playerUserId);
+    PlayerCard findByCardIdAndPlayerId(Long cardId, Long playerId);
 }

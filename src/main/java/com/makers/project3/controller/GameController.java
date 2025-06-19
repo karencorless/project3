@@ -7,6 +7,7 @@ import com.makers.project3.model.Deck;
 import com.makers.project3.model.Game;
 import com.makers.project3.repository.DeckRepository;
 import com.makers.project3.repository.GameRepository;
+import com.makers.project3.repository.PlayerCardRepository;
 import com.makers.project3.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,49 +33,20 @@ public class GameController {
     DeckRepository deckRepository;
     @Autowired
     GameRepository gameRepository;
+    @Autowired
+    PlayerCardRepository playerCardRepository;
 
 
-    // show game setup page
+//          GET -- New game setup page
     @GetMapping("/game/new")
     public String newGame(Model model) {
         Iterable<Deck> decks = deckRepository.findAll();
         model.addAttribute("decks", decks);
         return "newgame";
     }
-//
-////  Karen Code:
-//@PostMapping("/game/new")
-//public RedirectView setupGame(@RequestParam List<String> chosenDeckIds, @RequestParam Integer pointsToWin, Model model){
-//    List<Long> chosenDecks = new ArrayList<>();
-////                chosenDeckIds.forEach(Long.parseLong(String id));
-//    for (String deckId : chosenDeckIds) {
-//        Long id = Long.parseLong(deckId);
-//        chosenDecks.add(id);
-//    }
-//    //  user parse player 1 and player 2 user Id's
-//    Long playerOne;
-//    Long playerTwo;
-//    Long user = 1L;
-//    Long p2 = 2L;
-//    // decide who is playerOne for this game
-//    if (gameService.coinFlip()) {
-//        playerOne = user;
-//        playerTwo = p2;
-//    } else {
-//        playerOne = p2;
-//        playerTwo = user;
-//    }
-// -----------   // need to create new game object
-//        if (chosenDecks == null || chosenDeckIds.isEmpty()){
-//        return new RedirectView("/game/new");
-//    }
-//        gameService.dealCards(chosenDecks, pointsToWin, playerOne, playerTwo);
-//        model.addAttribute("currentPlayerId", user);
-//        return new RedirectView("/game/play");
-//}
 
-////  Avian Code:
-//       To start a new game. Will take input for chosen decks and points to win
+
+//       POST -- Initialize a new game. Takes input for chosen decks and points to win
     @PostMapping("/game/new")
     public RedirectView setupGame(@RequestParam List<String> chosenDeckIds, @RequestParam Integer pointsToWin){
         Game game = gameService.newGame(pointsToWin, chosenDeckIds);
@@ -82,88 +54,51 @@ public class GameController {
     }
 
 
-////    Karen Code:
-////    For displaying gameplay. More to add.
-//@GetMapping("/game/play")
-//public String playGame(Model model){
-//    // Attempt to retrieve currentPlayerId from the model (passed from previous method, e.g., setupGame POST)
-//    Long currentPlayerId = (Long) model.getAttribute("currentPlayerId");
-//
-//    // --- FIX 4: Provide a fallback for currentPlayerId if accessed directly or not set ---
-//    // This is crucial if the user directly navigates to /game/play without going through /game/new
-//    if (currentPlayerId == null) {
-//        // IMPORTANT: Replace '1L' with actual user identification logic (e.g., from Spring Security, session)
-//        currentPlayerId = 1L; // Default to Player 1 if no ID is found (adjust as needed)
-//        System.out.println("Warning: currentPlayerId was null on GET /game/play, defaulting to " + currentPlayerId + " for display.");
-//    }
-//
-//    // --- FIX 5: Ensure currentPlayerId IS ALWAYS IN THE MODEL for the HTML view ---
-//    model.addAttribute("currentPlayerId", currentPlayerId);
-//
-//    List<Card> playerHand = gameService.showPlayerHand(2L);
-//    model.addAttribute("playerHand", playerHand);
-//    return "playgame";
-//}
-
-
-////      Avian Code:
-//    For displaying gameplay.
-    @GetMapping("/game/play/{gameId}")
+//          For displaying gameplay.
+@GetMapping("/game/play/{gameId}")
     public String playGame(Model model, @PathVariable Long gameId){
         Game currentGame = gameRepository.findById(gameId).orElse(null);
         if (currentGame == null){  // needs error mapping
             return "errorpage";
         }
         Long userId = userService.getCurrentUserId();
-        Long userPlayerId = playerRepository.findByPlayerUserId(userId).getId();
-        List<Card> userHand;
-        userHand = gameService.showPlayerHand(userPlayerId);
-        gameService.winPoint(currentGame.getPlayerOneId()); // temporary for testing
+        Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
+
+        // --- FIX 4: Provide a fallback for currentPlayerId if accessed directly or not set ---
+        // This is crucial if the user directly navigates to /game/play without going through /game/new
+        if (currentPlayerId == null) {
+            // IMPORTANT: Replace '1L' with actual user identification logic (e.g., from Spring Security, session)
+            currentPlayerId = 1L; // Default to Player 1 if no ID is found (adjust as needed)
+            System.out.println("Warning: currentPlayerId was null on GET /game/play, defaulting to " + currentPlayerId + " for display.");
+        }
+
+        List<Card> playerHand = gameService.showPlayerHand(currentPlayerId);
+        model.addAttribute("currentPlayerId", currentPlayerId);
+        model.addAttribute("playerHand", playerHand);
         model.addAttribute("gameId", gameId);
-        model.addAttribute("userHand", userHand);
         return "playgame";
     }
 
-////  Karen Code:
-////    For the end of the game. Currently just being used to reset the hand.
-//@GetMapping("/game/reset")
-//public RedirectView clearHand() {
-//    gameService.clearHand(2L);  // will replace with parsed currentUserId
-//    gameService.clearHand(1L);
-//
-//    return new RedirectView("/game/new");
-//}
 
-////    Avian Code:
-//    For the end of the game. Returns bool of if the current user is the winner, and clears the game from the db.
-    @GetMapping("/game/reset/{gameId}")
-    public RedirectView clearGame(@PathVariable Long gameId) {
-
-        boolean userWinner = gameService.endGame(gameId);
-        gameService.deleteGame(gameId);
-        return new RedirectView("/game/new");
-    }
-
-    ////            KAREN:
     // Allows user to select a card from their hand and updates the hand
-    @PostMapping("/game/play")
-    public String selectCard(@RequestParam("playerId") Long playerId, @RequestParam("cardId") Long cardId, Model model) {
-        Card selectedCard = gameService.pickCardFromHand(playerId, cardId);
+    @PostMapping("/game/play/{gameId}")
+    public String selectCard(@RequestParam("currentPlayerId") Long currentPlayerId, @RequestParam("cardId") Long cardId, Model model) {
 
-        model.addAttribute("currentPlayerId", playerId);
+        model.addAttribute("currentPlayerId", currentPlayerId);
 
         // Checks if the both player and card ids are valid, otherwise shoes the hand with erorr
-        if (playerId == null || cardId == null) {
+        if (currentPlayerId == null || cardId == null) {
             model.addAttribute("errorMessage", "Player ID and Card ID are required to play a card.");
-            List<Card> currentHand = gameService.showPlayerHand(playerId != null ? playerId : 1L);
+            List<Card> currentHand = gameService.showPlayerHand(currentPlayerId != null ? currentPlayerId : 1L);
             model.addAttribute("playerHand", currentHand);
             return "playgame";
         }
 
         try {
-            Card playedCard = gameService.pickCardFromHand(playerId, cardId);
+            Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
 
             if (playedCard != null) {
+
                 model.addAttribute("successMessage", "You have selected: " + playedCard.getName() + "!");
             } else {
                 model.addAttribute("errorMessage", "Card isn't available in your hand or could not be played.");
@@ -174,10 +109,20 @@ public class GameController {
             model.addAttribute("errorMessage", "An unexpected error occurred: " + e.getMessage());
         }
 
-        List<Card> updatedPlayerHand = gameService.showPlayerHand(playerId);
-        model.addAttribute("playerHand", updatedPlayerHand);
+        List<Card> playerHand = gameService.showPlayerHand(currentPlayerId);
+        model.addAttribute("playerHand", playerHand);
 
         return "playgame";
+    }
+
+
+//    For the end of the game. Returns bool of if the current user is the winner, and clears the game from the db.
+    @GetMapping("/game/reset/{gameId}")
+    public RedirectView clearGame(@PathVariable Long gameId) {
+
+        boolean userWinner = gameService.endGame(gameId);
+        gameService.deleteGame(gameId);
+        return new RedirectView("/game/new");
     }
 }
 
