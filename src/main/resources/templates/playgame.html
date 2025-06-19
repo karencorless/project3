@@ -3,12 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Play Game</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<ul th:if="${userHand != null and #lists.size(userHand) > 0}" th:each="card: ${userHand}">
-    <li th:text="${card.name}"></li>
-</ul>
-<p th:if="${userHand == null or #lists.size(userHand) == 0}">No cards to display.</p>
+
+<!-- Display messages from the controller -->
+<div th:if="${successMessage}" class="message success">
+    <p th:text="${successMessage}"></p>
+    <!-- If you want to show the played card details -->
+    <p th:if="${playedCard != null}">You played: <strong th:text="${playedCard.name}"></strong></p>
+</div>
+<div th:if="${errorMessage}" class="message error">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+
+<h2>Your Hand:</h2>
+
+<div class="hand-container" th:if="${playerHand != null and #lists.size(playerHand) > 0}">
+    <div class="card-item" th:each="card: ${playerHand}">
+        <p class="card-name" th:text="${card.name}"></p>
+
+        <form th:action="@{/game/play}" method="post">
+            <input type="hidden" name="playerId" th:value="${currentPlayerId}" />
+            <input type="hidden" name="cardId" th:value="${card.id}" />
+            <button type="submit" class="play-button">Play</button>
+        </form>
+    </div>
+</div>
+
+<!--Avian's Player list-->
+<!--<ul th:if="${playerHand != null and #lists.size(playerHand) > 0}" th:each="card: ${playerHand}">-->
+<!--    <li th:text="${card.name}"></li>-->
+<!--</ul>-->
+
+<p th:if="${playerHand == null or #lists.size(playerHand) == 0}">No cards to display.</p>
 <a  th:href="@{/game/reset/{gameId}(gameId=${gameId})}" type="submit" class="button">New Game</a>
 </body>
 </html>

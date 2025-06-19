@@ -1,7 +1,16 @@
 package com.makers.project3.Service;
 
-import com.makers.project3.model.*;
-import com.makers.project3.repository.*;
+import com.makers.project3.model.PlayerCard;
+import com.makers.project3.model.Player;
+import com.makers.project3.model.Game;
+import com.makers.project3.model.Card;
+import com.makers.project3.model.User;
+import com.makers.project3.repository.PlayerCardRepository;
+import com.makers.project3.repository.PlayerRepository;
+import com.makers.project3.repository.GameRepository;
+import com.makers.project3.repository.UserRepository;
+import com.makers.project3.repository.CardRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,7 +89,34 @@ public class GameService {
         return player;
     }
 
+////                ----------- KAREN CODE --------------
+////        Randomly deal cards from the active decks
+//public void dealCards(List<Long> decksChosen, Integer pointsToWin, Long playerOneId, Long playerTwoId){
+//    List<Card> allCardsInPlay = new ArrayList<>();
+//    //      list of all available cards
+//    for (Long deckId : decksChosen) {
+//        List<Card> deckCards = new ArrayList<>(cardRepository.findAllByParentDeckId(deckId));
+//        allCardsInPlay.addAll(deckCards);
+//    }
+//    //      Random draw, alternating between players
+//    boolean playerOneDraw = true;
+//    for (int i = 0; i <(pointsToWin * 4); i ++) {
+//        Collections.shuffle(allCardsInPlay);
+//        Card card = allCardsInPlay.removeFirst();
+//        PlayerCard newCard;
+//
+//        if (playerOneDraw) {
+//            newCard = new PlayerCard(null, playerOneId, card.getId(), null);
+//        }
+//        else {
+//            newCard = new PlayerCard(null, playerTwoId, card.getId(), null);
+//        }
+//        playerCardsRepository.save(newCard);
+//        playerOneDraw = !playerOneDraw;
+//    }
+//}
 
+////                    --AVIAN--
 //        Randomly deal cards from the active decks
     public void dealCards(List<Long> decksChosen, Long playerOneId, Long playerTwoId, Integer pointsToWin){
         List<Card> allCardsInPlay = new ArrayList<>();
@@ -119,8 +155,53 @@ public class GameService {
     }
 
 
-                                 //    Game Play related methods:
+//      Random Boolean Generator
+    public boolean coinFlip() {
+        Random random = new Random();
+        return random.nextBoolean();
+    }
 
+
+                                 //    Game Play related methods:
+////            --------  KAREN ----------
+@Transactional
+public Card pickCardFromHand(Long playerUserId, Long selectedCardId) {
+    if (playerUserId == null || selectedCardId == null) {
+        System.out.println("Error: Player ID or Selected Card ID is null in pickCardFromHand.");
+        return null;
+    }
+
+    List<PlayerCard> playerCardsActiveInHand = playerCardsRepository.findByPlayerUserId(playerUserId);
+
+    // Find the card id from playercards and store it
+    PlayerCard selectedCardInPlayerCards = null;
+    for (PlayerCard playerCard : playerCardsActiveInHand) {
+        if (playerCard.getCardId().equals(selectedCardId)) {
+            selectedCardInPlayerCards = playerCard;
+            break;
+        }
+    }
+
+    // If card not found, prints warnign
+    if (selectedCardInPlayerCards == null) {
+        System.out.println("Warning: Card with ID " + selectedCardId + " not found in hand for player " + playerUserId);
+        return null; // Indicate that the operation failed
+    }
+
+    Optional<Card> optionalCard = cardRepository.findById(selectedCardInPlayerCards.getCardId());
+
+    Card playedCard = optionalCard.get();
+    playerCardsRepository.delete(selectedCardInPlayerCards); // Remove the card from player's hand
+
+    return playedCard;
+}
+
+
+
+
+
+
+///         ---- AVIAN ----
 //          Returns the player's current score
     public Integer getScore(Long playerId) {
         return (Objects.requireNonNull(playerRepository.findById(playerId).orElse(null))).getCurrentScore();
@@ -163,14 +244,7 @@ public class GameService {
     }
 
 
-//      Random Boolean Generator
-    public boolean coinFlip() {
-        Random random = new Random();
-        return random.nextBoolean();
-    }
-
-
-//      Return Array[2] with the players, derived from the Game id
+//      Return list of the players, derived from the Game id
     public Player[] getPlayersFromGame(Long gameId){
         assert checkCurrentUserIsPlayerInGame(gameId);
 
@@ -215,6 +289,13 @@ public class GameService {
         playerRepository.deleteAllById(playerOneId);
         playerRepository.deleteAllById(playerTwoId);
         gameRepository.deleteAllById(gameId);
+    }
+
+
+    //    Delete all playerCards currently in player's hand
+    @Transactional
+    public void clearHand(Long playerId){
+        playerCardRepository.deleteAllByPlayerId(playerId);
     }
 
 }

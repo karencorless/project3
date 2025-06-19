@@ -1,0 +1,155 @@
+/* style.css */
+
+body {
+    font-family: 'Inter', Arial, sans-serif; /* Using Inter font, fallback to Arial */
+    margin: 20px;
+    background-color: #f0f2f5; /* Light grey background */
+    color: #333;
+    line-height: 1.6;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+h2 {
+    color: #34495e;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+/* Messages (success/error) */
+.message {
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    border-radius: 8px; /* Rounded corners for messages */
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Hand Container */
+.hand-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* More space between cards */
+    justify-content: center; /* Center cards in the container */
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e9ecef; /* Slightly darker background for the hand area */
+    border-radius: 12px; /* Rounded corners for the hand container */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05); /* Inner shadow for depth */
+}
+
+/* Individual Card Item */
+.card-item {
+    border: 1px solid #dcdcdc;
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners for cards */
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* Stronger shadow for cards */
+    width: 200px; /* Slightly wider cards */
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition on hover */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Push button to bottom */
+}
+
+.card-item:hover {
+    transform: translateY(-5px); /* Lift card slightly on hover */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.card-name {
+    font-weight: bold;
+    margin-bottom: 12px;
+    font-size: 1.2em; /* Slightly larger card name */
+    color: #2c3e50;
+}
+
+.card-description {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* General Buttons */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 20px; /* Space from other elements */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px; /* More rounded corners for buttons */
+    cursor: pointer;
+    text-decoration: none; /* For link-buttons */
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Shadow for buttons */
+}
+
+.button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+/* Specific Button Styles */
+.play-button {
+    background-color: #28a745; /* Green play button */
+    margin-top: auto; /* Push button to bottom of card */
+    width: 100%; /* Make button full width of card */
+    padding: 10px 0; /* Adjust padding for full width */
+    font-size: 1.1em;
+}
+
+.play-button:hover {
+    background-color: #218838;
+}
+
+.reset-button {
+    background-color: #dc3545; /* Red reset button */
+    margin-left: 20px; /* Space from other general buttons if any */
+}
+
+.reset-button:hover {
+    background-color: #c82333;
+}
+
+/* No cards message */
+.no-cards-message {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 1.1em;
+    color: #777;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hand-container {
+        flex-direction: column; /* Stack cards vertically on small screens */
+        align-items: center; /* Center stacked cards */
+    }
+
+    .card-item {
+        width: 90%; /* Make cards take more width on small screens */
+    }
+}

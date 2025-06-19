@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Deck</title>
+</head>
+<body>
+<h1 th:text="${deck.name} + 'Cards'"></h1>
+
+<!--    View Cards    -->
+<!--    Displays a list of cards in a deck showing all of the information for a card    -->
+<div th:each="card: ${cards}">
+    <!--  Card image  -->
+    <img th:src="${card.imageSource}" alt="Card image" width="100"/>
+    <!--  Card name  -->
+    <strong th:text="${card.name}"></strong>
+    <!--  Flavour text  -->
+    <span th:text="${card.flavourText}"></span>
+    <!--  Card Stats  -->
+    <span> Strength:  <strong th:text="${card.strength}"></strong></span>
+    <span> Wisdom:  <strong th:text="${card.wisdom}"></strong></span>
+    <span> Defence:  <strong th:text="${card.defence}"></strong></span>
+    <span> Luck:  <strong th:text="${card.luck}"></strong></span>
+    <!--  Populates unique stat name from deck table  -->
+    <span><span th:text="' ' + ${deck.uniqueStatName} + ': '"></span><strong th:text="${card.customStat}"></strong></span>
+</div>
+</body>
+</html>
