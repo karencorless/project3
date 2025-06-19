@@ -17,6 +17,8 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_DB: stat_attack_development
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -25,6 +27,11 @@ jobs:
 
     env:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/stat_attack_development
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      ISSUER: ${{ secrets.ISSUER }}
 
     strategy:
       matrix:

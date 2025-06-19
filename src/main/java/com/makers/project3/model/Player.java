@@ -18,7 +18,7 @@ public class Player {
     @Column(name="current_card")
     private Long currentCardId = null;
     @Column(name="current_stat")
-    private Long currentStat = null;
+    private String currentStat;
     @Column(name = "current_score")
     private Integer currentScore = 0;
 

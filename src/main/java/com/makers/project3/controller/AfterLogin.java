@@ -1,7 +1,9 @@
 package com.makers.project3.controller;
 
 import com.makers.project3.Service.AuthenticatedUserService;
+import com.makers.project3.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +22,9 @@ public class AfterLogin {
 
     @GetMapping("/homepage")
     public ModelAndView viewHomepage() {
-        return new ModelAndView("homepage");
+        User currentUser = authenticatedUserService.getAuthenticatedUser();
+        ModelAndView mav = new ModelAndView("homepage");
+        mav.addObject("currentUser", currentUser);
+        return mav;
     }
 }
