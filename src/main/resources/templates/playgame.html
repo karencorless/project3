@@ -7,17 +7,21 @@
 </head>
 <body>
 
-<!-- Display messages from the controller -->
+<!-- You may keep success/user feedback separate -->
 <div th:if="${successMessage}" class="message success">
     <p th:text="${successMessage}"></p>
-    <!-- If you want to show the played card details -->
-    <p th:if="${playedCard != null}">You played: <strong th:text="${playedCard.name}"></strong></p>
-</div>
-<div th:if="${errorMessage}" class="message error">
-    <p th:text="${errorMessage}"></p>
 </div>
 
+<!-- Show results after battle -->
+<div th:if="${cpuPlayedCard != null}">
+    <p>You selected: <strong th:text="${chosenStat}"></strong></p>
+    <p>CPU played: <strong th:text="${cpuPlayedCard.name}"></strong></p>
+    <p>CPU chosen stat: <strong th:text="${cpuChosenStat}"></strong></p>
+    <p>CPU stat value: <strong th:text="${cpuStatValue}"></strong></p>
+    <p>Your stat value: <strong th:text="${statValue}"></strong></p>
+</div>
 
+<!--Displays player's hand, prompts player to pick card-->
 <h2>Your Hand:</h2>
 
 <div class="hand-container" th:if="${playerHand != null and #lists.size(playerHand) > 0}">
@@ -30,13 +34,27 @@
         </form>
     </div>
 </div>
-
-<!--Avian's Player list-->
-<!--<ul th:if="${playerHand != null and #lists.size(playerHand) > 0}" th:each="card: ${playerHand}">-->
-<!--    <li th:text="${card.name}"></li>-->
-<!--</ul>-->
-
 <p th:if="${playerHand == null or #lists.size(playerHand) == 0}">No cards to display.</p>
-<a  th:href="@{/game/reset/{gameId}(gameId=${gameId})}" type="submit" class="button">New Game</a>
+
+
+<!-- Prompts user to select a stat after picking a card -->
+<div class="stat-container" th:if="${playedCard != null}">
+    <form th:action="@{'/game/play/' + ${gameId} + '/select-stat'}" method="post">
+        <input type="hidden" name="currentPlayerId" th:value="${currentPlayerId}" />
+        <input type="hidden" name="cardId" th:value="${playedCard.id}" />
+
+    <label for="stat-select">Please select a stat:</label>
+    <select id="stat-select" name="chosenStat">
+    <option value="strength">Strength</option>
+    <option value="wisdom">Wisdom</option>
+    <option value="defence">Defence</option>
+    <option value="luck">Luck</option>
+    <option value="unique-stat">Unique Stat</option>
+</select>
+        <button type="submit" class="button">Battle!</button></form>
+</div>
+
+<!--New game/reset hand button-->
+<a th:href="@{/game/reset/{gameId}(gameId=${gameId})}" type="submit" class="button">New Game</a>
 </body>
 </html>

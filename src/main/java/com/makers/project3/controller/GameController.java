@@ -64,10 +64,7 @@ public class GameController {
         Long userId = userService.getCurrentUserId();
         Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
 
-        // --- FIX 4: Provide a fallback for currentPlayerId if accessed directly or not set ---
-        // This is crucial if the user directly navigates to /game/play without going through /game/new
         if (currentPlayerId == null) {
-            // IMPORTANT: Replace '1L' with actual user identification logic (e.g., from Spring Security, session)
             currentPlayerId = 1L; // Default to Player 1 if no ID is found (adjust as needed)
             System.out.println("Warning: currentPlayerId was null on GET /game/play, defaulting to " + currentPlayerId + " for display.");
         }
@@ -82,7 +79,7 @@ public class GameController {
 
     // Allows user to select a card from their hand and updates the hand
     @PostMapping("/game/play/{gameId}")
-    public String selectCard(@RequestParam("currentPlayerId") Long currentPlayerId, @RequestParam("cardId") Long cardId, Model model) {
+    public String selectCard(@RequestParam("currentPlayerId") Long currentPlayerId, @RequestParam("cardId") Long cardId, @PathVariable Long gameId, Model model) {
 
         model.addAttribute("currentPlayerId", currentPlayerId);
 
@@ -98,8 +95,8 @@ public class GameController {
             Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
 
             if (playedCard != null) {
-
-                model.addAttribute("successMessage", "You have selected: " + playedCard.getName() + "!");
+                model.addAttribute("playedCard", playedCard);
+                model.addAttribute("successMessage", "You played: " + playedCard.getName() + "!");
             } else {
                 model.addAttribute("errorMessage", "Card isn't available in your hand or could not be played.");
             }
@@ -109,8 +106,91 @@ public class GameController {
             model.addAttribute("errorMessage", "An unexpected error occurred: " + e.getMessage());
         }
 
+        Game game = gameService.getGameById(gameId);
+        if (game == null) {
+            model.addAttribute("errorMessage", "Game not found.");
+            return "playgame";
+        }
+
         List<Card> playerHand = gameService.showPlayerHand(currentPlayerId);
         model.addAttribute("playerHand", playerHand);
+        model.addAttribute("gameId", gameId);
+
+        return "playgame";
+    }
+
+    @PostMapping("/game/play/{gameId}/select-stat")
+    public String selectPlayerStat(@PathVariable Long gameId, @RequestParam("currentPlayerId") Long currentPlayerId,
+                                   @RequestParam("cardId") Long cardId, @RequestParam("chosenStat") String chosenStat, Model model) {
+
+        Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
+        if (playedCard == null) {
+            model.addAttribute("errorMessage", "Selected card not found.");
+            return "playgame";
+        }
+
+        int statValue = gameService.getStatValue(chosenStat, playedCard);
+
+        Game game = gameService.getGameById(gameId);
+        if (game == null) {
+            model.addAttribute("errorMessage", "Game not found.");
+            return "playgame";
+        }
+
+        Long cpuId = gameService.getOppIdForGame(game, currentPlayerId);
+        if (cpuId == null) {
+            model.addAttribute("errorMessage", "Opponent not found.");
+            return "playgame";
+        }
+
+        Card cpuCard = gameService.getCpuCardByHighestStat(cpuId, chosenStat);
+        if (cpuCard == null) {
+            model.addAttribute("errorMessage", "Opponent has no cards.");
+            return "playgame";
+        }
+
+        int cpuStatValue = gameService.getStatValue(chosenStat, cpuCard);
+
+        List<Card> updatedPlayerHand = gameService.showPlayerHand(currentPlayerId);
+        model.addAttribute("playerHand", updatedPlayerHand);
+
+        model.addAttribute("chosenStat", chosenStat);
+        model.addAttribute("statValue", statValue);
+        model.addAttribute("playedCard", playedCard);
+        model.addAttribute("cpuPlayedCard", cpuCard);
+        model.addAttribute("cpuChosenStat", chosenStat);
+        model.addAttribute("cpuStatValue", cpuStatValue);
+        model.addAttribute("currentPlayerId", currentPlayerId);
+        model.addAttribute("gameId", gameId);
+
+        System.out.println("CPU card picked: " + cpuCard.getName());
+        System.out.println("CPU chosen stat: " + chosenStat);
+        System.out.println("Entered selectPlayerStat with gameId=" + gameId + ", currentPlayerId=" + currentPlayerId + ", cardId=" + cardId + ", chosenStat=" + chosenStat);
+        System.out.println("Played card: " + (playedCard != null ? playedCard.getName() : "null"));
+        System.out.println("CPU card: " + (cpuCard != null ? cpuCard.getName() : "null"));
+        System.out.println("Sending to playgame: cpuCard=" + cpuCard.getName() + ", stat=" + chosenStat);
+
+
+        return "playgame";
+    }
+
+
+    @PostMapping("/game/play/{gameId}/cpu-turn")
+    public String selectCpuTurn(@RequestParam("currentPlayerId") Long currentPlayerId, @RequestParam("cardId") Long cardId, @RequestParam("cpuId") Long cpuId, Model model) {
+
+        // ----- CPU ID REQUIRED, PARSE THAT IN THE FORM ------
+
+        int highestStatValue = gameService.getHighestStatValue(cpuId);
+
+        Card highestStatValueCard = gameService.getHighestStatValueCard(cpuId);
+
+        String statName = gameService.getNameOfMaxStatOnCard(highestStatValueCard);
+
+        // gets highest stat card CHARACTER NAME
+        String cardCharacterName = highestStatValueCard.getName();
+
+        model.addAttribute("cpuChosenCard", cardCharacterName);
+        model.addAttribute("cpuChosenStat", statName);
 
         return "playgame";
     }
