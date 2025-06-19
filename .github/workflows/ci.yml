@@ -29,9 +29,9 @@ jobs:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/stat_attack_development
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
-      CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
-      ISSUER: ${{ secrets.AUTH0_ISSUER_URI }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+      ISSUER: ${{ secrets.ISSUER }}
 
     strategy:
       matrix:
