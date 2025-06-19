@@ -7,6 +7,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name="games")
 public class Game {
 
     @Id
@@ -15,7 +16,7 @@ public class Game {
     @Column(name="player_1_id")
     private Long playerOneId;
     @Column(name="player_2_id")
-    private Long playerTwo;
+    private Long playerTwoId;
     @Column(name = "points_to_win")
     private int pointsToWin;
 

@@ -14,9 +14,9 @@ public class PlayerCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "player_id")
-    private Long playerUserId;
+    private Long playerId;
     @Column(name="card_id")
     private Long cardId;
-    private Boolean discarded;
+    private Boolean discarded = false;
 
 }
