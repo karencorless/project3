@@ -86,7 +86,7 @@ public class GameController {
 
         List<Card> playerHand = gameService.showPlayerHand(2L);
         model.addAttribute("playerHand", playerHand);
-        return "newgame";
+        return "playgame";
     }
 
 
