@@ -61,7 +61,7 @@ public class GameController {
         // need to create new game object
 
         if (chosenDecks == null || chosenDeckIds.isEmpty()){
-            return new RedirectView("/game/start");
+            return new RedirectView("/game/new");
         }
         gameService.dealCards(chosenDecks, pointsToWin, playerOne, playerTwo);
         return new RedirectView("/game/play");
@@ -81,7 +81,7 @@ public class GameController {
     public RedirectView clearHand() {
         gameService.clearHand(2L);  // will replace with parsed currentUserId
         gameService.clearHand(1L);
-        return new RedirectView("/game/setup");
+        return new RedirectView("/game/new");
     }
 }
 
