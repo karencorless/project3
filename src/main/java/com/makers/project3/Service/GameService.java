@@ -176,6 +176,7 @@ public class GameService {
         ///  Change bool discarded to true and set currentCard
         currentPlayer.setCurrentCardId(selectedCardId);
         selectedCardInPlayerCards.setDiscarded(true);
+
         return playedCard;
     }
 
@@ -186,11 +187,18 @@ public class GameService {
     }
 
 
-//          Updates player's currentScore
-    @Transactional
-    public void winPoint(Long playerId) {
-        playerRepository.incrementCurrentScore(playerId);
+@Transactional
+public void winPoint(Long playerId) {
+        // Updatedas previous wasn't updating for some reason
+    Player player = playerRepository.findById(playerId).orElse(null);
+    if (player != null) {
+        player.setCurrentScore(player.getCurrentScore() + 1);
+        playerRepository.save(player);
+        System.out.println("Manually incremented score for playerId: " + playerId + ", new score: " + player.getCurrentScore());
+    } else {
+        System.out.println("Player not found with id: " + playerId);
     }
+}
 
 
 //          Compare players' scores
@@ -208,6 +216,16 @@ public class GameService {
         }
     }
 
+    //          Compare players' stat values
+    public Boolean compareStats(int p1StatValue, int cpuStatValue){
+        if (p1StatValue > cpuStatValue) {
+            return true;
+        } else if (cpuStatValue > p1StatValue) {
+            return false;
+        } else {
+            return null;
+        }
+    }
 
 //          Return list of the cards currently in the player's hand
     public List<Card> showPlayerHand(Long playerId){
@@ -247,8 +265,112 @@ public class GameService {
         return null;
     }
 
+//      Gets the card's stat value based on chosen attribute
+    public int getStatValue(String stat, Card card){
+        return switch (stat.toLowerCase()) {
+            case "strength" -> card.getStrength();
+            case "wisdom" -> card.getWisdom();
+            case "defence" -> card.getDefence();
+            case "luck" -> card.getLuck();
+            case "customstat" -> card.getCustomStat();
+            default -> throw new IllegalArgumentException("Invalid stat: " + stat);
+        };
+    }
 
-                    //  Deletion and end game related methods:
+//      Finds the highest value stat on one card for CPU
+    public int getMaxStatValueOnACard(Card card) {
+        return Collections.max(List.of(
+                card.getStrength(),
+                card.getWisdom(),
+                card.getDefence(),
+                card.getLuck(),
+                card.getCustomStat()
+        ));
+    }
+
+//      Finds the highest value stat across all cards in CPU's hand
+    public int getHighestStatValue(Long cpuId){
+        // Gets the cpus hand
+        List<PlayerCard> cpuCardsInHand = playerCardRepository.findByPlayerId(cpuId);
+
+        // verifiees card is in cpus hand
+        List<Card> cpuHand = new ArrayList<>();
+        for (PlayerCard card : cpuCardsInHand) {
+            if (!card.getDiscarded()) {
+                cardRepository.findById(card.getCardId()).ifPresent(cpuHand::add);
+            }
+        }
+        // Applies the maxstat method on all the cards and sorts them descending
+        cpuHand.sort(Comparator.comparingInt(this::getMaxStatValueOnACard).reversed());
+
+        // Return the highest stat value
+        return cpuHand.isEmpty() ? 0 : getMaxStatValueOnACard(cpuHand.get(0));
+    }
+
+    //      Finds the card with the highest stat value in the CpU's hand
+    public Card getHighestStatValueCard(Long cpuId){
+        List<PlayerCard> cpuCardsInHand = playerCardRepository.findByPlayerId(cpuId);
+
+        List<Card> cpuHand = new ArrayList<>();
+        for (PlayerCard card : cpuCardsInHand) {
+            if (!card.getDiscarded()) {
+                cardRepository.findById(card.getCardId()).ifPresent(cpuHand::add);
+            }
+        }
+        cpuHand.sort(Comparator.comparingInt(this::getMaxStatValueOnACard).reversed());
+
+        // Return the highest stat value
+        return cpuHand.isEmpty() ? null : cpuHand.get(0);
+    }
+
+//      Finds the name of the attribute with the highest value on a card:
+    public String getNameOfMaxStatOnCard(Card card) {
+        int maxValue = getMaxStatValueOnACard(card);  // get highest value
+
+        if (card.getStrength() == maxValue) return "strength";
+        if (card.getWisdom() == maxValue) return "wisdom";
+        if (card.getDefence() == maxValue) return "defence";
+        if (card.getLuck() == maxValue) return "luck";
+        if (card.getCustomStat() == maxValue) return "customStat";
+
+        return "unknown";
+    }
+
+//      Finds the ID of the opponent..
+public Long getOppIdForGame(Game game, Long currentPlayerId) {
+    if (game.getPlayerOneId().equals(currentPlayerId)) {
+        return game.getPlayerTwoId();
+    } else if (game.getPlayerTwoId().equals(currentPlayerId)) {
+        return game.getPlayerOneId();
+    } else {
+        return null; // or throw exception if player not in game
+    }
+}
+
+//      Get cpu's highest card with MY Chosen attribute.
+    public Card getCpuCardByHighestStat(Long cpuId, String chosenStat) {
+        List<PlayerCard> cpuCardsInHand = playerCardRepository.findByPlayerId(cpuId);
+
+        List<Card> cpuHand = new ArrayList<>();
+        for (PlayerCard pc : cpuCardsInHand) {
+            if (!pc.getDiscarded()) {
+                cardRepository.findById(pc.getCardId()).ifPresent(cpuHand::add);
+            }
+        }
+
+        cpuHand.sort(Comparator.comparingInt((Card card) -> getStatValue(chosenStat, card)).reversed());
+
+        return cpuHand.isEmpty() ? null : cpuHand.get(0);
+    }
+
+
+//      Get game iD ---- CHECK IF AVIAN ALREADY HAS ONE AND REFACTOR WHAT U USE -----
+    public Game getGameById(Long gameId) {
+        return gameRepository.findById(gameId).orElse(null);
+    }
+
+
+    //  Deletion and end game related methods:
 
 //        End Game, determine winner
     public boolean endGame(Long gameId) {
