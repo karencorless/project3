@@ -1,3 +1,4 @@
+<!-- fragments/header.html -->
 <div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
     <header style="background: #fff; border-bottom: 2px solid #ddd;">
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem;">
@@ -40,7 +41,7 @@
                 padding: 0.5rem 1rem;
                 ">All Decks</a>
 
-                <a href="/tutorial" th:href="@{/tutorial}" style="
+                <a href="javascript:void(0)" onclick="openTuto()" style="
                 text-decoration: none;
                 color: #000000;
                 font-weight: 600;
@@ -85,6 +86,7 @@
     </header>
 </div>
 
+<!-- fragments/footer.html -->
 <div th:fragment="footer" style="text-align:center; padding:2rem; background:#f1f1f1; margin-top:3rem; font-size: 1.2rem;">
     <footer>
         <a href="/contact" th:href="@{/contact}" style="text-decoration:none; color:#777; font-weight:500; margin-right: 20px;">Contact Us</a>
@@ -93,6 +95,212 @@
             &copy; 2025 Stat Attack. All rights reserved.
         </div>
     </footer>
+</div>
+
+<!-- fragments/tutorial.html -->
+<div th:fragment="tutorialModal">
+    <div id="tutorial" class="overlay" style="display: none;">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeTuto()">&times;</a>
+        <div class="overlay-content">
+            <div class="tutorial-content">
+                <!-- Initial selection screen -->
+                <div class="tuto-select">
+                    <h2>Select Manual</h2>
+                    <p>Below, select which gamemode you would like to learn how to play.</p>
+                    <div class="manual-select">
+                        <button id="1v1Btn" class="btn btn-primary" style="margin: 10px;">1v1</button>
+                        <button class="btn btn-secondary" style="margin: 10px;" disabled>Team [Coming Soon]</button>
+                    </div>
+                </div>
+
+                <!-- 1v1 Tutorial Steps -->
+                <div id="1v1Tutorial" style="display: none;">
+                    <div class="tutorial-step active" data-step="1">
+                        <h2>Before The Game</h2>
+                        <p>Prior to each game, you'll be prompted with a lobby configuration menu. Here you can select which card decks you'd like to play with as well as how many points you need to win the game.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-primary next-step">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step" data-step="2" style="display: none;">
+                        <h2>How To Play - Start</h2>
+                        <p>Each of the decks you selected will be shuffled together, and you will be dealt a hand of cards. This hand will be the cards you get to choose from for each round.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-secondary prev-step">Back</button>
+                            <button class="btn btn-primary next-step">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step" data-step="3" style="display: none;">
+                        <h2>How To Play - Rounds</h2>
+                        <p>One player will choose a card they wish to play, and the following sub-stat to go with it. For example, SpongeBob and Luck. The opponent will be told the substat in play, and choose one of their own cards to fight it. Whichever card has the highest value of that stat will win the round, with a point going towards the winner.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-secondary prev-step">Back</button>
+                            <button class="btn btn-primary next-step">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step" data-step="4" style="display: none;">
+                        <h2>How To Play - Winning</h2>
+                        <p>Once a card has been played, it will be removed from the players hand and added to the discard pile. The game keeps going until someone hits the points to win target as selected prior to the game starting.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-secondary prev-step">Back</button>
+                            <button class="btn btn-success finish-tutorial">Finish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .overlay-content {
+            background-color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: white;
+            position: relative;
+        }
+
+        .closebtn {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 35px;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .closebtn:hover {
+            color: white;
+        }
+
+        .tuto-nav {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .manual-select {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .tutorial-step {
+            display: none;
+        }
+
+        .tutorial-step.active {
+            display: block;
+        }
+    </style>
+
+    <script>
+        // Tutorial Modal Functions
+        function openTuto() {
+            const tutorial = document.getElementById('tutorial');
+            tutorial.style.display = 'flex';
+            setTimeout(() => {
+                tutorial.classList.add('active');
+                // Reset to initial state when opening
+                document.querySelector('.tuto-select').style.display = 'block';
+                document.getElementById('1v1Tutorial').style.display = 'none';
+            }, 10);
+        }
+
+        function closeTuto() {
+            const tutorial = document.getElementById('tutorial');
+            tutorial.classList.remove('active');
+            setTimeout(() => {
+                tutorial.style.display = 'none';
+            }, 300);
+        }
+
+        // Initialize tutorial navigation when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1v1 button click handler
+            document.getElementById('1v1Btn').addEventListener('click', function() {
+                document.querySelector('.tuto-select').style.display = 'none';
+                const tutorial = document.getElementById('1v1Tutorial');
+                tutorial.style.display = 'block';
+                // Show first step
+                const steps = tutorial.querySelectorAll('.tutorial-step');
+                steps.forEach(step => step.style.display = 'none');
+                steps[0].style.display = 'block';
+                steps[0].classList.add('active');
+            });
+
+            // Navigation between steps
+            document.addEventListener('click', function(e) {
+                // Next step button
+                if (e.target.classList.contains('next-step')) {
+                    const currentStep = e.target.closest('.tutorial-step');
+                    const nextStep = currentStep.nextElementSibling;
+
+                    if (nextStep) {
+                        currentStep.classList.remove('active');
+                        currentStep.style.display = 'none';
+                        nextStep.classList.add('active');
+                        nextStep.style.display = 'block';
+                    }
+                }
+
+                // Previous step button
+                if (e.target.classList.contains('prev-step')) {
+                    const currentStep = e.target.closest('.tutorial-step');
+                    const prevStep = currentStep.previousElementSibling;
+
+                    if (prevStep) {
+                        currentStep.classList.remove('active');
+                        currentStep.style.display = 'none';
+                        prevStep.classList.add('active');
+                        prevStep.style.display = 'block';
+                    }
+                }
+
+                // Finish tutorial button
+                if (e.target.classList.contains('finish-tutorial')) {
+                    closeTuto();
+                }
+            });
+
+            // Close modal when clicking outside content
+            document.getElementById('tutorial').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeTuto();
+                }
+            });
+        });
+    </script>
 </div>
 
 <!--th:insert, th:replace, or th:include to use the above in other pages-->

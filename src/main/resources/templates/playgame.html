@@ -6,19 +6,38 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<div th:replace="~{fragments :: header}"></div>
 
-<!-- You may keep success/user feedback separate -->
+<!-- Displays all points -->
+<div style="display: flex; justify-content: space-between; padding: 10px;">
+    <div style="text-align: left;">
+        <h2>Player 1:</h2>
+        <h2><strong th:text="${player1Score}"></strong></h2>
+    </div>
+    <div style="text-align: right;">
+        <h2>Player 2:</h2>
+        <h2><strong th:text="${cpuScore}"></strong> </h2>
+    </div>
+</div>
+
+<!-- Display messages from the controller -->
 <div th:if="${successMessage}" class="message success">
     <p th:text="${successMessage}"></p>
 </div>
 
 <!-- Show results after battle -->
 <div th:if="${cpuPlayedCard != null}">
-    <p>You selected: <strong th:text="${chosenStat}"></strong></p>
-    <p>CPU played: <strong th:text="${cpuPlayedCard.name}"></strong></p>
-    <p>CPU chosen stat: <strong th:text="${cpuChosenStat}"></strong></p>
-    <p>CPU stat value: <strong th:text="${cpuStatValue}"></strong></p>
-    <p>Your stat value: <strong th:text="${statValue}"></strong></p>
+    <p style="width: 300px; margin: 0 auto;">You played: <strong th:text="${chosenStat}"></strong></p>
+    <p style="width: 300px; margin: 0 auto;">You selected: <strong th:text="${playedCard.name}"></strong></p>
+    <p style="width: 300px; margin: 0 auto;">Your stat value: <strong th:text="${statValue}"></strong></p>
+</div>
+
+<!--Show CPU's moves-->
+<div th:if="${cpuPlayedCard != null}" style="float: right; text-align: right;">
+    <h2>Player 2 Hand:</h2>
+    <p>Played: <strong th:text="${cpuPlayedCard.name}"></strong></p>
+    <p>Chosen stat: <strong th:text="${cpuChosenStat}"></strong></p>
+    <p>Stat value: <strong th:text="${cpuStatValue}"></strong></p>
 </div>
 
 <!--Displays player's hand, prompts player to pick card-->
@@ -27,21 +46,25 @@
 <div class="hand-container" th:if="${playerHand != null and #lists.size(playerHand) > 0}">
     <div class="card-item" th:each="card: ${playerHand}">
         <p class="card-name" th:text="${card.name}"></p>
-        <form th:action="@{/game/play/{gameId}(gameId=${gameId})}" method="post">
+        <form th:action="@{/game/play}" method="post">
             <input type="hidden" name="currentPlayerId" th:value="${currentPlayerId}" />
             <input type="hidden" name="cardId" th:value="${card.id}" />
+            <input type="hidden" name="gameId" th:value="${gameId}" />
             <button type="submit" class="play-button">Play</button>
         </form>
     </div>
 </div>
+
+
 <p th:if="${playerHand == null or #lists.size(playerHand) == 0}">No cards to display.</p>
 
 
 <!-- Prompts user to select a stat after picking a card -->
-<div class="stat-container" th:if="${playedCard != null}">
-    <form th:action="@{'/game/play/' + ${gameId} + '/select-stat'}" method="post">
+<div class="stat-container" th:if="${playedCard != null and cpuPlayedCard == null}">
+    <form th:action="@{'/game/play/player-1-stat-select'}" method="post">
         <input type="hidden" name="currentPlayerId" th:value="${currentPlayerId}" />
         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
+        <input type="hidden" name="gameId" th:value="${gameId}" />
 
     <label for="stat-select">Please select a stat:</label>
     <select id="stat-select" name="chosenStat">
@@ -49,12 +72,23 @@
     <option value="wisdom">Wisdom</option>
     <option value="defence">Defence</option>
     <option value="luck">Luck</option>
-    <option value="unique-stat">Unique Stat</option>
+    <option value="customStat">Unique Stat</option>
 </select>
         <button type="submit" class="button">Battle!</button></form>
 </div>
 
+<div th:if="${cpuPlayedCard != null}">
+    <form action="#" th:action="@{/game/play/player-2-stat-select}" method="post">
+        <input type="hidden" name="currentPlayerId" th:value="${currentPlayerId}"/>
+        <input type="hidden" name="cardId" th:value="${cpuPlayedCard.id}"/>
+        <input type="hidden" name="cpuId" th:value="${cpuId}"/>
+        <button type="submit" class="button">Next Round</button>
+</form>
+</div>
+
 <!--New game/reset hand button-->
-<a th:href="@{/game/reset/{gameId}(gameId=${gameId})}" type="submit" class="button">New Game</a>
+<a  th:href="@{/game/reset}" type="submit" class="button">New Game</a>
+
+<div th:replace="~{fragments :: footer}"></div>
 </body>
 </html>
