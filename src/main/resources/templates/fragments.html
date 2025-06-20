@@ -1,8 +1,9 @@
+<!-- fragments/header.html -->
 <div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
     <header style="background: #fff; border-bottom: 2px solid #ddd;">
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem;">
 
-            <a class="stat-attack-logo" href="/" th:href="@{/}" style="
+            <a class="stat-attack-logo" href="/homepage" th:href="@{/homepage}" style="
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 font-size: 2.5rem;
                 font-weight: bold;
@@ -40,7 +41,7 @@
                 padding: 0.5rem 1rem;
                 ">All Decks</a>
 
-                <a href="/tutorial" th:href="@{/tutorial}" style="
+                <a href="javascript:void(0)" onclick="openTuto()" style="
                 text-decoration: none;
                 color: #000000;
                 font-weight: 600;
@@ -71,7 +72,7 @@
                     font-weight: 500;
                     color: #000000;"></span>
 
-                <a href="/logout" style="
+                <a href="#" onclick="confirmLogout(event)" style="
                     padding: 0.6rem 1.2rem;
                     text-decoration: none;
                     color: #fff;
@@ -81,10 +82,18 @@
                     font-size: 1.3rem;">Logout</a>
             </div>
         </nav>
-
+        <script>
+            function confirmLogout(event) {
+                event.preventDefault(); // Stop the link from navigating immediately
+                if (confirm("Are you sure you want to log out?")) {
+                    window.location.href = "/logout";
+                }
+            }
+        </script>
     </header>
 </div>
 
+<!-- fragments/footer.html -->
 <div th:fragment="footer" style="text-align:center; padding:2rem; background:#f1f1f1; margin-top:3rem; font-size: 1.2rem;">
     <footer>
         <a href="/contact" th:href="@{/contact}" style="text-decoration:none; color:#777; font-weight:500; margin-right: 20px;">Contact Us</a>
@@ -93,6 +102,388 @@
             &copy; 2025 Stat Attack. All rights reserved.
         </div>
     </footer>
+</div>
+
+<!-- fragments/tutorial.html -->
+<div th:fragment="tutorialModal">
+    <div id="tutorial" class="overlay" style="display: none;">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeTuto()">&times;</a>
+        <div class="overlay-content">
+            <div class="tutorial-content">
+                <!-- Initial selection screen -->
+                <div class="tuto-select">
+                    <h2>Select Manual</h2>
+                    <p>Below, select which gamemode you would like to learn how to play.</p>
+                    <div class="manual-select">
+                        <button id="1v1Btn" class="btn btn-primary" style="margin: 10px;">1v1</button>
+                        <button class="btn btn-secondary" style="margin: 10px;" disabled>Team [Coming Soon]</button>
+                    </div>
+                </div>
+
+                <!-- 1v1 Tutorial Steps -->
+                <div id="1v1Tutorial" style="display: none;">
+                    <div class="tutorial-step active" data-step="1">
+                        <h2>Before The Game</h2>
+                        <p>Prior to each game, you'll be prompted with a lobby configuration menu. Here you can select which card decks you'd like to play with as well as how many points you need to win the game.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-primary next-step">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step" data-step="2" style="display: none;">
+                        <h2>How To Play - Start</h2>
+                        <p>Each of the decks you selected will be shuffled together, and you will be dealt a hand of cards. This hand will be the cards you get to choose from for each round.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-secondary prev-step">Back</button>
+                            <button class="btn btn-primary next-step">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step" data-step="3" style="display: none;">
+                        <h2>How To Play - Rounds</h2>
+                        <p>One player will choose a card they wish to play, and the following sub-stat to go with it. For example, SpongeBob and Luck. The opponent will be told the substat in play, and choose one of their own cards to fight it. Whichever card has the highest value of that stat will win the round, with a point going towards the winner.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-secondary prev-step">Back</button>
+                            <button class="btn btn-primary next-step">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step" data-step="4" style="display: none;">
+                        <h2>How To Play - Winning</h2>
+                        <p>Once a card has been played, it will be removed from the players hand and added to the discard pile. The game keeps going until someone hits the points to win target as selected prior to the game starting.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-secondary prev-step">Back</button>
+                            <button class="btn btn-success finish-tutorial">Finish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .overlay-content {
+            background-color: #333;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            color: white;
+            position: relative;
+        }
+
+        .closebtn {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 35px;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .closebtn:hover {
+            color: white;
+        }
+
+        .tuto-nav {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .manual-select {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .tutorial-step {
+            display: none;
+        }
+
+        .tutorial-step.active {
+            display: block;
+        }
+    </style>
+
+    <script>
+        // Tutorial Modal Functions
+        function openTuto() {
+            const tutorial = document.getElementById('tutorial');
+            tutorial.style.display = 'flex';
+            setTimeout(() => {
+                tutorial.classList.add('active');
+                // Reset to initial state when opening
+                document.querySelector('.tuto-select').style.display = 'block';
+                document.getElementById('1v1Tutorial').style.display = 'none';
+            }, 10);
+        }
+
+        function closeTuto() {
+            const tutorial = document.getElementById('tutorial');
+            tutorial.classList.remove('active');
+            setTimeout(() => {
+                tutorial.style.display = 'none';
+            }, 300);
+        }
+
+        // Initialize tutorial navigation when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1v1 button click handler
+            document.getElementById('1v1Btn').addEventListener('click', function() {
+                document.querySelector('.tuto-select').style.display = 'none';
+                const tutorial = document.getElementById('1v1Tutorial');
+                tutorial.style.display = 'block';
+                // Show first step
+                const steps = tutorial.querySelectorAll('.tutorial-step');
+                steps.forEach(step => step.style.display = 'none');
+                steps[0].style.display = 'block';
+                steps[0].classList.add('active');
+            });
+
+            // Navigation between steps
+            document.addEventListener('click', function(e) {
+                // Next step button
+                if (e.target.classList.contains('next-step')) {
+                    const currentStep = e.target.closest('.tutorial-step');
+                    const nextStep = currentStep.nextElementSibling;
+
+                    if (nextStep) {
+                        currentStep.classList.remove('active');
+                        currentStep.style.display = 'none';
+                        nextStep.classList.add('active');
+                        nextStep.style.display = 'block';
+                    }
+                }
+
+                // Previous step button
+                if (e.target.classList.contains('prev-step')) {
+                    const currentStep = e.target.closest('.tutorial-step');
+                    const prevStep = currentStep.previousElementSibling;
+
+                    if (prevStep) {
+                        currentStep.classList.remove('active');
+                        currentStep.style.display = 'none';
+                        prevStep.classList.add('active');
+                        prevStep.style.display = 'block';
+                    }
+                }
+
+                // Finish tutorial button
+                if (e.target.classList.contains('finish-tutorial')) {
+                    closeTuto();
+                }
+            });
+
+            // Close modal when clicking outside content
+            document.getElementById('tutorial').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeTuto();
+                }
+            });
+        });
+    </script>
+</div>
+
+<!-- fragments/sidebar.html -->
+<div th:fragment="sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 211x; /* Below navbar (header height + nav height) */
+            left: 0;
+            width: 250px;
+            height: calc(100vh - 184px); /* Full height minus header+nav */
+            background: #fff;
+            border-right: 2px solid #ddd;
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-title {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #FFA500;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .sidebar-section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-section-title:before {
+            content: "";
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #FFA500;
+            margin-right: 10px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 0.8rem 1rem;
+            margin: 0.5rem 0;
+            color: #555;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-link:hover {
+            background: #FFA500;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 206px; /* Below navbar + small margin */
+            left: 250px;
+            background: #FFA500;
+            color: #000;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 101;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* When sidebar is collapsed */
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-toggle.collapsed {
+            left: 0;
+        }
+        .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 1rem;
+        margin: 0.5rem 0;
+        background-color: #f8f8f8;
+        border-radius: 4px;
+        border-left: 3px solid #FFA500;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #000;
+            background: #FFA500;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            min-width: 50px;
+            text-align: center;
+        }
+    </style>
+
+    <button class="sidebar-toggle" onclick="toggleSidebar()">≡</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-title">Menu</div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Statistics</div>
+
+            <div class="stat-item">
+                <div class="stat-label">Games Played:</div>
+                <div class="stat-value" id="games-played" th:text="${currentUser.gamesPlayed}">0</div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-label">Games Won:</div>
+                <div class="stat-value" id="games-won" th:text="${currentUser.gamesWon}">0</div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-label">Win Ratio:</div>
+                <div class="stat-value" id="win-ratio"
+                     th:text="${currentUser.gamesPlayed != 0 ?
+                     T(java.lang.Math).round((currentUser.gamesWon * 100.0 / currentUser.gamesPlayed)) + '%' : '0%'}">
+                    0%
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Community</div>
+            <a href="#" class="sidebar-link">Leaderboards</a>
+            <a href="#" class="sidebar-link">Friends</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.querySelector('.sidebar-toggle');
+
+            sidebar.classList.toggle('collapsed');
+            toggleBtn.classList.toggle('collapsed');
+
+            // Change toggle button icon/text
+            if (sidebar.classList.contains('collapsed')) {
+                toggleBtn.textContent = "≡";
+            } else {
+                toggleBtn.textContent = "×";
+            }
+        }
+    </script>
 </div>
 
 <!--th:insert, th:replace, or th:include to use the above in other pages-->

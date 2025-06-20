@@ -1,9 +1,12 @@
 package com.makers.project3.controller;
 
+import com.makers.project3.Service.UserService;
 import com.makers.project3.model.Card;
 import com.makers.project3.model.Deck;
+import com.makers.project3.model.User;
 import com.makers.project3.repository.DeckRepository;
 import com.makers.project3.repository.CardRepository;
+import com.makers.project3.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,10 +25,18 @@ public class DeckController {
     @Autowired
     CardRepository cardRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserService userService;
+
     @GetMapping("/decks")
     public String viewDecks(Model model) {
         Iterable<Deck> decks = deckRepository.findAll();
         model.addAttribute("decks", decks);
+        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        model.addAttribute("currentUser", currentUser);
         return "decks/alldecks";
     }
 
@@ -38,6 +49,9 @@ public class DeckController {
 
         modelAndView.addObject("deck", deck);
         modelAndView.addObject("cards", cards);
+
+        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        modelAndView.addObject("currentUser", currentUser);
 
         return modelAndView;
 

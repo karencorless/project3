@@ -18,7 +18,7 @@ public class PlayerCardTest {
     //    Tests that player card model saved the associated user ID correctly
     @Test
     public void playerCardHasUserID() {
-        assertThat(testPlayerCard.getPlayerUserId(), equalTo(1L));
+        assertThat(testPlayerCard.getPlayerId(), equalTo(1L));
     }
 
     //    Tests that player card model saved the associated card ID correctly

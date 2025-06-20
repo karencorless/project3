@@ -1,0 +1,36 @@
+<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
+    <header>
+        <div class="header-container">
+            <a class="stat-attack-logo" href="/homepage" th:href="@{/homepage}">
+                stat attack
+            </a>
+        </div>
+
+        <nav>
+            <div class="nav-links">
+                <a href="/game/new" th:href="@{/game/new}">New Game</a>
+                <a href="/decks" th:href="@{/decks}">All Decks</a>
+                <a href="javascript:void(0)" onclick="openTuto()">Tutorial</a>
+                <a href="/settings" th:href="@{/settings}">Settings</a>
+            </div>
+
+            <div class="user-controls">
+                <div class="profile-container">
+                    <div class="profile-image">
+                        <img th:src="@{${currentUser.imageSource}}" alt="Profile" />
+                    </div>
+                    <span id="greeting" th:text="'Logged in as ' + ${currentUser.username}"></span>
+                </div>
+                <a href="#" onclick="confirmLogout(event)" class="logout-btn">Logout</a>
+            </div>
+        </nav>
+        <script>
+            function confirmLogout(event) {
+                event.preventDefault();
+                if (confirm("Are you sure you want to log out?")) {
+                    window.location.href = "/logout";
+                }
+            }
+        </script>
+    </header>
+</div>
