@@ -5,6 +5,9 @@
     <title>New Game</title>
 </head>
 <body>
+
+    <div th:replace="~{fragments :: header}"></div>
+
     <h1>Game Setup</h1>
 
     <form id="game-setup" th:action="@{/game/new}" method="post">
@@ -29,6 +32,8 @@
             <!--    buttons: start game,  clear choices-->
         </div>
     </form>
+
+    <div th:replace="~{fragments :: footer}"></div>
 
 </body>
 </html>
