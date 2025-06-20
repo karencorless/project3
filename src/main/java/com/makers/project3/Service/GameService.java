@@ -1,5 +1,6 @@
 package com.makers.project3.Service;
 
+import com.makers.project3.exception.NoSuchEntityExistsException;
 import com.makers.project3.model.PlayerCard;
 import com.makers.project3.model.Player;
 import com.makers.project3.model.Game;
@@ -90,12 +91,14 @@ public class GameService {
     }
 
 
-////                    --AVIAN--
 //        Randomly deal cards from the active decks
     public void dealCards(List<Long> decksChosen, Long playerOneId, Long playerTwoId, Integer pointsToWin){
         List<Card> allCardsInPlay = new ArrayList<>();
         //      list of all available cards
         for (Long deckId : decksChosen) {
+            if (deckId == null) {
+                throw new NoSuchEntityExistsException("Deck");
+            }
             List<Card> deckCards = new ArrayList<>(cardRepository.findAllByParentDeckId(deckId));
             allCardsInPlay.addAll(deckCards);
         }
@@ -173,8 +176,6 @@ public class GameService {
         ///  Change bool discarded to true and set currentCard
         currentPlayer.setCurrentCardId(selectedCardId);
         selectedCardInPlayerCards.setDiscarded(true);
-
-
         return playedCard;
     }
 
