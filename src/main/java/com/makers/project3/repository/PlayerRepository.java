@@ -10,9 +10,12 @@ import java.util.List;
 
 public interface PlayerRepository extends CrudRepository<Player,Long> {
     void deleteAllById(Long id);
-    @Modifying()
-    @Query("UPDATE Player u SET u.currentScore = u.currentScore + 1 WHERE u.id = :id")
-    void incrementCurrentScore(@Param("id") Long id);
+
+//    ------- Issues with incrementing player score, removing from use ------
+//    @Modifying()
+//    @Query("UPDATE Player u SET u.currentScore = u.currentScore + 1 WHERE u.id = :id")
+//    void incrementCurrentScore(@Param("id") Long id);
+
     Player findByPlayerUserId(Long playerUserId);
     List<Player> findAllByPlayerUserId(Long playerUserId);
 }
