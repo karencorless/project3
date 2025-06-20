@@ -1,0 +1,49 @@
+<div th:fragment="sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
+    <button class="sidebar-toggle" onclick="toggleSidebar()">≡</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-title">Menu</div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Statistics</div>
+            <div class="stat-item">
+                <div class="stat-label">Games Played:</div>
+                <div class="stat-value" id="games-played" th:text="${currentUser.gamesPlayed}">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Games Won:</div>
+                <div class="stat-value" id="games-won" th:text="${currentUser.gamesWon}">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Win Ratio:</div>
+                <div class="stat-value" id="win-ratio"
+                     th:text="${currentUser.gamesPlayed != 0 ?
+                     T(java.lang.Math).round((currentUser.gamesWon * 100.0 / currentUser.gamesPlayed)) + '%' : '0%'}">
+                    0%
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Community</div>
+            <a href="#" class="sidebar-link">Leaderboards</a>
+            <a href="#" class="sidebar-link">Friends</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.querySelector('.sidebar-toggle');
+
+            sidebar.classList.toggle('collapsed');
+            toggleBtn.classList.toggle('collapsed');
+
+            if (sidebar.classList.contains('collapsed')) {
+                toggleBtn.textContent = "≡";
+            } else {
+                toggleBtn.textContent = "×";
+            }
+        }
+    </script>
+</div>
