@@ -23,13 +23,7 @@
             .deck img {
                 width: 100%;
                 height: auto;
-                border: 1px solid #ccc;
-            }
-
-            .deck img:hover {
-                transform: scale(1.02);
-                border-color: #b6b6b6;
-                opacity: 0.8;
+                border-bottom: 1px solid #ccc;
             }
 
             .deck strong {
@@ -40,13 +34,17 @@
                 font-size: 22px;
             }
 
-            .deck strong:hover {
-                font-size: 23px;
-                opacity: 0.9;
-            }
-
             .deck {
                 max-width: 250px;
+                box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+                transition: 0.3s;
+                border: 1.5px solid #ccc;
+            }
+
+            .deck:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+                transform: scale(1.02);
+                opacity: 0.8;
             }
         </style>
     </head>
