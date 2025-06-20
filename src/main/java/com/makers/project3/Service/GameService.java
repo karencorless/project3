@@ -59,23 +59,23 @@ public class GameService {
 //       Creates new Game
     public Game newGame(int pointsToWin, List<String> chosenDeckIds){
         Long currentUserId = userService.getCurrentUserId();
-        User opp = userRepository.findUserByUsername("robouser1");
-        Long oppId = opp.getId();
+        User roboUser = userRepository.findUserByUsername("robouser1");
+        Long roboUserId = roboUser.getId();
         Game game;
 
-        // creates player objects for the user and opponent
+        // creates player objects for the user and roboPlayer
         Player player = newPlayer(currentUserId);
-        Player opponent = newPlayer(oppId);
+        Player roboPlayer = newPlayer(roboUserId);
 
         // parses the list of strings from newgame.html, uses the long ID's to deal the hands
         List<Long> chosenDecks = parseLongIdsFromString(chosenDeckIds);
-        dealCards(chosenDecks, player.getId(), opponent.getId(), pointsToWin);
+        dealCards(chosenDecks, player.getId(), roboPlayer.getId(), pointsToWin);
 
         // determines who goes first and creates the Game object
         if (coinFlip()) {
-            game = new Game(null, player.getId(), opponent.getId(), pointsToWin);
+            game = new Game(null, player.getId(), roboPlayer.getId(), pointsToWin);
         } else {
-            game = new Game(null, opponent.getId(), player.getId(), pointsToWin);
+            game = new Game(null, roboPlayer.getId(), player.getId(), pointsToWin);
         }
         gameRepository.save(game);
         return game;
@@ -150,7 +150,7 @@ public class GameService {
         System.out.println(playerCardsActiveInHand);
         // -- filter by boolean discarded also, "AND"??
 
-        // Find the card id from playercards and store it
+        // Find the card id from playerCards and store it
         PlayerCard selectedCardInPlayerCards = null;
         for (PlayerCard playerCard : playerCardsActiveInHand) {
             if (playerCard.getCardId().equals(selectedCardId)) {
@@ -223,7 +223,7 @@ public class GameService {
     }
 
 
-//      Return list of the players, derived from the Game id
+//      Return list of the player objects, derived from the Game id
     public Player[] getPlayersFromGame(Long gameId){
         assert checkCurrentUserIsPlayerInGame(gameId);
 
@@ -232,6 +232,18 @@ public class GameService {
         Player playerOne = playerRepository.findById(game.getPlayerOneId()).orElse(null);
         Player playerTwo = playerRepository.findById(game.getPlayerTwoId()).orElse(null);
         return new Player[]{playerOne, playerTwo};
+    }
+
+//          Find CurrentUser's Game
+    public Game findCurrentUserGame(){
+        Long userId = userService.getCurrentUserId();
+        List<Player> associatedPlayers = playerRepository.findAllByPlayerUserId(userId);
+        for (Player player : associatedPlayers){
+            if (Objects.equals(player.getPlayerUserId(), userId)) {
+                return gameRepository.findByPlayerOneIdOrPlayerTwoId(player.getId(), player.getId());
+            }
+        }
+        return null;
     }
 
 
@@ -248,7 +260,13 @@ public class GameService {
             return false;
         }
         Long winnerUserId = playerRepository.findById(winnerPlayerId).get().getPlayerUserId();
-        return Objects.equals(winnerUserId, currentUserId);
+        boolean currentUserWinner = Objects.equals(winnerUserId, currentUserId);
+        if (currentUserWinner) {
+            User currentUser = userRepository.findById(currentUserId).orElse(null);
+            assert currentUser != null;
+            currentUser.setGamesWon(currentUser.getGamesWon() + 1);
+        }
+        return currentUserWinner;
     }
 
 
@@ -275,6 +293,17 @@ public class GameService {
     @Transactional
     public void clearHand(Long playerId){
         playerCardRepository.deleteAllByPlayerId(playerId);
+    }
+
+    @Transactional
+    public void cleanUp(){
+        Long userId = userService.getCurrentUserId();
+        List<Player> playersForCurrentUser = playerRepository.findAllByPlayerUserId(userId);
+        for (Player player : playersForCurrentUser){
+            Long playerId = player.getId();
+            playerCardRepository.deleteAllByPlayerId(playerId);
+            playerRepository.deleteAllById(playerId);
+        }
     }
 
 }

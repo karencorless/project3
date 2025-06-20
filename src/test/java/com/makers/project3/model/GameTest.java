@@ -23,7 +23,7 @@ public class GameTest {
     //    Tests that the game model has an associated ID for player 2
     @Test
     public void gameHasPlayer2ID() {
-        assertThat(testGame.getPlayerTwo(), equalTo(2L));
+        assertThat(testGame.getPlayerTwoId(), equalTo(2L));
     }
 
     //    Tests that the game model successfully saved the points to win value
