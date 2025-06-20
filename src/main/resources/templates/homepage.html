@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
 </head>
 <body>
-<div th:insert="~{fragments :: header}"></div>
-<div th:insert="~{fragments :: tutorialModal}"></div>
+    <div th:insert="~{fragments/header :: header}"></div>
 
-<div th:insert="~{fragments :: footer}"></div>
+    <div class="main-content">
+        <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+        <div class="content-wrapper">
+            <h1>Content</h1>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{fragments/tutorial :: tutorialModal}"></div>
 </body>
 </html>
