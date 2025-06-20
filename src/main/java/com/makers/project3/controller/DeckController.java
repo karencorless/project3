@@ -1,5 +1,7 @@
 package com.makers.project3.controller;
 
+
+import com.makers.project3.exception.NoSuchEntityExistsException;
 import com.makers.project3.Service.UserService;
 import com.makers.project3.model.Card;
 import com.makers.project3.model.Deck;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class DeckController {
@@ -44,7 +47,8 @@ public class DeckController {
     public ModelAndView viewCardsInDeck(@PathVariable("name") String name){
         ModelAndView modelAndView = new ModelAndView("decks/deck");
 
-        Deck deck = deckRepository.findByName(name);
+        Deck deck = deckRepository.findByName(name).orElseThrow(
+                () -> new NoSuchEntityExistsException("Deck '" + name + "'"));
         List<Card> cards = cardRepository.findAllByParentDeckId(deck.getId());
 
         modelAndView.addObject("deck", deck);
