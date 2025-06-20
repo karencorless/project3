@@ -1,6 +1,8 @@
 <!-- fragments/header.html -->
 <div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
-    <header style="background: #fff; border-bottom: 2px solid #ddd;">
+    <header style="background: #fff;
+                   border-bottom: 2px solid #ddd;
+                   margin-bottom: 10px;">
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem;">
 
             <a class="stat-attack-logo" href="/" th:href="@{/}" style="
@@ -22,7 +24,7 @@
         background: #FFA500;
         padding: 1rem 2rem;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 2.0rem;
+        font-size: 1.8rem;
         display: flex;
         justify-content: space-between;
         align-items: center;">
@@ -87,7 +89,7 @@
 </div>
 
 <!-- fragments/footer.html -->
-<div th:fragment="footer" style="text-align:center; padding:2rem; background:#f1f1f1; margin-top:3rem; font-size: 1.2rem;">
+<div th:fragment="footer" style="text-align:center; padding:2rem; background:#f1f1f1; margin-top:3rem; font-size: 1.2rem; position: fixed; bottom: 0; width: 100%;">
     <footer>
         <a href="/contact" th:href="@{/contact}" style="text-decoration:none; color:#777; font-weight:500; margin-right: 20px;">Contact Us</a>
         <a href="/privacy" th:href="@{/privacy}" style="text-decoration:none; color:#777; font-weight:500;">Privacy and Cookies</a>
