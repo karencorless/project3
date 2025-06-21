@@ -31,7 +31,8 @@ VALUES
 ('The Simpsons', 'D''oh! Factor', '/deckImages/simpsons/thumbnail.jpg'),
 ('Harry Potter', 'Spellcasting', '/deckImages/harryPotter/thumbnail.jpg'),
 ('Marvel', 'Superpower', '/deckImages/marvel/thumbnail.jpg'),
-('Disney', 'Disney Magic', '/deckImages/disney/thumbnail.jpg');
+('Disney', 'Disney Magic', '/deckImages/disney/thumbnail.jpg'),
+('Pop-culture', 'Memeability', '/deckImages/popculture/thumbnail.jpg');
 
 -- Insert cards
 INSERT INTO cards
