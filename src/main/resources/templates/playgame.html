@@ -73,7 +73,9 @@
             <option value="wisdom">Wisdom: [[${playedCard.wisdom}]]</option>
             <option value="defence">Defence: [[${playedCard.defence}]]</option>
             <option value="luck">Luck: [[${playedCard.luck}]]</option>
-            <option value="customStat" th:text="${customStatName}">: [[${playedCard.customStat}]]</option>
+            <option value="customStat"
+                    th:if="${customStatName != null}"
+                    th:text="${customStatName + ': ' + playedCard.customStat}">Custom Stat</option>
         </select>
         <button type="submit" class="button">Battle!</button>
     </form>

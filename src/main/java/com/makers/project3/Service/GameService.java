@@ -398,6 +398,34 @@ public class GameService {
         System.out.println("This is the CPU's current hand :" + cpuHand);
     }
 
+    // Get P1's selected cards custom stat name
+    public String getCardCustomStatName(Card card) {
+
+        Long cardDeckId = card.getParentDeckId();
+        String customStatName = "Special";
+
+        // The Simpsons
+        if (cardDeckId == 1) {
+            customStatName = "D'oh Factor";
+        }
+        // Harry Potter
+        else if(cardDeckId == 2) {
+            customStatName = "Spellcasting";
+        }
+        // Marvel
+        else if(cardDeckId == 3) {
+            customStatName = "Superpower";
+        }
+        // Disney
+        else if(cardDeckId == 4) {
+            customStatName = "Disney Magic";
+        }
+
+        // Add remaining deck names later.
+
+        return customStatName;
+    }
+
 
     //  Deletion and end game related methods:
 

@@ -137,6 +137,7 @@ public class GameController {
         model.addAttribute("roundComplete", roundComplete);
         model.addAttribute("p1IsAttackingNextRound", true);
         model.addAttribute("currentAttacker", "P1");
+        model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
 
         return "playgame";
     }
@@ -228,6 +229,8 @@ public class GameController {
         model.addAttribute("roundComplete", true);
         model.addAttribute("p1IsAttackingNextRound", false);
         model.addAttribute("currentAttacker", "P1");
+        model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
+        model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
 
         // Game logs for easier reading and debugs
         System.out.println("CPU card picked: " + cpuCard.getName());
@@ -359,6 +362,9 @@ public class GameController {
         model.addAttribute("roundComplete", true);
         model.addAttribute("p1IsAttackingNextRound", true);
         model.addAttribute("currentAttacker", "P2");
+
+        model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
+        model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
 
         // Game logs for easier reading and debugs
         System.out.println("CPU card picked: " + cpuCard.getName());
