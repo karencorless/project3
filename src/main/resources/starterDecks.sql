@@ -19,7 +19,8 @@ VALUES
 ('Marvel', 'Superpower', '/deckImages/marvel/thumbnail.jpg'),
 ('Disney', 'Disney Magic', '/deckImages/disney/thumbnail.jpg'),
 ('Pop-culture', 'Memeability', '/deckImages/popculture/thumbnail.jpg'),
-('Brit-tv', 'Cuppa Strength', '/deckImages/brittv/thumbnail.jpg');
+('Brit-tv', 'Cuppa Strength', '/deckImages/brittv/thumbnail.jpg'),
+('Kids-tv', 'Giggle Power', '/deckImages/kidstv/thumbnail.jpg');
 
 -- Insert cards
 INSERT INTO cards
@@ -219,6 +220,34 @@ VALUES
 ((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Jay Cartwright', 65, 55, 60, 70, 77, 'Shameless’ cheeky Scouser with heart.', '/deckImages/brittv/jay_cartwright.jpg'),
 ((SELECT id FROM decks WHERE name = 'Brit-tv'), 'James Acaster', 45, 80, 50, 68, 92, 'Off‑kilter comedian with surreal charm.', '/deckImages/brittv/james_acaster.jpg'),
 ((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Greg Davies', 65, 70, 60, 72, 88, 'Tall comic with booming voice and presence.', '/deckImages/brittv/greg_davies.jpg'),
-((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Peter Kay', 55, 75, 58, 70, 95, 'Everyday observational humour with warmth.', '/deckImages/brittv/peter_kay.jpg');
-
-
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Peter Kay', 55, 75, 58, 70, 95, 'Everyday observational humour with warmth.', '/deckImages/brittv/peter_kay.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Teletubbies', 32, 38, 41, 91, 64, 'Lovable, bouncy, and endlessly surreal.', '/deckImages/kidstv/teletubbies.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Duggee', 77, 72, 68, 85, 56, 'Leader of The Squirrel Club. Much wow, many badges.', '/deckImages/kidstv/duggee.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Bluey', 58, 61, 54, 94, 73, 'A blue heeler pup with endless imagination.', '/deckImages/kidstv/bluey.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Ms. Rachel', 41, 91, 53, 74, 65, 'Bringing learning and love through song.', '/deckImages/kidstv/ms_rachel.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Peppa Pig', 50, 59, 44, 83, 68, 'Snort! It’s Peppa, the sassy piglet.', '/deckImages/kidstv/peppa.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Postman Pat', 46, 71, 63, 52, 74, 'With his black and white cat, always on time.', '/deckImages/kidstv/postman_pat.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Dora', 53, 66, 47, 76, 69, 'Explorer, adventurer, backpack-tamer.', '/deckImages/kidstv/dora.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Elmo', 39, 57, 42, 97, 86, 'Red, fuzzy, giggly, and loved by millions.', '/deckImages/kidstv/elmo.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Arthur Read', 47, 74, 61, 63, 58, 'An aardvark who makes growing up a bit easier.', '/deckImages/kidstv/arthur.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Bob the Builder', 76, 68, 79, 62, 54, 'Can he fix it? Yes, he can!', '/deckImages/kidstv/bob.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Chase', 66, 58, 71, 68, 61, 'A brave pup always on the case.', '/deckImages/kidstv/chase.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Thomas', 61, 60, 72, 59, 65, 'A cheeky little engine with a big heart.', '/deckImages/kidstv/thomas.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Fireman Sam', 73, 66, 76, 57, 60, 'Saving Pontypandy one emergency at a time.', '/deckImages/kidstv/fireman_sam.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Noddy', 44, 54, 48, 65, 62, 'The little wooden toy with a bell on his hat.', '/deckImages/kidstv/noddy.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Charlie and Lola', 35, 69, 38, 81, 67, 'Sibling charm and quirky British humour.', '/deckImages/kidstv/charlie_lola.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Paddington Bear', 52, 78, 60, 58, 72, 'Manners, marmalade, and heartwarming mischief.', '/deckImages/kidstv/paddington.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Iggle Piggle', 31, 36, 42, 87, 71, 'Blanket in hand, boat at the ready.', '/deckImages/kidstv/iggle_piggle.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Mr Tumble', 43, 64, 51, 93, 69, 'Spotty bag, signing hands, big heart.', '/deckImages/kidstv/mr_tumble.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Mr Blobby', 82, 24, 55, 99, 58, 'Utter chaos in a pink and yellow blob.', '/deckImages/kidstv/mr_blobby.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Scooby Doo', 66, 53, 57, 75, 77, 'Hungry, cowardly, but always lovable.', '/deckImages/kidstv/scooby.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Baby Shark', 45, 37, 39, 88, 83, 'Doo doo doo doo doo doo!', '/deckImages/kidstv/baby_shark.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Barney the Dinosaur', 54, 63, 66, 78, 59, 'A big purple dinosaur who loves you.', '/deckImages/kidstv/barney.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Pingu', 40, 42, 50, 92, 66, 'Noot noot!', '/deckImages/kidstv/pingu.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Supertato', 63, 56, 58, 74, 60, 'Veggie hero saving the supermarket!', '/deckImages/kidstv/supertato.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Sportacus', 78, 59, 74, 55, 69, 'Leaping into action with healthy energy.', '/deckImages/kidstv/sportacus.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'The Clangers', 34, 46, 40, 85, 75, 'Whistling aliens on a tiny blue planet.', '/deckImages/kidstv/clangers.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Cookie Monster', 72, 39, 49, 96, 57, 'C is for cookie – and chaotic fun.', '/deckImages/kidstv/cookie_monster.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Shaun the Sheep', 55, 58, 53, 86, 70, 'A silent schemer with woolly antics.', '/deckImages/kidstv/shaun.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Ben and Holly', 42, 67, 45, 80, 68, 'Magic, royalty, and fairy mischief.', '/deckImages/kidstv/ben_holly.jpg'),
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Mister Maker', 37, 83, 40, 79, 72, 'Art and crafts faster than you can blink.', '/deckImages/kidstv/mister_maker.jpg');
