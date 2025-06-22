@@ -231,7 +231,7 @@ VALUES
 ((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Judi Dench', 55, 90, 60, 70, 88, 'Legendary actress with gravitas galore.', '/deckImages/brittv/judi_dench.jpg'),
 ((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Alan Carr', 50, 70, 55, 68, 90, 'Chatty comedian with infectious energy.', '/deckImages/brittv/alan_carr.jpg'),
 ((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Lenny Henry', 55, 70, 55, 68, 85, 'Comedic force and Variety legend.', '/deckImages/brittv/lenny_henry.jpg'),
-((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Jay Cartwright', 65, 55, 60, 70, 77, 'Shameless’ cheeky Scouser with heart.', '/deckImages/brittv/jay_cartwright.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Jay Cartwright', 65, 55, 60, 70, 77, 'Stat Attack? Completed it mate.', '/deckImages/brittv/jay_cartwright.jpg'),
 ((SELECT id FROM decks WHERE name = 'Brit-tv'), 'James Acaster', 45, 80, 50, 68, 92, 'Off‑kilter comedian with surreal charm.', '/deckImages/brittv/james_acaster.jpg'),
 ((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Greg Davies', 65, 70, 60, 72, 88, 'Tall comic with booming voice and presence.', '/deckImages/brittv/greg_davies.jpg'),
 ((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Peter Kay', 55, 75, 58, 70, 95, 'Everyday observational humour with warmth.', '/deckImages/brittv/peter_kay.jpg'),
