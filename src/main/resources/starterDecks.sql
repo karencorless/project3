@@ -18,7 +18,8 @@ VALUES
 ('Harry Potter', 'Spellcasting', '/deckImages/harryPotter/thumbnail.jpg'),
 ('Marvel', 'Superpower', '/deckImages/marvel/thumbnail.jpg'),
 ('Disney', 'Disney Magic', '/deckImages/disney/thumbnail.jpg'),
-('Pop-culture', 'Memeability', '/deckImages/popculture/thumbnail.jpg');
+('Pop-culture', 'Memeability', '/deckImages/popculture/thumbnail.jpg'),
+('Brit-tv', 'Cuppa Strength', '/deckImages/brittv/thumbnail.jpg');
 
 -- Insert cards
 INSERT INTO cards
@@ -118,8 +119,8 @@ VALUES
 ((SELECT id FROM decks WHERE name = 'Marvel'), 'Professor X', 71, 99, 61, 94, 53, 'Telepathic leader of the X‑Men.', '/deckImages/marvel/professorx.jpg'),
 ((SELECT id FROM decks WHERE name = 'Marvel'), 'Jean Grey', 81, 96, 71, 89, 61, 'Telekinetic and telepathic mutant.', '/deckImages/marvel/jeangrey.jpg'),
 ((SELECT id FROM decks WHERE name = 'Marvel'), 'Cyclops', 86, 81, 76, 84, 66, 'Optic blast-wielding leader of the X‑Men.', '/deckImages/marvel/cyclops.jpg'),
-((SELECT id FROM decks WHERE name = 'Marvel'), 'Silver Surfer', 81, 91, 81, 99, 56, 'Cosmic-powered herald who soars the spaceways on his board.', '/deckImages/marvel/silversurfer.jpg'),
-((SELECT id FROM decks WHERE name = 'Disney'), 'Mickey Mouse', 39, 79, 43, 96, 86, 'The face of Disney — cheerful, clever, and full of wonder.', '/deckImages/disney/mickey.jpg'),
+((SELECT id FROM decks WHERE name = 'Marvel'), 'Silver Surfer', 81, 91, 81, 99, 56, 'Cosmic-powered herald who soars the spaceways.', '/deckImages/marvel/silversurfer.jpg'),
+((SELECT id FROM decks WHERE name = 'Disney'), 'Mickey Mouse', 39, 79, 43, 96, 86, 'The face of Disney — cheerful and full of wonder.', '/deckImages/disney/mickey.jpg'),
 ((SELECT id FROM decks WHERE name = 'Disney'), 'Minnie Mouse', 37, 77, 47, 84, 92, 'Graceful, loving, and always in style.', '/deckImages/disney/minnie.jpg'),
 ((SELECT id FROM decks WHERE name = 'Disney'), 'Donald Duck', 48, 66, 53, 63, 72, 'Short temper, big heart, and even bigger voice.', '/deckImages/disney/donald.jpg'),
 ((SELECT id FROM decks WHERE name = 'Disney'), 'Goofy', 61, 54, 61, 49, 94, 'Clumsy, lucky, and full of surprises.', '/deckImages/disney/goofy.jpg'),
@@ -183,6 +184,41 @@ VALUES
 ((SELECT id FROM decks WHERE name = 'Pop-culture'), 'Darth Vader', 93, 88, 81, 72, 49, 'Once Anakin, now asthma with a lightsaber.', '/deckImages/popculture/vader.jpg'),
 ((SELECT id FROM decks WHERE name = 'Pop-culture'), 'Frodo Baggins', 29, 76, 54, 61, 77, 'Tiny hobbit, massive burden. Loves rings.', '/deckImages/popculture/frodo.jpg'),
 ((SELECT id FROM decks WHERE name = 'Pop-culture'), 'Godzilla', 99, 34, 91, 84, 25, 'Tokyo''s worst tourist. Loud, lizard, legend.', '/deckImages/popculture/godzilla.jpg'),
-((SELECT id FROM decks WHERE name = 'Pop-culture'), 'Hannibal Lecter', 56, 98, 67, 52, 41, 'Brilliant. Cultured. Really into... fine dining.', '/deckImages/popculture/hannibal.jpg');
+((SELECT id FROM decks WHERE name = 'Pop-culture'), 'Hannibal Lecter', 56, 98, 67, 52, 41, 'Brilliant. Cultured. Really into... fine dining.', '/deckImages/popculture/hannibal.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Phil Mitchell', 85, 55, 80, 92, 38, 'East End tough, heart of gold… occasionally.', '/deckImages/brittv/phil_mitchell.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Del Boy', 60, 70, 50, 78, 90, 'He’ll have that framed and gutted, Rodney.', '/deckImages/brittv/del_boy.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Mr Bean', 40, 30, 30, 85, 99, 'Silent legend of slapstick and Minis.', '/deckImages/brittv/mr_bean.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Dot Cotton', 30, 65, 40, 72, 45, 'Grab a fag, grab some gossip, bless.', '/deckImages/brittv/dot_cotton.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Davina McCall', 50, 60, 55, 68, 75, 'Reality host with boundless enthusiasm.', '/deckImages/brittv/davina_mccall.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Dermot O’Leary', 52, 63, 57, 65, 70, 'Chilled charm with a ﬂair for talent shows.', '/deckImages/brittv/dermot_oleary.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Ant McPartlin', 55, 60, 58, 70, 83, 'The ever‑smiling half of Britain’s fave duo.', '/deckImages/brittv/ant_mcpartlin.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Dec Donnelly', 55, 60, 58, 70, 83, 'Steadying presence next to Ant’s sparkle.', '/deckImages/brittv/dec_donnelly.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Claudia Winkleman', 50, 68, 56, 66, 78, 'Quirky, candles, backstage brilliance.', '/deckImages/brittv/claudia_winkleman.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Graham Norton', 58, 75, 60, 70, 88, 'Red sofa king with razor-sharp wit.', '/deckImages/brittv/graham_norton.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'David Brent', 45, 40, 45, 55, 95, 'Boss with cringe dreams and big illusions.', '/deckImages/brittv/david_brent.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Alan Partridge',  50, 55, 50, 60, 90, 'Radio awkwardness meets midlands charm.', '/deckImages/brittv/alan_partridge.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Doctor Who', 70, 90, 65, 88, 80, 'Time‑travelling hero with sonic panache.', '/deckImages/brittv/doctor_who.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'David Attenborough', 30, 99, 40, 75, 65, 'The soothing voice of the natural world.', '/deckImages/brittv/david_attenborough.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Bruce Forsyth', 40, 65, 50, 70, 85, 'Nice to see you, to see you… nice.', '/deckImages/brittv/bruce_forsyth.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Luther', 85, 60, 80, 68, 55, 'Brooding detective with chemistry… and teeth.', '/deckImages/brittv/luther.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Jeremy Paxman', 40, 95, 45, 60, 50, 'The interrogator‑in‑chief of British TV.', '/deckImages/brittv/jeremy_paxman.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Louis Theroux', 30, 92, 45, 72, 60, 'Warm‑hearted docu‑explorer with curiosity.', '/deckImages/brittv/louis_theroux.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'David Beckham', 75, 60, 70, 65, 85, 'Golden‑boot legend turned TV celeb.', '/deckImages/brittv/david_beckham.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Jeremy Clarkson', 70, 55, 65, 62, 80, 'Love‑him‑or‑loathe‑him motoring maestro.', '/deckImages/brittv/jeremy_clarkson.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Piers Morgan', 60, 50, 60, 58, 55, 'Controversial host with strong opinions.', '/deckImages/brittv/piers_morgan.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Simon Cowell', 55, 60, 58, 70, 68, 'Judgmental magnate of X Factor fame.', '/deckImages/brittv/simon_cowell.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Carol Vorderman', 50, 85, 55, 68, 75, 'Maths whizz with numbers and charm.', '/deckImages/brittv/carol_vorderman.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Ben Shephard', 50, 60, 55, 65, 72, 'Breakfast TV staple with cheeky grin.', '/deckImages/brittv/ben_shephard.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Paul Hollywood', 65, 70, 60, 68, 70, 'The bread judge with steely stare and handshake.', '/deckImages/brittv/paul_hollywood.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Noel Edmonds', 48, 60, 55, 66, 80, 'Party‑host with a playful grin and puzzles.', '/deckImages/brittv/noel_edmonds.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Anne Robinson', 48, 70, 55, 60, 65, 'The harsh quizmistress with biting put‑downs.', '/deckImages/brittv/anne_robinson.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Martin Freeman', 60, 65, 58, 66, 82, 'Lovable everyman with impeccable timing.', '/deckImages/brittv/martin_freeman.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Judi Dench', 55, 90, 60, 70, 88, 'Legendary actress with gravitas galore.', '/deckImages/brittv/judi_dench.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Alan Carr', 50, 70, 55, 68, 90, 'Chatty comedian with infectious energy.', '/deckImages/brittv/alan_carr.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Lenny Henry', 55, 70, 55, 68, 85, 'Comedic force and Variety legend.', '/deckImages/brittv/lenny_henry.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Jay Cartwright', 65, 55, 60, 70, 77, 'Shameless’ cheeky Scouser with heart.', '/deckImages/brittv/jay_cartwright.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'James Acaster', 45, 80, 50, 68, 92, 'Off‑kilter comedian with surreal charm.', '/deckImages/brittv/james_acaster.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Greg Davies', 65, 70, 60, 72, 88, 'Tall comic with booming voice and presence.', '/deckImages/brittv/greg_davies.jpg'),
+((SELECT id FROM decks WHERE name = 'Brit-tv'), 'Peter Kay', 55, 75, 58, 70, 95, 'Everyday observational humour with warmth.', '/deckImages/brittv/peter_kay.jpg');
 
 

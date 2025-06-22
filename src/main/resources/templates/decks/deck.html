@@ -17,12 +17,13 @@
         <!--    View Cards    -->
         <!--    Displays a list of cards in a deck showing all of the information for a card    -->
 
-        <div th:each="card: ${cards}" class="p-2" >
+        <div th:each="card: ${cards}" class="p-3" >
             <div class="card-wrap" th:classappend="${deck.name == 'The Simpsons' ? ' simpson' :
                                                      deck.name == 'Harry Potter' ? ' hp' :
                                                      deck.name == 'Marvel' ? ' marvel' :
                                                      deck.name == 'Disney' ? ' disney' :
-                                                     deck.name == 'Pop-culture' ? ' pop-culture' : ''}">
+                                                     deck.name == 'Pop-culture' ? ' pop-culture' :
+                                                     deck.name == 'Brit-tv' ? ' brit-tv' : ''}">
                 <!--  Card name  -->
                 <strong class="card-name" th:text="${#strings.toUpperCase(card.name)}"></strong>
                 <div class="card-image-box">

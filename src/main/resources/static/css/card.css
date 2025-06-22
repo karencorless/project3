@@ -37,6 +37,10 @@
         background: linear-gradient(145deg, #F7DC6F, #C9A538, #B36B58, #8A3F50, #4C2431);
         }
 
+        .card-wrap.brit-tv {
+                background: linear-gradient(145deg, #D0CBDD, #AFA9C5, #8C7FB2, #5E5B84, #2F2C45);
+                }
+
         /* .card-wrap:hover {
         transform: scale(1.1);
         } */
