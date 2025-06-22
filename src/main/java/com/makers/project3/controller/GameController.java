@@ -85,10 +85,10 @@ public class GameController {
         model.addAttribute("roundComplete", roundComplete);
         model.addAttribute("p1IsAttackingNextRound", true);
         model.addAttribute("currentAttacker", "P1");
+        model.addAttribute("gameOver", false);
 
         return "playgame";
     }
-
 
     // P1 SUBMITTING THEIR SELECTED CARD.
     @PostMapping("/game/play/p1-attack-1")
@@ -102,7 +102,6 @@ public class GameController {
         Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
         Long cpuId = gameService.getOppIdForGame(currentGame, currentPlayerId);
         Game game = gameService.getGameById(gameId);
-        Boolean roundComplete = false;
 
         if (currentPlayerId == null || cardId == null) {
             model.addAttribute("errorMessage", "Player ID and Card ID are required to play a card.");
@@ -134,10 +133,11 @@ public class GameController {
         model.addAttribute("playerHand", playerHand);
         model.addAttribute("player1Score", player1Score);
         model.addAttribute("cpuScore", cpuScore);
-        model.addAttribute("roundComplete", roundComplete);
+        model.addAttribute("roundComplete", false);
         model.addAttribute("p1IsAttackingNextRound", true);
         model.addAttribute("currentAttacker", "P1");
         model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
+        model.addAttribute("gameOver", false);
 
         return "playgame";
     }
@@ -209,6 +209,15 @@ public class GameController {
         // Return updated hand
         List<Card> updatedPlayerHand = gameService.showPlayerHand(currentPlayerId);
 
+        // Check if game has been won
+        int pointsToWinGame = game.getPointsToWin();
+        if (pointsToWinGame == player1Score || pointsToWinGame == cpuScore) {
+            model.addAttribute("gameOver", true);
+        }
+        else {
+            model.addAttribute("gameOver", false);
+        }
+
         // Put in necessary values.
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("playerHand", updatedPlayerHand);
@@ -243,6 +252,7 @@ public class GameController {
         System.out.println("CPU Score: " + cpuScore);
         System.out.println("Current player Id: " + currentPlayerId);
         System.out.println("Incrementing score for playerId: " + currentPlayerId);
+        System.out.println("Game points to win: " + game.getPointsToWin());
 
         return "playgame";
     }
@@ -260,7 +270,6 @@ public class GameController {
         Long userId = userService.getCurrentUserId();
         Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
         Long cpuId = gameService.getOppIdForGame(currentGame, currentPlayerId);
-        Boolean roundComplete = false;
 
         // Chooses the CPU's stat
         Card cpuCard = gameService.getCpuCard(cpuId);
@@ -278,11 +287,13 @@ public class GameController {
         model.addAttribute("playerHand", playerHand);
         model.addAttribute("player1Score", player1Score);
         model.addAttribute("cpuScore", cpuScore);
-        model.addAttribute("roundComplete", roundComplete);
+        model.addAttribute("roundComplete", false);
         model.addAttribute("cpuStat", cpuStat);
         model.addAttribute("playerStat", null);
         model.addAttribute("p1IsAttackingNextRound", true);
         model.addAttribute("currentAttacker", "P2");
+        model.addAttribute("gameOver", false);
+        model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
 
         return "playgame";
     }
@@ -342,6 +353,15 @@ public class GameController {
         // Return updated hand
         List<Card> updatedPlayerHand = gameService.showPlayerHand(currentPlayerId);
 
+        // Check if game has been won, and end it if so
+        int pointsToWinGame = game.getPointsToWin();
+        if (pointsToWinGame == player1Score || pointsToWinGame == cpuScore) {
+            model.addAttribute("gameOver", true);
+        }
+        else {
+            model.addAttribute("gameOver", false);
+        }
+
         // Put in necessary values.
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("playerHand", updatedPlayerHand);
@@ -362,6 +382,7 @@ public class GameController {
         model.addAttribute("roundComplete", true);
         model.addAttribute("p1IsAttackingNextRound", true);
         model.addAttribute("currentAttacker", "P2");
+        model.addAttribute("pointsToWin", game.getPointsToWin());
 
         model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
         model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
@@ -377,6 +398,7 @@ public class GameController {
         System.out.println("CPU Score: " + cpuScore);
         System.out.println("Current player Id: " + currentPlayerId);
         System.out.println("Incrementing score for playerId: " + currentPlayerId);
+        System.out.println("Game points to win: " + game.getPointsToWin());
 
         return "playgame";
     }

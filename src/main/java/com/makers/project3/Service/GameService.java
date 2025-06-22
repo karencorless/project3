@@ -288,25 +288,6 @@ public class GameService {
         ));
     }
 
-    ////      Finds the highest value stat across all cards in CPU's hand
-//    public int getStatValue(Long cpuId){
-//        // Gets the cpus hand
-//        List<PlayerCard> cpuCardsInHand = playerCardRepository.findByPlayerId(cpuId);
-//
-//        // verifiees card is in cpus hand
-//        List<Card> cpuHand = new ArrayList<>();
-//        for (PlayerCard card : cpuCardsInHand) {
-//            if (!card.getDiscarded()) {
-//                cardRepository.findById(card.getCardId()).ifPresent(cpuHand::add);
-//            }
-//        }
-//        // Applies the maxstat method on all the cards and sorts them descending
-//        cpuHand.sort(Comparator.comparingInt(this::getMaxStatValueOnACard).reversed());
-//
-//        // Return the highest stat value
-//        return cpuHand.isEmpty() ? 0 : getMaxStatValueOnACard(cpuHand.get(0));
-//    }
-
 //      Finds the name of the attribute with the highest value on a card:
     public String getNameOfMaxStatOnCard(Card card) {
         int maxValue = getMaxStatValueOnACard(card);  // get highest value
