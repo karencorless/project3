@@ -12,8 +12,8 @@
 <!--Displays GAME OVER and game winner-->
 <div class="game-result-container" th:if="${playerHand != null and #lists.size(playerHand) == 0}" style="text-align: center; margin-top: 10px;">
     <h1>Game Over!</h1>
-    <p th:if="${player1Score > cpuScore}"><strong>Congratulations! </strong>You have won the game.</p>
-    <p th:if="${player1Score < cpuScore}"><strong>Better luck next time! </strong>Player 2 has won the game.</p>
+    <p th:if="${player1Score > cpuScore}"><strong>Congratulations!</strong><br>You have won the game.</p>
+    <p th:if="${player1Score < cpuScore}"><strong>Player 2 has won the game.</strong><br>Better luck next time!</p>
 </div>
 
 <!--Displays round winner-->
@@ -46,22 +46,48 @@
     <p th:text="${successMessage}"></p>
 </div>
 
+<div th:if="${cpuPlayedCard != null}" style="display: flex; justify-content: space-between; margin-top: 3px;">
 <!-- Show results after battle -->
-<div th:if="${cpuPlayedCard != null}" style="text-align: center; margin-top: 3px;">
+<div th:if="${cpuPlayedCard != null}" style="text-align: left; margin-top: 3px;">
+    <h2>Your Card</h2>
+    <p>You played: <strong th:text="${playedCard.name}"></strong></p>
     <p th:if="${chosenStat != 'customStat'}">You picked: <strong th:text="${chosenStat}"></strong></p>
     <p th:if="${chosenStat == 'customStat'}">You picked: <strong th:text="${customStatName}"></strong></p>
-    <p>You played: <strong th:text="${playedCard.name}"></strong></p>
-    <p>Your stat value: <strong th:text="${statValue}"></strong></p>
+    <p>Stat value: <strong th:text="${statValue}"></strong></p>
 </div>
 
 <!--Reveals CPU's stats after the round's completed-->
 <div th:if="${cpuPlayedCard != null}" style="float: right; text-align: right;">
-    <h2>Player 2 Hand:</h2>
+    <h2>Player 2's Card</h2>
     <p>Played: <strong th:text="${cpuPlayedCard.name}"></strong></p>
     <p th:if="${cpuChosenStat != 'customStat'}">Stat: <strong th:text="${cpuChosenStat}"></strong></p>
     <p th:if="${cpuChosenStat == 'customStat'}">Stat: <strong th:text="${cpuCustomStatName}"></strong></p>
     <p>Stat value: <strong th:text="${cpuStatValue}"></strong></p>
 </div>
+</div>
+
+
+<!--    &lt;!&ndash; P1 Hand reveal&ndash;&gt;-->
+<!--    <div style="flex: 1; text-align: left;">-->
+<!--        <h2>Your Card</h2>-->
+<!--        <p>You played: <strong th:text="${playedCard.name}"></strong></p>-->
+<!--        <p th:if="${chosenStat != 'customStat'}">You picked: <strong th:text="${chosenStat}"></strong></p>-->
+<!--        <p th:if="${chosenStat == 'customStat'}">You picked: <strong th:text="${customStatName}"></strong></p>-->
+<!--        <p>Stat value: <strong th:text="${statValue}"></strong></p>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; CPU hand reveal &ndash;&gt;-->
+<!--    <div style="flex: 1; text-align: right;">-->
+<!--        <h2>Player 2's Card</h2>-->
+<!--        <p>Played: <strong th:text="${cpuPlayedCard.name}"></strong></p>-->
+<!--        <p th:if="${cpuChosenStat != 'customStat'}">Stat: <strong th:text="${cpuChosenStat}"></strong></p>-->
+<!--        <p th:if="${cpuChosenStat == 'customStat'}">Stat: <strong th:text="${cpuCustomStatName}"></strong></p>-->
+<!--        <p>Stat value: <strong th:text="${cpuStatValue}"></strong></p>-->
+<!--    </div>-->
+
+<!--</div>-->
+
+
 
 <!-- Prompts user to select a stat after picking a card -->
 <div class="stat-container" style="text-align: center; margin-top: 3px;"
@@ -87,7 +113,9 @@
 <!--Shows the CPU's selected stat, IF they go first in that round.-->
 <div class="cpu-stat-container" style="width: 300px; margin: 0 auto; text-align: center;" th:if="${cpuStat != null && playerStat == null}">
     <h2>Battle Stat: </h2>
-    <h2><strong th:text="${cpuStat}"></strong></h2>
+<!--    <h2><strong th:text="${cpuStat}"></strong></h2>-->
+    <h2 th:if="${cpuStat != 'customStat'}"><strong th:text="${cpuStat}"></strong></h2>
+    <h2 th:if="${cpuStat == 'customStat'}"><strong th:text="${cpuCustomStatName}"></strong></h2>
 </div>
 
 <!--Displays player's hand, prompts player to pick card-->
@@ -123,7 +151,10 @@
 </div>
 
 <!-- Play again button at end of game -->
-<a th:if="${#lists.size(playerHand) == 0}" th:href="@{/game/reset}" class="button">Play Again</a>
+<div style="text-align: center; margin-top: 20px;">
+    <a th:if="${#lists.size(playerHand) == 0}" th:href="@{/game/reset}" class="button">Play Again</a>
+</div>
+
 
 <!--New game/reset hand button-->
 <a th:if="${#lists.size(playerHand) > 0}" th:href="@{/game/reset}" type="submit" class="button">New Game</a>
