@@ -6,10 +6,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-    <body>
-    <div th:replace="~{fragments :: header}"></div>
+<body>
+<div th:replace="~{fragments :: header}"></div>
 
-<!-- Displays all points -->
+<!--Displays GAME OVER and game winner-->
+<div class="game-result-container" th:if="${playerHand != null and #lists.size(playerHand) == 0}" style="text-align: center; margin-top: 10px;">
+    <h1>Game Over!</h1>
+    <p th:if="${player1Score > cpuScore}"><strong>Congratulations! </strong>You have won the game.</p>
+    <p th:if="${player1Score < cpuScore}"><strong>Better luck next time! </strong>Player 2 has won the game.</p>
+</div>
+
+<!--Displays round winner-->
+<div th:if="${#lists.size(playerHand) > 0}" class="round-result-container" style="text-align: center; margin-top: 10px;">
+    <h2 th:if="${statValue > cpuStatValue and roundComplete == true}">Player 1 Wins!</h2>
+    <h2 th:if="${statValue < cpuStatValue and roundComplete == true}">Player 2 Wins!</h2>
+    <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's A Draw!</h2>
+</div>
+
+<!-- Score Display -->
 <div style="display: flex; justify-content: space-between; padding: 10px;">
     <div style="text-align: left;">
         <h2>Player 1:</h2>
@@ -21,19 +35,25 @@
     </div>
 </div>
 
+<!-- Displays who is attacking that round -->
+<div class="round-result-container" style="text-align: center; margin-top: 10px;">
+    <h2 th:if="${currentAttacker == 'P1' and roundComplete == false}"><strong>You</strong> are attacking!</h2>
+    <h2 th:if="${currentAttacker == 'P2' and roundComplete == false}"><strong>Player 2</strong> is attacking!</h2>
+</div>
+
 <!-- Display messages from the controller -->
 <div th:if="${successMessage}" class="message success">
     <p th:text="${successMessage}"></p>
 </div>
 
 <!-- Show results after battle -->
-<div th:if="${cpuPlayedCard != null}">
-    <p style="width: 300px; margin: 0 auto;">You played: <strong th:text="${chosenStat}"></strong></p>
-    <p style="width: 300px; margin: 0 auto;">You selected: <strong th:text="${playedCard.name}"></strong></p>
-    <p style="width: 300px; margin: 0 auto;">Your stat value: <strong th:text="${statValue}"></strong></p>
+<div th:if="${cpuPlayedCard != null}" style="text-align: center; margin-top: 3px;">
+    <p>You played: <strong th:text="${chosenStat}"></strong></p>
+    <p>You selected: <strong th:text="${playedCard.name}"></strong></p>
+    <p>Your stat value: <strong th:text="${statValue}"></strong></p>
 </div>
 
-<!--Show CPU's moves-->
+<!--Reveals CPU's stats after the round's completed-->
 <div th:if="${cpuPlayedCard != null}" style="float: right; text-align: right;">
     <h2>Player 2 Hand:</h2>
     <p>Played: <strong th:text="${cpuPlayedCard.name}"></strong></p>
@@ -41,56 +61,76 @@
     <p>Stat value: <strong th:text="${cpuStatValue}"></strong></p>
 </div>
 
-<!--Displays player's hand, prompts player to pick card-->
-<h2>Your Hand:</h2>
+<!-- Prompts user to select a stat after picking a card -->
+<div class="stat-container" style="text-align: center; margin-top: 3px;"
+     th:if="${playedCard != null and cpuStat == null and roundComplete == false}">
+    <form th:action="@{'/game/play/p1-attack-2'}" method="post">
+        <input type="hidden" name="cardId" th:value="${playedCard.id}" />
 
+        <label for="stat-select">Select Your Stat:</label>
+        <select id="stat-select" name="chosenStat">
+            <!--                <option value="strength">Strength</option>-->
+            <!--                <option value="wisdom">Wisdom</option>-->
+            <!--                <option value="defence">Defence</option>-->
+            <!--                <option value="luck">Luck</option>-->
+            <!--                <option value="customStat">Unique Stat</option>-->
+            <option value="strength">Strength: [[${playedCard.strength}]]</option>
+            <option value="wisdom">Wisdom: [[${playedCard.wisdom}]]</option>
+            <option value="defence">Defence: [[${playedCard.defence}]]</option>
+            <option value="luck">Luck: [[${playedCard.luck}]]</option>
+            <option value="customStat" th:text="${customStatName}">: [[${playedCard.customStat}]]</option>
+        </select>
+        <button type="submit" class="button">Battle!</button>
+    </form>
+</div>
+
+
+<!--Shows the CPU's selected stat, IF they go first in that round.-->
+<div class="cpu-stat-container" style="width: 300px; margin: 0 auto; text-align: center;" th:if="${cpuStat != null && playerStat == null}">
+    <h2>Battle Stat: </h2>
+    <h2><strong th:text="${cpuStat}"></strong></h2>
+</div>
+
+<!--Displays player's hand, prompts player to pick card-->
 <div class="hand-container" th:if="${playerHand != null and #lists.size(playerHand) > 0}">
+    <h2>Your Hand:</h2>
     <div class="card-item" th:each="card: ${playerHand}">
         <p class="card-name" th:text="${card.name}"></p>
-        <form th:action="@{/game/play}" method="post">
-            <input type="hidden" name="currentPlayerId" th:value="${currentPlayerId}" />
+        <form th:action="@{/game/play/p1-attack-1}" method="post" th:if="${roundComplete == false and cpuStat == null and playedCard == null}">
             <input type="hidden" name="cardId" th:value="${card.id}" />
-            <input type="hidden" name="gameId" th:value="${gameId}" />
+            <button type="submit" class="play-button">Play</button>
+        </form>
+        <form th:action="@{/game/play/p1-defend}" method="post" th:if="${roundComplete == false and cpuStat != null and playedCard == null}">
+            <input type="hidden" name="cardId" th:value="${card.id}" />
             <button type="submit" class="play-button">Play</button>
         </form>
     </div>
 </div>
 
-
-
-
-<!-- Prompts user to select a stat after picking a card -->
-<div class="stat-container" th:if="${playedCard != null and cpuPlayedCard == null}">
-    <form th:action="@{'/game/play/player-1-stat-select'}" method="post">
-        <input type="hidden" name="currentPlayerId" th:value="${currentPlayerId}" />
-        <input type="hidden" name="cardId" th:value="${playedCard.id}" />
-        <input type="hidden" name="gameId" th:value="${gameId}" />
-
-    <label for="stat-select">Please select a stat:</label>
-    <select id="stat-select" name="chosenStat">
-    <option value="strength">Strength</option>
-    <option value="wisdom">Wisdom</option>
-    <option value="defence">Defence</option>
-    <option value="luck">Luck</option>
-    <option value="customStat">Unique Stat</option>
-</select>
-        <button type="submit" class="button">Battle!</button></form>
-</div>
-
-<div th:if="${cpuPlayedCard != null}">
-    <form action="#" th:action="@{/game/play/player-2-stat-select}" method="post">
-        <input type="hidden" name="currentPlayerId" th:value="${currentPlayerId}"/>
-        <input type="hidden" name="cardId" th:value="${cpuPlayedCard.id}"/>
-        <input type="hidden" name="cpuId" th:value="${cpuId}"/>
+<!-- Next round: if CPU's turn to attack -->
+<div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;"
+     th:if="${roundComplete == true and p1IsAttackingNextRound == false and #lists.size(playerHand) > 0}">
+    <form th:action="@{/game/play/p2-attack}" method="get">
         <button type="submit" class="button">Next Round</button>
-</form>
+    </form>
 </div>
 
-    <!--New game/reset hand button-->
-    <a  th:href="@{/game/reset}" type="submit" class="button">New Game</a>
-    <p th:if="${playerHand == null or #lists.size(playerHand) == 0}">No cards to display.</p>
+<!-- Next round: if P1's turn to attack -->
+<div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;"
+     th:if="${roundComplete == true and p1IsAttackingNextRound == true and #lists.size(playerHand) > 0}">
+    <form th:action="@{/game/play}" method="get">
+        <button type="submit" class="button">Next Round</button>
+    </form>
+</div>
+
+<!-- Play again button at end of game -->
+<a th:if="${#lists.size(playerHand) == 0}" th:href="@{/game/reset}" class="button">Play Again</a>
+
+<!--New game/reset hand button-->
+<a th:if="${#lists.size(playerHand) > 0}" th:href="@{/game/reset}" type="submit" class="button">New Game</a>
+<!--<p th:if="${playerHand == null or #lists.size(playerHand) == 0}">No cards to display.</p>-->
 
 
-    <div th:replace="~{fragments :: footer}"></div>
+<div th:replace="~{fragments :: footer}"></div>
 </body>
 </html>
