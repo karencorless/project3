@@ -10,26 +10,30 @@
     <style>
         body {
             text-align: center;
+            justify-content: center;
+            align-items: center;
         }
 
         .all-decks {
-                display: inline-block;
-                gap: 30px;
-                justify-content: center;
-                padding: 10px;
-                text-align: center;
-                margin-top: 20px;
+            display: flex;
+            white-space: nowrap;
+            gap: 20px;
+            padding: 10px;
+            margin-top: 20px;
 
-                width: 70%
-                max-height: 300px;
-                max-width: 60%;
-                overflow-y: hidden;
-                overflow-x: scroll;
+            text-align: center;
+            justify-content: center;
+
+            width: 70%
+            max-height: 350px;
+            max-width: 60%;
+            overflow-y: hidden;
+            overflow-x: scroll;
             }
 
         .deck img {
-            width: 100%;
-            height: auto;
+            width: 250px;
+            height: 250px
             border-bottom: 1px solid #ccc;
         }
 
@@ -50,6 +54,7 @@
             flex-wrap: wrap;
             float: left;
             width: 50%;
+            flex: 0 0 auto;
         }
 
     </style>
