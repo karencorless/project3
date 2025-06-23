@@ -35,18 +35,18 @@ public class GameService {
     UserService userService;
 
 
-                        //   Security related methods:
+    //   Security related methods:
 
-//          Verify that currentUser is in the game
+    //          Verify that currentUser is in the game
     public boolean checkCurrentUserIsPlayerInGame(Long gameId) {
         Long currentUserId = userService.getCurrentUserId();
         Player[] players = getPlayersFromGame(gameId);
         return Objects.equals(currentUserId, players[0].getPlayerUserId()) || Objects.equals(currentUserId, players[1].getPlayerUserId());
     }
-            //  should update or add a method to compare with robo user,
-            //  so we can add it to winPoint and getScore.
+    //  should update or add a method to compare with robo user,
+    //  so we can add it to winPoint and getScore.
 
-//          Verify that currentUser is player
+    //          Verify that currentUser is player
     public boolean checkCurrentUserIsPlayer(Long playerId){
         Long currentUserId = userService.getCurrentUserId();
         Player player = playerRepository.findById(playerId).orElse(null);
@@ -55,9 +55,9 @@ public class GameService {
     }
 
 
-                    //  Creation/game start related methods:
+    //  Creation/game start related methods:
 
-//       Creates new Game
+    //       Creates new Game
     public Game newGame(int pointsToWin, List<String> chosenDeckIds){
         Long currentUserId = userService.getCurrentUserId();
         User roboUser = userRepository.findUserByUsername("robouser1");
@@ -83,7 +83,7 @@ public class GameService {
     }
 
 
-//          Creates new Player object
+    //          Creates new Player object
     public Player newPlayer(Long userId){
         Player player = new Player(userId);
         playerRepository.save(player);
@@ -91,7 +91,7 @@ public class GameService {
     }
 
 
-//        Randomly deal cards from the active decks
+    //        Randomly deal cards from the active decks
     public void dealCards(List<Long> decksChosen, Long playerOneId, Long playerTwoId, Integer pointsToWin){
         List<Card> allCardsInPlay = new ArrayList<>();
         //      list of all available cards
@@ -121,7 +121,7 @@ public class GameService {
     }
 
 
-//      Takes the String deckIds from newgame.html, parses the usable Long values, and returns that list
+    //      Takes the String deckIds from newgame.html, parses the usable Long values, and returns that list
     public List<Long> parseLongIdsFromString(List<String>chosenDeckIds){
         List<Long> chosenDecks = new ArrayList<>();
         for (String deckId : chosenDeckIds) {
@@ -132,26 +132,25 @@ public class GameService {
     }
 
 
-//      Random Boolean Generator
+    //      Random Boolean Generator
     public boolean coinFlip() {
         Random random = new Random();
         return random.nextBoolean();
     }
 
 
-                                 //    Game Play related methods:
+    //    Game Play related methods:
 
-//          Allows player to select card from hand, updates playerCards accordingly.
+    //          Allows player to select card from hand, updates playerCards accordingly.
     @Transactional
     public Card pickCardFromHand(Long playerId, Long selectedCardId) {
+        // Makes sure player id and card id are valid
         if (playerId == null || selectedCardId == null) {
             System.out.println("Error: Player ID or Selected Card ID is null in pickCardFromHand.");
             return null;
         }
 
         List<PlayerCard> playerCardsActiveInHand = playerCardRepository.findByPlayerId(playerId);
-        System.out.println(playerCardsActiveInHand);
-        // -- filter by boolean discarded also, "AND"??
 
         // Find the card id from playerCards and store it
         PlayerCard selectedCardInPlayerCards = null;
@@ -165,7 +164,7 @@ public class GameService {
         // If card not found, prints warning
         if (selectedCardInPlayerCards == null) {
             System.out.println("Warning: Card with ID " + selectedCardId + " not found in hand for player " + playerId);
-            return null; // Indicate that the operation failed
+            return null;
         }
 
         Optional<Card> optionalCard = cardRepository.findById(selectedCardInPlayerCards.getCardId());
@@ -173,35 +172,36 @@ public class GameService {
         Card playedCard = optionalCard.get();
         Player currentPlayer = playerRepository.findById(playerId).orElse(null);
 
-        ///  Change bool discarded to true and set currentCard
         currentPlayer.setCurrentCardId(selectedCardId);
         selectedCardInPlayerCards.setDiscarded(true);
+
+        System.out.println("This is P1's current hand: " + playerCardsActiveInHand);
 
         return playedCard;
     }
 
 
-//          Returns the player's current score
+    //          Returns the player's current score
     public Integer getScore(Long playerId) {
         return (Objects.requireNonNull(playerRepository.findById(playerId).orElse(null))).getCurrentScore();
     }
 
 
-@Transactional
-public void winPoint(Long playerId) {
+    @Transactional
+    public void winPoint(Long playerId) {
         // Updatedas previous wasn't updating for some reason
-    Player player = playerRepository.findById(playerId).orElse(null);
-    if (player != null) {
-        player.setCurrentScore(player.getCurrentScore() + 1);
-        playerRepository.save(player);
-        System.out.println("Manually incremented score for playerId: " + playerId + ", new score: " + player.getCurrentScore());
-    } else {
-        System.out.println("Player not found with id: " + playerId);
+        Player player = playerRepository.findById(playerId).orElse(null);
+        if (player != null) {
+            player.setCurrentScore(player.getCurrentScore() + 1);
+            playerRepository.save(player);
+            System.out.println("Manually incremented score for playerId: " + playerId + ", new score: " + player.getCurrentScore());
+        } else {
+            System.out.println("Player not found with id: " + playerId);
+        }
     }
-}
 
 
-//          Compare players' scores
+    //          Compare players' scores
     public Long compareCurrentScores(Long playerOneId, Long playerTwoId){
         assert checkCurrentUserIsPlayer(playerOneId) || checkCurrentUserIsPlayer(playerTwoId);
 
@@ -227,7 +227,7 @@ public void winPoint(Long playerId) {
         }
     }
 
-//          Return list of the cards currently in the player's hand
+    //          Return list of the cards currently in the player's hand
     public List<Card> showPlayerHand(Long playerId){
         assert checkCurrentUserIsPlayer(playerId);
 
@@ -242,7 +242,7 @@ public void winPoint(Long playerId) {
     }
 
 
-//      Return list of the player objects, derived from the Game id
+    //      Return list of the player objects, derived from the Game id
     public Player[] getPlayersFromGame(Long gameId){
         assert checkCurrentUserIsPlayerInGame(gameId);
 
@@ -253,7 +253,7 @@ public void winPoint(Long playerId) {
         return new Player[]{playerOne, playerTwo};
     }
 
-//          Find CurrentUser's Game
+    //          Find CurrentUser's Game
     public Game findCurrentUserGame(){
         Long userId = userService.getCurrentUserId();
         List<Player> associatedPlayers = playerRepository.findAllByPlayerUserId(userId);
@@ -265,7 +265,7 @@ public void winPoint(Long playerId) {
         return null;
     }
 
-//      Gets the card's stat value based on chosen attribute
+    //      Gets the card's stat value based on chosen attribute
     public int getStatValue(String stat, Card card){
         return switch (stat.toLowerCase()) {
             case "strength" -> card.getStrength();
@@ -277,7 +277,7 @@ public void winPoint(Long playerId) {
         };
     }
 
-//      Finds the highest value stat on one card for CPU
+    //      Finds the highest value stat on one card for CPU
     public int getMaxStatValueOnACard(Card card) {
         return Collections.max(List.of(
                 card.getStrength(),
@@ -286,41 +286,6 @@ public void winPoint(Long playerId) {
                 card.getLuck(),
                 card.getCustomStat()
         ));
-    }
-
-//      Finds the highest value stat across all cards in CPU's hand
-    public int getHighestStatValue(Long cpuId){
-        // Gets the cpus hand
-        List<PlayerCard> cpuCardsInHand = playerCardRepository.findByPlayerId(cpuId);
-
-        // verifiees card is in cpus hand
-        List<Card> cpuHand = new ArrayList<>();
-        for (PlayerCard card : cpuCardsInHand) {
-            if (!card.getDiscarded()) {
-                cardRepository.findById(card.getCardId()).ifPresent(cpuHand::add);
-            }
-        }
-        // Applies the maxstat method on all the cards and sorts them descending
-        cpuHand.sort(Comparator.comparingInt(this::getMaxStatValueOnACard).reversed());
-
-        // Return the highest stat value
-        return cpuHand.isEmpty() ? 0 : getMaxStatValueOnACard(cpuHand.get(0));
-    }
-
-    //      Finds the card with the highest stat value in the CpU's hand
-    public Card getHighestStatValueCard(Long cpuId){
-        List<PlayerCard> cpuCardsInHand = playerCardRepository.findByPlayerId(cpuId);
-
-        List<Card> cpuHand = new ArrayList<>();
-        for (PlayerCard card : cpuCardsInHand) {
-            if (!card.getDiscarded()) {
-                cardRepository.findById(card.getCardId()).ifPresent(cpuHand::add);
-            }
-        }
-        cpuHand.sort(Comparator.comparingInt(this::getMaxStatValueOnACard).reversed());
-
-        // Return the highest stat value
-        return cpuHand.isEmpty() ? null : cpuHand.get(0);
     }
 
 //      Finds the name of the attribute with the highest value on a card:
@@ -336,19 +301,35 @@ public void winPoint(Long playerId) {
         return "unknown";
     }
 
-//      Finds the ID of the opponent..
-public Long getOppIdForGame(Game game, Long currentPlayerId) {
-    if (game.getPlayerOneId().equals(currentPlayerId)) {
-        return game.getPlayerTwoId();
-    } else if (game.getPlayerTwoId().equals(currentPlayerId)) {
-        return game.getPlayerOneId();
-    } else {
-        return null; // or throw exception if player not in game
+    //      Finds the ID of the opponent..
+    public Long getOppIdForGame(Game game, Long currentPlayerId) {
+        if (game.getPlayerOneId().equals(currentPlayerId)) {
+            return game.getPlayerTwoId();
+        } else if (game.getPlayerTwoId().equals(currentPlayerId)) {
+            return game.getPlayerOneId();
+        } else {
+            return null; // or throw exception if player not in game
+        }
     }
-}
 
-//      Get cpu's highest card with MY Chosen attribute.
-    public Card getCpuCardByHighestStat(Long cpuId, String chosenStat) {
+    //      Finds the card with the highest stat value in the CpU's hand
+    public Card getCpuCard(Long cpuId){
+        List<PlayerCard> cpuCardsInHand = playerCardRepository.findByPlayerId(cpuId);
+
+        List<Card> cpuHand = new ArrayList<>();
+        for (PlayerCard card : cpuCardsInHand) {
+            if (!card.getDiscarded()) {
+                cardRepository.findById(card.getCardId()).ifPresent(cpuHand::add);
+            }
+        }
+        cpuHand.sort(Comparator.comparingInt(this::getMaxStatValueOnACard).reversed());
+
+        // Return the highest stat value
+        return cpuHand.isEmpty() ? null : cpuHand.get(0);
+    }
+
+    //      Get cpu's highest card with MY Chosen attribute.
+    public Card getCpuCardWithP1sStat(Long cpuId, String chosenStat) {
         List<PlayerCard> cpuCardsInHand = playerCardRepository.findByPlayerId(cpuId);
 
         List<Card> cpuHand = new ArrayList<>();
@@ -357,22 +338,79 @@ public Long getOppIdForGame(Game game, Long currentPlayerId) {
                 cardRepository.findById(pc.getCardId()).ifPresent(cpuHand::add);
             }
         }
-
         cpuHand.sort(Comparator.comparingInt((Card card) -> getStatValue(chosenStat, card)).reversed());
 
         return cpuHand.isEmpty() ? null : cpuHand.get(0);
     }
 
 
-//      Get game iD ---- CHECK IF AVIAN ALREADY HAS ONE AND REFACTOR WHAT U USE -----
+    //      Get game iD ---- CHECK IF AVIAN ALREADY HAS ONE AND REFACTOR WHAT U USE -----
     public Game getGameById(Long gameId) {
         return gameRepository.findById(gameId).orElse(null);
+    }
+
+    // Mark the CPU's chosen card as discarded
+    public void discardCpuChosenCardFromHand(Long cardId, Long cpuId) {
+
+        // Get the cpu's hand
+        List<PlayerCard> cpuCardsInHand = playerCardRepository.findByPlayerId(cpuId);
+
+        // Find the card id from playerCards and store it
+        PlayerCard selectedCardInCpuCards = null;
+        for (PlayerCard playerCard : cpuCardsInHand) {
+            if (playerCard.getCardId().equals(cardId)) {
+                selectedCardInCpuCards = playerCard;
+                selectedCardInCpuCards.setDiscarded(true);
+                break;
+            }
+            else {
+                System.out.println("Error removing card with ID " + cardId + "from CPU deck.");
+            }
+        }
+
+        // Stack trace debugs:
+        List<Card> cpuHand = new ArrayList<>();
+        for (PlayerCard card : cpuCardsInHand) {
+            if (!card.getDiscarded()) {
+                cardRepository.findById(card.getCardId()).ifPresent(cpuHand::add);
+            }
+        }
+
+        System.out.println("This is the CPU's current hand :" + cpuHand);
+    }
+
+    // Get P1's selected cards custom stat name
+    public String getCardCustomStatName(Card card) {
+
+        Long cardDeckId = card.getParentDeckId();
+        String customStatName = "Special";
+
+        // The Simpsons
+        if (cardDeckId == 1) {
+            customStatName = "D'oh Factor";
+        }
+        // Harry Potter
+        else if(cardDeckId == 2) {
+            customStatName = "Spellcasting";
+        }
+        // Marvel
+        else if(cardDeckId == 3) {
+            customStatName = "Superpower";
+        }
+        // Disney
+        else if(cardDeckId == 4) {
+            customStatName = "Disney Magic";
+        }
+
+        // Add remaining deck names later.
+
+        return customStatName;
     }
 
 
     //  Deletion and end game related methods:
 
-//        End Game, determine winner
+    //        End Game, determine winner
     public boolean endGame(Long gameId) {
         assert checkCurrentUserIsPlayerInGame(gameId);
 
@@ -393,7 +431,7 @@ public Long getOppIdForGame(Game game, Long currentPlayerId) {
     }
 
 
-//          Clears the game from the DB, deleting the playerCard, player, and game objects.
+    //          Clears the game from the DB, deleting the playerCard, player, and game objects.
     @Transactional
     public void deleteGame(Long gameId){
         assert checkCurrentUserIsPlayerInGame(gameId);
