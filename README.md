@@ -74,8 +74,6 @@ mvn test -Dtest=SignUpTest
 - [@Victoria](https://github.com/vicrbsn)
 - [@Alexandre](https://github.com/twiin0)
 
-## 🙋‍♂️ Quality Engineers
+## ✅ Quality Engineers
 - [@Barbora](https://github.com/Bara170)
 - [@Alina](https://github.com/AlinaLupu123)
-
-
