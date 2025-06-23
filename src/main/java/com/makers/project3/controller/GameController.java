@@ -215,6 +215,7 @@ public class GameController {
         int pointsToWinGame = game.getPointsToWin();
         if (pointsToWinGame == player1Score || pointsToWinGame == cpuScore) {
             model.addAttribute("gameOver", true);
+            gameService.endGameTally(game.getId());
         }
         else {
             model.addAttribute("gameOver", false);
@@ -244,18 +245,18 @@ public class GameController {
         model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
         model.addAttribute("pointsToWin", game.getPointsToWin());
 
-        // Game logs for easier reading and debugs
-        System.out.println("CPU card picked: " + cpuCard.getName());
-        System.out.println("CPU chosen stat: " + chosenStat);
-        System.out.println("Entered selectPlayerStat with gameId=" + gameId + ", currentPlayerId=" + currentPlayerId + ", cardId=" + cardId + ", chosenStat=" + chosenStat);
-        System.out.println("Played card: " + (playedCard != null ? playedCard.getName() : "null"));
-        System.out.println("CPU card: " + (cpuCard != null ? cpuCard.getName() : "null"));
-        System.out.println("Sending to playgame: cpuCard=" + cpuCard.getName() + ", stat=" + chosenStat);
-        System.out.println("Player 1 Score: " + player1Score);
-        System.out.println("CPU Score: " + cpuScore);
-        System.out.println("Current player Id: " + currentPlayerId);
-        System.out.println("Incrementing score for playerId: " + currentPlayerId);
-        System.out.println("Game points to win: " + game.getPointsToWin());
+//        // Game logs for easier reading and debugs
+//        System.out.println("CPU card picked: " + cpuCard.getName());
+//        System.out.println("CPU chosen stat: " + chosenStat);
+//        System.out.println("Entered selectPlayerStat with gameId=" + gameId + ", currentPlayerId=" + currentPlayerId + ", cardId=" + cardId + ", chosenStat=" + chosenStat);
+//        System.out.println("Played card: " + (playedCard != null ? playedCard.getName() : "null"));
+//        System.out.println("CPU card: " + (cpuCard != null ? cpuCard.getName() : "null"));
+//        System.out.println("Sending to playgame: cpuCard=" + cpuCard.getName() + ", stat=" + chosenStat);
+//        System.out.println("Player 1 Score: " + player1Score);
+//        System.out.println("CPU Score: " + cpuScore);
+//        System.out.println("Current player Id: " + currentPlayerId);
+//        System.out.println("Incrementing score for playerId: " + currentPlayerId);
+//        System.out.println("Game points to win: " + game.getPointsToWin());
 
         return "playgame";
     }
@@ -361,6 +362,7 @@ public class GameController {
         int pointsToWinGame = game.getPointsToWin();
         if (pointsToWinGame == player1Score || pointsToWinGame == cpuScore) {
             model.addAttribute("gameOver", true);
+            gameService.endGameTally(game.getId());
         }
         else {
             model.addAttribute("gameOver", false);
@@ -391,28 +393,27 @@ public class GameController {
         model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
         model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
 
-        // Game logs for easier reading and debugs
-        System.out.println("CPU card picked: " + cpuCard.getName());
-        System.out.println("CPU chosen stat: " + cpuStat);
-        System.out.println("Entered selectPlayerStat with gameId=" + gameId + ", currentPlayerId=" + currentPlayerId + ", cardId=" + cardId + ", chosenStat=" + cpuStat);
-        System.out.println("Played card: " + (playedCard != null ? playedCard.getName() : "null"));
-        System.out.println("CPU card: " + (cpuCard != null ? cpuCard.getName() : "null"));
-        System.out.println("Sending to playgame: cpuCard=" + cpuCard.getName() + ", stat=" + cpuStat);
-        System.out.println("Player 1 Score: " + player1Score);
-        System.out.println("CPU Score: " + cpuScore);
-        System.out.println("Current player Id: " + currentPlayerId);
-        System.out.println("Incrementing score for playerId: " + currentPlayerId);
-        System.out.println("Game points to win: " + game.getPointsToWin());
+//        // Game logs for easier reading and debugs
+//        System.out.println("CPU card picked: " + cpuCard.getName());
+//        System.out.println("CPU chosen stat: " + cpuStat);
+//        System.out.println("Entered selectPlayerStat with gameId=" + gameId + ", currentPlayerId=" + currentPlayerId + ", cardId=" + cardId + ", chosenStat=" + cpuStat);
+//        System.out.println("Played card: " + (playedCard != null ? playedCard.getName() : "null"));
+//        System.out.println("CPU card: " + (cpuCard != null ? cpuCard.getName() : "null"));
+//        System.out.println("Sending to playgame: cpuCard=" + cpuCard.getName() + ", stat=" + cpuStat);
+//        System.out.println("Player 1 Score: " + player1Score);
+//        System.out.println("CPU Score: " + cpuScore);
+//        System.out.println("Current player Id: " + currentPlayerId);
+//        System.out.println("Incrementing score for playerId: " + currentPlayerId);
+//        System.out.println("Game points to win: " + game.getPointsToWin());
 
         return "playgame";
     }
 
-    //    GET -- End of the game. Returns bool of if the current user is the winner, and clears the game from the db.
+    //    GET -- End of the game. Clears the game, players, and player cards from the db and redirects to new game page.
     @GetMapping("/game/reset")
     public RedirectView clearGame() {
-        Game game = gameService.findCurrentUserGame();
-        boolean userWinner = gameService.endGame(game.getId());
-        gameService.cleanUp();
+        gameRepository.delete(gameService.findCurrentUserGame());
+//        gameService.cleanUp();
         return new RedirectView("/game/new");
     }
 }

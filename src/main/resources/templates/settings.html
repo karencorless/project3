@@ -16,6 +16,32 @@
 
         <div class="content-wrapper">
             <h1>Content</h1>
+            <div class="col-md-6 text-center">
+                <form th:action="@{/settings}" th:object="${user}" method="post" enctype="multipart/form-data" style="display: inline-block; max-width: 300px; width: 100%;">
+                    <h1 class="text-center mt-3 text-nowrap">
+                        Update your details
+                    </h1>
+                    <div class="d-flex justify-content-center mt-4 mb-3">
+                        <img class="rounded-circle mb-2" th:src="@{${user.profilePic}}" style="width: 100px; height: 100px; object-fit: cover;">
+                    </div>
+                    <div class="mb-4">
+                        <label th:for="imageSource" class="form-label"></label>Profile Picture:<br>
+                        <input type="file" name="file" class="form-control mt-2"/>
+                    </div>
+                    <div class="mb-3">
+                        <label th:for="username" class="form-label">Username:</label>
+                        <input type="text" th:field="*{username}" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label th:for="birthday" class="form-label">Birthday:</label>
+                        <input type="date" th:field="*{birthday}" class="form-control"/>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <input type="submit" value="Submit" id="submit" class="btn btn-primary btn-sm w-50 me-2 mt-3"/>
+                        <input type="reset" value="Reset" class="btn btn-outline-primary btn-sm w-50 mt-3"/>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

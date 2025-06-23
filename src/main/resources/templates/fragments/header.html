@@ -14,7 +14,7 @@
                 <a href="/settings" th:href="@{/settings}">Settings</a>
             </div>
 
-            <div class="user-controls" sec:authorize="isAuthenticated()">
+            <div class="user-controls" th:if="${currentUser != null}">
                 <div class="profile-container">
                     <div class="profile-image">
                         <img th:src="@{${currentUser.imageSource}}" alt="Profile" />

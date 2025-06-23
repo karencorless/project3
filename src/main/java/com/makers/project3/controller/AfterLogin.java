@@ -27,4 +27,7 @@ public class AfterLogin {
         mav.addObject("currentUser", currentUser);
         return mav;
     }
+
+    @GetMapping("/settings")
+    public viewSettingsPage()
 }
