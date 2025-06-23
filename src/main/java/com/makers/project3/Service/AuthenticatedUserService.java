@@ -45,6 +45,8 @@ public class AuthenticatedUserService {
         newUser.setImageSource(imageSource);
         newUser.setAuth0id(authId);
         newUser.setUsername(username);
+        newUser.setGamesWon(0);
+        newUser.setGamesPlayed(0);
         return userRepository.save(newUser);
     }
 

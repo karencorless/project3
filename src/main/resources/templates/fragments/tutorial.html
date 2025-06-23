@@ -1,0 +1,120 @@
+<div th:fragment="tutorialModal">
+    <div id="tutorial" class="overlay">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeTuto()">&times;</a>
+        <div class="overlay-content">
+            <div class="tutorial-content">
+                <div class="tuto-select">
+                    <h2>Select Manual</h2>
+                    <p>Below, select which gamemode you would like to learn how to play.</p>
+                    <div class="manual-select">
+                        <button id="1v1Btn" class="btn btn-primary">1v1</button>
+                        <button class="btn btn-secondary" disabled>Team [Coming Soon]</button>
+                    </div>
+                </div>
+
+                <div id="1v1Tutorial">
+                    <div class="tutorial-step active" data-step="1">
+                        <h2>Before The Game</h2>
+                        <p>Prior to each game, you'll be prompted with a lobby configuration menu.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-primary next-step">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step" data-step="2">
+                        <h2>How To Play - Start</h2>
+                        <p>Each of the decks you selected will be shuffled together.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-secondary prev-step">Back</button>
+                            <button class="btn btn-primary next-step">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step" data-step="3">
+                        <h2>How To Play - Rounds</h2>
+                        <p>One player will choose a card they wish to play.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-secondary prev-step">Back</button>
+                            <button class="btn btn-primary next-step">Next</button>
+                        </div>
+                    </div>
+
+                    <div class="tutorial-step" data-step="4">
+                        <h2>How To Play - Winning</h2>
+                        <p>Once a card has been played, it will be removed from the players hand.</p>
+                        <div class="tuto-nav">
+                            <button class="btn btn-secondary prev-step">Back</button>
+                            <button class="btn btn-success finish-tutorial">Finish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openTuto() {
+            const tutorial = document.getElementById('tutorial');
+            tutorial.style.display = 'flex';
+            setTimeout(() => {
+                tutorial.classList.add('active');
+                document.querySelector('.tuto-select').style.display = 'block';
+                document.getElementById('1v1Tutorial').style.display = 'none';
+            }, 10);
+        }
+
+        function closeTuto() {
+            const tutorial = document.getElementById('tutorial');
+            tutorial.classList.remove('active');
+            setTimeout(() => {
+                tutorial.style.display = 'none';
+            }, 300);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('1v1Btn').addEventListener('click', function() {
+                document.querySelector('.tuto-select').style.display = 'none';
+                const tutorial = document.getElementById('1v1Tutorial');
+                tutorial.style.display = 'block';
+                const steps = tutorial.querySelectorAll('.tutorial-step');
+                steps.forEach(step => step.style.display = 'none');
+                steps[0].style.display = 'block';
+                steps[0].classList.add('active');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('next-step')) {
+                    const currentStep = e.target.closest('.tutorial-step');
+                    const nextStep = currentStep.nextElementSibling;
+                    if (nextStep) {
+                        currentStep.classList.remove('active');
+                        currentStep.style.display = 'none';
+                        nextStep.classList.add('active');
+                        nextStep.style.display = 'block';
+                    }
+                }
+
+                if (e.target.classList.contains('prev-step')) {
+                    const currentStep = e.target.closest('.tutorial-step');
+                    const prevStep = currentStep.previousElementSibling;
+                    if (prevStep) {
+                        currentStep.classList.remove('active');
+                        currentStep.style.display = 'none';
+                        prevStep.classList.add('active');
+                        prevStep.style.display = 'block';
+                    }
+                }
+
+                if (e.target.classList.contains('finish-tutorial')) {
+                    closeTuto();
+                }
+            });
+
+            document.getElementById('tutorial').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeTuto();
+                }
+            });
+        });
+    </script>
+</div>

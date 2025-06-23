@@ -3,7 +3,7 @@
     <header style="background: #fff; border-bottom: 2px solid #ddd;">
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 2rem;">
 
-            <a class="stat-attack-logo" href="/" th:href="@{/}" style="
+            <a class="stat-attack-logo" href="/homepage" th:href="@{/homepage}" style="
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 font-size: 2.5rem;
                 font-weight: bold;
@@ -72,7 +72,7 @@
                     font-weight: 500;
                     color: #000000;"></span>
 
-                <a href="/logout" style="
+                <a href="#" onclick="confirmLogout(event)" style="
                     padding: 0.6rem 1.2rem;
                     text-decoration: none;
                     color: #fff;
@@ -82,7 +82,14 @@
                     font-size: 1.3rem;">Logout</a>
             </div>
         </nav>
-
+        <script>
+            function confirmLogout(event) {
+                event.preventDefault(); // Stop the link from navigating immediately
+                if (confirm("Are you sure you want to log out?")) {
+                    window.location.href = "/logout";
+                }
+            }
+        </script>
     </header>
 </div>
 
@@ -300,6 +307,182 @@
                 }
             });
         });
+    </script>
+</div>
+
+<!-- fragments/sidebar.html -->
+<div th:fragment="sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
+    <style>
+        .sidebar {
+            position: fixed;
+            top: 211x; /* Below navbar (header height + nav height) */
+            left: 0;
+            width: 250px;
+            height: calc(100vh - 184px); /* Full height minus header+nav */
+            background: #fff;
+            border-right: 2px solid #ddd;
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-title {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #FFA500;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .sidebar-section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-section-title:before {
+            content: "";
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #FFA500;
+            margin-right: 10px;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 0.8rem 1rem;
+            margin: 0.5rem 0;
+            color: #555;
+            text-decoration: none;
+            font-size: 1.2rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-link:hover {
+            background: #FFA500;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 206px; /* Below navbar + small margin */
+            left: 250px;
+            background: #FFA500;
+            color: #000;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 101;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* When sidebar is collapsed */
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-toggle.collapsed {
+            left: 0;
+        }
+        .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 1rem;
+        margin: 0.5rem 0;
+        background-color: #f8f8f8;
+        border-radius: 4px;
+        border-left: 3px solid #FFA500;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #000;
+            background: #FFA500;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            min-width: 50px;
+            text-align: center;
+        }
+    </style>
+
+    <button class="sidebar-toggle" onclick="toggleSidebar()">≡</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-title">Menu</div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Statistics</div>
+
+            <div class="stat-item">
+                <div class="stat-label">Games Played:</div>
+                <div class="stat-value" id="games-played" th:text="${currentUser.gamesPlayed}">0</div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-label">Games Won:</div>
+                <div class="stat-value" id="games-won" th:text="${currentUser.gamesWon}">0</div>
+            </div>
+
+            <div class="stat-item">
+                <div class="stat-label">Win Ratio:</div>
+                <div class="stat-value" id="win-ratio"
+                     th:text="${currentUser.gamesPlayed != 0 ?
+                     T(java.lang.Math).round((currentUser.gamesWon * 100.0 / currentUser.gamesPlayed)) + '%' : '0%'}">
+                    0%
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Community</div>
+            <a href="#" class="sidebar-link">Leaderboards</a>
+            <a href="#" class="sidebar-link">Friends</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.querySelector('.sidebar-toggle');
+
+            sidebar.classList.toggle('collapsed');
+            toggleBtn.classList.toggle('collapsed');
+
+            // Change toggle button icon/text
+            if (sidebar.classList.contains('collapsed')) {
+                toggleBtn.textContent = "≡";
+            } else {
+                toggleBtn.textContent = "×";
+            }
+        }
     </script>
 </div>
 
