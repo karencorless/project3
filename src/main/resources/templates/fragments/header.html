@@ -1,4 +1,4 @@
-<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <header>
         <div class="header-container">
             <a class="stat-attack-logo" href="/homepage" th:href="@{/homepage}">
@@ -14,7 +14,7 @@
                 <a href="/settings" th:href="@{/settings}">Settings</a>
             </div>
 
-            <div class="user-controls">
+            <div class="user-controls" sec:authorize="isAuthenticated()">
                 <div class="profile-container">
                     <div class="profile-image">
                         <img th:src="@{${currentUser.imageSource}}" alt="Profile" />
