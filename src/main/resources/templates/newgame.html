@@ -8,11 +8,6 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon.ico">
 
     <style>
-        body {
-            text-align: center;
-            justify-content: center;
-            align-items: center;
-        }
 
         .all-decks {
             display: flex;
@@ -64,21 +59,6 @@
     <div th:insert="~{fragments/header :: header}"></div>
 
 <h1>Game Setup</h1>
-
-<!--    <form id="game-setup" th:action="@{/game/new}" method="post">-->
-<!--        <div class="all-decks">-->
-<!--            &lt;!&ndash;    Displays a list of decks in the database showing the name and thumbnail image for each deck    &ndash;&gt;-->
-<!--            <div th:each="deck: ${decks}" class="deck">-->
-<!--                <label th:for="'deck-' + ${deck.id}">-->
-<!--                    <img th:src="${deck.thumbnail}" alt="Deck thumbnail" class="mb-1"/>-->
-<!--                    &lt;!&ndash;    Deck Name    &ndash;&gt;-->
-<!--                    <strong th:text="${deck.name}"></strong>-->
-<!--                    &lt;!&ndash; Deck Checkbox &ndash;&gt;-->
-<!--                    <input type="checkbox" th:id="'deck-' + ${deck.id}" th:name="chosenDeckIds" th:value="${deck.id}">-->
-<!--                </label>-->
-<!--            </div>-->
-<!--        </div>-->
-
 
 <form id="game-setup" th:action="@{/game/new}" method="post">-->
     <!--    View Decks    -->
