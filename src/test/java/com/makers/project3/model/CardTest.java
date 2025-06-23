@@ -4,10 +4,15 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import com.makers.project3.repository.DeckRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class CardTest {
-    private Card testCard = new Card(1L, 1L, "Johnny Silverhand", "Legendary rockerboy, visionary, and rebel.", "placeholder.png", 75, 40, 75, 60, 85);
+    @Autowired
+    DeckRepository deckRepository;
+
+    private Card testCard = new Card(1L, 1L, "Johnny Silverhand", "Legendary rockerboy, visionary, and rebel.", "placeholder.png", 75, 40, 75, 60, 85, deckRepository.findById(1L).orElse(null));
 
     //    Tests that card model has an associated ID
     @Test

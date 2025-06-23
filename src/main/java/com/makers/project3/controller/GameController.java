@@ -40,7 +40,6 @@ public class GameController {
     @Autowired
     UserRepository userRepository;
 
-//          GET -- New game setup page
     @GetMapping("/game/new")
     public String newGame(Model model) {
         Iterable<Deck> decks = deckRepository.findAll();
@@ -51,7 +50,7 @@ public class GameController {
     }
 
 
-//       POST -- Initialize a new game. Takes input for chosen decks and points to win
+    //       Initialize a new game. Takes input for chosen decks and points to win
     @PostMapping("/game/new")
     public RedirectView setupGame(@RequestParam List<String> chosenDeckIds, @RequestParam Integer pointsToWin){
         gameService.cleanUp();
@@ -60,47 +59,51 @@ public class GameController {
     }
 
 
-//          GET -- Display gameplay.
+    //       Display gameplay.
     @GetMapping("/game/play")
     public String playGame(Model model){
+        // Player 1, CPU, and game info.
         User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
         Game currentGame = gameService.findCurrentUserGame();
-        Long gameId = currentGame.getId();
-
-        if (currentGame == null){  // needs error mapping
-            return "errorpage";
-        }
+//        Long gameId = currentGame.getId();
         Long userId = userService.getCurrentUserId();
         Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
         Long cpuId = gameService.getOppIdForGame(currentGame, currentPlayerId);
+        Boolean roundComplete = false;
 
-        if (currentPlayerId == null) {
-            currentPlayerId = 1L; // Default to Player 1 if no ID is found (adjust as needed)
-            System.out.println("Warning: currentPlayerId was null on GET /game/play, defaulting to " + currentPlayerId + " for display.");
-        }
-
+        // Fetches player scores.
         int player1Score = gameService.getScore(currentPlayerId);
         int cpuScore = gameService.getScore(cpuId);
 
+        // Shows player1's hand.
         List<Card> playerHand = gameService.showPlayerHand(currentPlayerId);
-        model.addAttribute("currentPlayerId", currentPlayerId);
+
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("playerHand", playerHand);
-        model.addAttribute("gameId", gameId);
         model.addAttribute("player1Score", player1Score);
         model.addAttribute("cpuScore", cpuScore);
-        model.addAttribute("cpuId", cpuId);
+        model.addAttribute("roundComplete", roundComplete);
+        model.addAttribute("p1IsAttackingNextRound", true);
+        model.addAttribute("currentAttacker", "P1");
+        model.addAttribute("gameOver", false);
+        model.addAttribute("pointsToWin", currentGame.getPointsToWin());
 
         return "playgame";
     }
 
+    // P1 SUBMITTING THEIR SELECTED CARD.
+    @PostMapping("/game/play/p1-attack-1")
+    public String p1SelectCard(@RequestParam("cardId") Long cardId, Model model) {
 
-    // Allows user to select a card from their hand and updates the hand
-    @PostMapping("/game/play")
-    public String selectCard(@RequestParam("currentPlayerId") Long currentPlayerId, @RequestParam("cardId") Long cardId, @RequestParam("gameId") Long gameId, Model model) {
+        // Player 1, CPU, and game info.
         User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        Game currentGame = gameService.findCurrentUserGame();
+        Long gameId = currentGame.getId();
+        Long userId = userService.getCurrentUserId();
+        Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
+        Long cpuId = gameService.getOppIdForGame(currentGame, currentPlayerId);
+        Game game = gameService.getGameById(gameId);
 
-        // Checks if the both player and card ids are valid, otherwise shoes the hand with error
         if (currentPlayerId == null || cardId == null) {
             model.addAttribute("errorMessage", "Player ID and Card ID are required to play a card.");
             List<Card> currentHand = gameService.showPlayerHand(currentPlayerId != null ? currentPlayerId : 1L);
@@ -108,94 +111,84 @@ public class GameController {
             return "playgame";
         }
 
+        // Selects P1's card from their hand using P1 and Card Id, AND REMOVES CARD FROM HAND, discardedbool=true.
         Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
 
-        try {
-
-            if (playedCard != null) {
-                model.addAttribute("playedCard", playedCard);
-                model.addAttribute("successMessage", "You played: " + playedCard.getName() + "!");
-            } else {
-                model.addAttribute("errorMessage", "Card isn't available in your hand or could not be played.");
-            }
-        } catch (Exception e) {
-            System.err.println("An unexpected error occurred while playing card: " + e.getMessage());
-            e.printStackTrace(); // Print full stack trace for detailed debugging bc more info good
-            model.addAttribute("errorMessage", "An unexpected error occurred: " + e.getMessage());
+        // Displays the selected
+        if (playedCard != null) {
+            model.addAttribute("playedCard", playedCard);
+            model.addAttribute("successMessage", "You played: " + playedCard.getName() + "!");
+        }
+        else {
+            model.addAttribute("errorMessage", "Card isn't available in your hand or could not be played.");
         }
 
-        Game game = gameService.getGameById(gameId);
-        if (game == null) {
-            model.addAttribute("errorMessage", "Game not found.");
-            return "playgame";
-        }
-
+        // Show player's updated hand
         List<Card> playerHand = gameService.showPlayerHand(currentPlayerId);
-        Long cpuId = gameService.getOppIdForGame(game, currentPlayerId);
 
+        // Show updated player scores.
         int player1Score = gameService.getScore(currentPlayerId);
         int cpuScore = gameService.getScore(cpuId);
 
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("playerHand", playerHand);
-        model.addAttribute("gameId", gameId);
         model.addAttribute("player1Score", player1Score);
         model.addAttribute("cpuScore", cpuScore);
-        model.addAttribute("currentUser", currentUser);
-        model.addAttribute("cpuId", cpuId);
-        model.addAttribute("currentUser", currentUser);
-        model.addAttribute("currentPlayerId", currentPlayerId);
-        model.addAttribute("gameId", gameId);
+        model.addAttribute("roundComplete", false);
+        model.addAttribute("p1IsAttackingNextRound", true);
+        model.addAttribute("currentAttacker", "P1");
+        model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
+        model.addAttribute("gameOver", false);
+        model.addAttribute("pointsToWin", game.getPointsToWin());
 
         return "playgame";
     }
 
-    @PostMapping("/game/play/player-1-stat-select")
+
+    // P1 SUBMITTING THEIR SELECTED STAT.
+    @PostMapping("/game/play/p1-attack-2")
     public String selectP1Stat(@RequestParam("cardId") Long cardId, @RequestParam("chosenStat") String chosenStat,
-                                   @RequestParam("gameId") Long gameId, Model model) {
-
-        // Get current user object
-        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
-
-        Long userId = userService.getCurrentUserId();
-        Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
-
-        // Checks card is in active hand
-        Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
-        if (playedCard == null) {
-            model.addAttribute("errorMessage", "Selected card not found.");
-            return "playgame";
-        }
-
-        // Gets card id
-        // Checks card is in active hand
-        Long playedCardId = playedCard.getId();
-
-        // Gets value of chosen stat
-        int statValue = gameService.getStatValue(chosenStat, playedCard);
+                               Model model) {
 
         //Get current game object
+        Boolean roundComplete = false;
+        Game currentGame = gameService.findCurrentUserGame();
+        Long gameId = currentGame.getId();
         Game game = gameService.getGameById(gameId);
-        if (game == null) {
-            model.addAttribute("errorMessage", "Game not found.");
-            return "playgame";
-        }
 
-        // Get Cpu id
+        // Getting P1 user info
+        Long userId = userService.getCurrentUserId();
+        Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
+        User currentUser = (userRepository.findById(userId).orElse(null));
+
+        // Get CPU ID
         Long cpuId = gameService.getOppIdForGame(game, currentPlayerId);
         if (cpuId == null) {
             model.addAttribute("errorMessage", "Opponent not found.");
             return "playgame";
         }
 
-        // Automatically generate Cpu's chosen card
-        Card cpuCard = gameService.getCpuCardByHighestStat(cpuId, chosenStat);
+        // Selects P1's card, AND REMOVES IT FROM THEIR HAND.
+        Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
+        if (playedCard == null) {
+            model.addAttribute("errorMessage", "Selected card not found.");
+            return "playgame";
+        }
+
+        // Gets P1's selected card ID and stat value
+        Long playedCardId = playedCard.getId();
+        int statValue = gameService.getStatValue(chosenStat, playedCard);
+
+        // Gets CPU's chosen card and stat value
+        Card cpuCard = gameService.getCpuCardWithP1sStat(cpuId, chosenStat);
         if (cpuCard == null) {
             model.addAttribute("errorMessage", "Opponent has no cards.");
             return "playgame";
         }
-
-        // Get cpu's stat value
         int cpuStatValue = gameService.getStatValue(chosenStat, cpuCard);
+
+        // Removes CPU's card from their hand so they cant use it again
+        gameService.discardCpuChosenCardFromHand(cpuCard.getId(), cpuId);
 
         // Compare Player 1 and CPU's stat values:
         Boolean compareStatsResult = gameService.compareStats(statValue, cpuStatValue);
@@ -215,27 +208,41 @@ public class GameController {
         int player1Score = gameService.getScore(currentPlayerId);
         int cpuScore = gameService.getScore(cpuId);
 
-        System.out.println("Current player Id: " + currentPlayerId);
-
-        System.out.println("Incrementing score for playerId: " + currentPlayerId);
-        gameService.winPoint(currentPlayerId);
-
         // Return updated hand
         List<Card> updatedPlayerHand = gameService.showPlayerHand(currentPlayerId);
+
+        // Check if game has been won
+        int pointsToWinGame = game.getPointsToWin();
+        if (pointsToWinGame == player1Score || pointsToWinGame == cpuScore) {
+            model.addAttribute("gameOver", true);
+        }
+        else {
+            model.addAttribute("gameOver", false);
+        }
+
+        // Put in necessary values.
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("playerHand", updatedPlayerHand);
+
+        // Player's round moves
+        model.addAttribute("playedCard", playedCard);
         model.addAttribute("chosenStat", chosenStat);
         model.addAttribute("statValue", statValue);
-        model.addAttribute("playedCard", playedCard);
+
+        // CPU's round moves
         model.addAttribute("cpuPlayedCard", cpuCard);
         model.addAttribute("cpuChosenStat", chosenStat);
         model.addAttribute("cpuStatValue", cpuStatValue);
-        model.addAttribute("currentPlayerId", currentPlayerId);
-        model.addAttribute("gameId", gameId);
-        model.addAttribute("currentUser", currentUser);
+
+        // Display points and mark round complete
         model.addAttribute("player1Score", player1Score);
         model.addAttribute("cpuScore", cpuScore);
-        model.addAttribute("cardId", playedCardId);
-        model.addAttribute("cpuId", cpuId);
+        model.addAttribute("roundComplete", true);
+        model.addAttribute("p1IsAttackingNextRound", false);
+        model.addAttribute("currentAttacker", "P1");
+        model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
+        model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
+        model.addAttribute("pointsToWin", game.getPointsToWin());
 
         // Game logs for easier reading and debugs
         System.out.println("CPU card picked: " + cpuCard.getName());
@@ -246,74 +253,161 @@ public class GameController {
         System.out.println("Sending to playgame: cpuCard=" + cpuCard.getName() + ", stat=" + chosenStat);
         System.out.println("Player 1 Score: " + player1Score);
         System.out.println("CPU Score: " + cpuScore);
+        System.out.println("Current player Id: " + currentPlayerId);
+        System.out.println("Incrementing score for playerId: " + currentPlayerId);
+        System.out.println("Game points to win: " + game.getPointsToWin());
 
         return "playgame";
     }
 
 
-    @PostMapping("/game/play/player-2-stat-select")
-    public String selectP2Stat(@RequestParam("cardId") Long cardId, @RequestParam("cpuId") Long cpuId, @RequestParam(value = "chosenStat", required = false) String chosenStat, Model model) {
+    @GetMapping("/game/play/p2-attack")
+    public String selectP2Stat(Model model) {
 
-        // Get current user object, user id and current player id
+        // THIS ROUND, CPU HAS CHOSEN THE STAT.
+        // PLAYER ONLY NEEDS TO PICK A CARD.
+
+        // Player 1, CPU, and game info.
         User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        Game currentGame = gameService.findCurrentUserGame();
         Long userId = userService.getCurrentUserId();
         Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
+        Long cpuId = gameService.getOppIdForGame(currentGame, currentPlayerId);
 
-        if (chosenStat == null) {
-            chosenStat = "strength"; // default stat if none chosen yet
-        }
+        // Chooses the CPU's stat
+        Card cpuCard = gameService.getCpuCard(cpuId);
+        String cpuStat = gameService.getNameOfMaxStatOnCard(cpuCard);
 
-        // Get played card for current player
-        Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
-        if (playedCard == null) {
-            // error handlin
-            model.addAttribute("error", "Invalid card selected.");
-            return "error"; // or your error page
-        }
-
-        // Player's stat value on chosen stat
-        int playerStatValue = gameService.getStatValue(chosenStat, playedCard);
-
-        // CPU's best card for that stat
-        Card cpuPlayedCard = gameService.getCpuCardByHighestStat(cpuId, chosenStat);
-        int cpuStatValue = 0;
-        if (cpuPlayedCard != null) {
-            cpuStatValue = gameService.getStatValue(chosenStat, cpuPlayedCard);
-        }
-
-        // Player hand
+        // Show player's hand
         List<Card> playerHand = gameService.showPlayerHand(currentPlayerId);
 
-        // Scores
+        // Displays player scores
         int player1Score = gameService.getScore(currentPlayerId);
         int cpuScore = gameService.getScore(cpuId);
 
         // Add to model
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("playerHand", playerHand);
         model.addAttribute("player1Score", player1Score);
         model.addAttribute("cpuScore", cpuScore);
-        model.addAttribute("playedCard", playedCard);
-        model.addAttribute("chosenStat", chosenStat);
-        model.addAttribute("statValue", playerStatValue);
-        model.addAttribute("cpuPlayedCard", cpuPlayedCard);
-        model.addAttribute("cpuChosenStat", chosenStat);
-        model.addAttribute("cpuStatValue", cpuStatValue);
-        model.addAttribute("playerHand", playerHand);
-        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("roundComplete", false);
+        model.addAttribute("cpuStat", cpuStat);
+        model.addAttribute("playerStat", null);
+        model.addAttribute("p1IsAttackingNextRound", true);
+        model.addAttribute("currentAttacker", "P2");
+        model.addAttribute("gameOver", false);
+        model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
+        model.addAttribute("pointsToWin", currentGame.getPointsToWin());
 
-        Game game = gameService.findCurrentUserGame();
-        Long gameId = game.getId();
-        model.addAttribute("gameId", gameId);
-        model.addAttribute("currentPlayerId", currentPlayerId);
-        model.addAttribute("cardId", cardId);
-        model.addAttribute("cpuId", cpuId);
-
-        return "playgame"; // your Thymeleaf template
+        return "playgame";
     }
 
+    @PostMapping("/game/play/p1-defend")
+    public String selectP1Card(@RequestParam("cardId") Long cardId, Model model) {
 
+        // Player 1, CPU, and game info.
+        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        Game currentGame = gameService.findCurrentUserGame();
+        Long gameId = currentGame.getId();
+        Long userId = userService.getCurrentUserId();
+        Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
+        Long cpuId = gameService.getOppIdForGame(currentGame, currentPlayerId);
+        Game game = gameService.getGameById(gameId);
 
+        // Chooses the CPU's stat
+        Card cpuCard = gameService.getCpuCard(cpuId);
+        String cpuStat = gameService.getNameOfMaxStatOnCard(cpuCard);
 
-//    GET -- End of the game. Returns bool of if the current user is the winner, and clears the game from the db.
+        System.out.println("This is the cpu's chosen stat: " + cpuStat);
+
+        // Get the cpu's stat value.
+        int cpuStatValue = gameService.getMaxStatValueOnACard(cpuCard);
+
+        // Removes CPU's card from their hand so they cant use it again
+        gameService.discardCpuChosenCardFromHand(cpuCard.getId(), cpuId);
+
+        // Selects P1's card, AND REMOVES IT FROM THEIR HAND.
+        Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
+        if (playedCard == null) {
+            model.addAttribute("errorMessage", "Selected card not found.");
+            return "playgame";
+        }
+
+        // Gets P1's selected card ID and stat value
+        int statValue = gameService.getStatValue(cpuStat, playedCard);
+
+        // Compare Player 1 and CPU's stat values:
+        Boolean compareStatsResult = gameService.compareStats(statValue, cpuStatValue);
+
+        // Apply points:
+        if (compareStatsResult == null) {
+            System.out.println("Stat values are equal, round result is a draw. No points awarded.");
+        }
+        else if (compareStatsResult) {
+            gameService.winPoint(currentPlayerId);
+        }
+        else {
+            gameService.winPoint(cpuId);
+        }
+
+        // Access both player's points:
+        int player1Score = gameService.getScore(currentPlayerId);
+        int cpuScore = gameService.getScore(cpuId);
+
+        // Return updated hand
+        List<Card> updatedPlayerHand = gameService.showPlayerHand(currentPlayerId);
+
+        // Check if game has been won, and end it if so
+        int pointsToWinGame = game.getPointsToWin();
+        if (pointsToWinGame == player1Score || pointsToWinGame == cpuScore) {
+            model.addAttribute("gameOver", true);
+        }
+        else {
+            model.addAttribute("gameOver", false);
+        }
+
+        // Put in necessary values.
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("playerHand", updatedPlayerHand);
+
+        // Player's round moves
+        model.addAttribute("playedCard", playedCard);
+        model.addAttribute("chosenStat", cpuStat);
+        model.addAttribute("statValue", statValue);
+
+        // CPU's round moves
+        model.addAttribute("cpuPlayedCard", cpuCard);
+        model.addAttribute("cpuChosenStat", cpuStat);
+        model.addAttribute("cpuStatValue", cpuStatValue);
+
+        // Display points and mark round complete
+        model.addAttribute("player1Score", player1Score);
+        model.addAttribute("cpuScore", cpuScore);
+        model.addAttribute("roundComplete", true);
+        model.addAttribute("p1IsAttackingNextRound", true);
+        model.addAttribute("currentAttacker", "P2");
+        model.addAttribute("pointsToWin", game.getPointsToWin());
+
+        model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
+        model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
+
+        // Game logs for easier reading and debugs
+        System.out.println("CPU card picked: " + cpuCard.getName());
+        System.out.println("CPU chosen stat: " + cpuStat);
+        System.out.println("Entered selectPlayerStat with gameId=" + gameId + ", currentPlayerId=" + currentPlayerId + ", cardId=" + cardId + ", chosenStat=" + cpuStat);
+        System.out.println("Played card: " + (playedCard != null ? playedCard.getName() : "null"));
+        System.out.println("CPU card: " + (cpuCard != null ? cpuCard.getName() : "null"));
+        System.out.println("Sending to playgame: cpuCard=" + cpuCard.getName() + ", stat=" + cpuStat);
+        System.out.println("Player 1 Score: " + player1Score);
+        System.out.println("CPU Score: " + cpuScore);
+        System.out.println("Current player Id: " + currentPlayerId);
+        System.out.println("Incrementing score for playerId: " + currentPlayerId);
+        System.out.println("Game points to win: " + game.getPointsToWin());
+
+        return "playgame";
+    }
+
+    //    GET -- End of the game. Returns bool of if the current user is the winner, and clears the game from the db.
     @GetMapping("/game/reset")
     public RedirectView clearGame() {
         Game game = gameService.findCurrentUserGame();
@@ -322,4 +416,3 @@ public class GameController {
         return new RedirectView("/game/new");
     }
 }
-
