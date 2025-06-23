@@ -28,4 +28,8 @@ public class Card {
     @Column(name = "unique_stat")
     private Integer customStat;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deck_id", insertable = false, updatable = false)
+    private Deck deck;
+
 }
