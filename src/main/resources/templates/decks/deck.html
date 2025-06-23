@@ -24,7 +24,8 @@
                                                      deck.name == 'Disney' ? ' disney' :
                                                      deck.name == 'Pop-culture' ? ' pop-culture' :
                                                      deck.name == 'Brit-tv' ? ' brit-tv' :
-                                                     deck.name == 'Kids-tv' ? ' kids-tv' : ''}">
+                                                     deck.name == 'Kids-tv' ? ' kids-tv' :
+                                                     deck.name == 'Anime' ? ' anime' : ''}">
                 <!--  Card name  -->
                 <strong class="card-name" th:text="${#strings.toUpperCase(card.name)}"></strong>
                 <div class="card-image-box">
@@ -55,5 +56,15 @@
 </div>
 <div th:replace="~{fragments :: footer}"></div>
 
+<script>
+    const goldText = document.querySelector('.card-box-rare#span');
+
+    let gradientPosition = 0;
+    setInterval(() => {
+      gradientPosition = (gradientPosition + 1) % 100;
+      goldText.style.background = `linear-gradient(${gradientPosition}deg, #d4af37, #ffd700, #d4af37)`;
+    }, 100);
+
+</script>
 </body>
 </html>
