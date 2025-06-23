@@ -12,8 +12,8 @@
     <div th:insert="~{fragments/header :: header}"></div>
     <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-    <div class="container my-4">
-    <h1 th:text="${deck.name} + ' Cards'"></h1>
+    <div class="container my-4 text-center">
+    <h1 th:text="${deck.name} + ' deck'"></h1>
 
         <div class="d-flex flex-wrap justify-content-center">
             <!--    View Cards    -->
