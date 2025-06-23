@@ -8,6 +8,8 @@
 </head>
 <body>
 <div th:replace="~{fragments :: header}"></div>
+<div th:insert="~{fragments :: tutorialModal}"></div>
+
 
 <!--Displays GAME OVER and game winner-->
 <div class="game-result-container" th:if="${gameOver}" style="text-align: center; margin-top: 10px;">
@@ -118,6 +120,7 @@
     <form th:action="@{/game/play/p2-attack}" method="get">
         <button type="submit" class="button">Next Round</button>
     </form>
+
 </div>
 
 <!-- Next round: if P1's turn to attack -->
