@@ -152,6 +152,8 @@ public class GameController {
     @PostMapping("/game/play/p1-attack-2")
     public String selectP1Stat(@RequestParam("cardId") Long cardId, @RequestParam("chosenStat") String chosenStat,
                                Model model) {
+        System.out.println("Received chosenStat: " + chosenStat);
+
 
         //Get current game object
         Boolean roundComplete = false;
@@ -236,7 +238,7 @@ public class GameController {
         model.addAttribute("statValue", statValue);
 
         // CPU's round moves
-        model.addAttribute("cpuChosenStat", chosenStat);
+        model.addAttribute("cpuChosenStat", gameService.getCardCustomStatName(cpuCard));
         model.addAttribute("cpuStatValue", cpuStatValue);
 
         // Display points and mark round complete

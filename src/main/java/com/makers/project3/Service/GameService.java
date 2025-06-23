@@ -267,14 +267,42 @@ public class GameService {
 
     //      Gets the card's stat value based on chosen attribute
     public int getStatValue(String stat, Card card){
-        return switch (stat.toLowerCase()) {
-            case "strength" -> card.getStrength();
-            case "wisdom" -> card.getWisdom();
-            case "defence" -> card.getDefence();
-            case "luck" -> card.getLuck();
-            case "customstat" -> card.getCustomStat();
-            default -> throw new IllegalArgumentException("Invalid stat: " + stat);
-        };
+        String normalizedStat = stat.toLowerCase();
+
+        if ("strength".equals(normalizedStat)) {
+            return card.getStrength();
+        } else if ("wisdom".equals(normalizedStat)) {
+            return card.getWisdom();
+        } else if ("defence".equals(normalizedStat)) {
+            return card.getDefence();
+        } else if ("luck".equals(normalizedStat)) {
+            return card.getLuck();
+        }
+        // This is the correct place for the debugging print statements
+        // BEFORE the actual comparison and return for the custom stat.
+        else if (card != null && card.getDeck() != null && normalizedStat.equals(card.getDeck().getUniqueStatName().toLowerCase())) {
+            // Debugging statements go here:
+            System.out.println("--- Debugging Custom Stat Comparison ---");
+            System.out.println("Card's Deck uniqueStatName: " + card.getDeck().getUniqueStatName());
+            System.out.println("Normalized Deck uniqueStatName: " + card.getDeck().getUniqueStatName().toLowerCase());
+            System.out.println("Normalized Input Stat (from frontend): " + normalizedStat);
+            System.out.println("Are they equal? " + normalizedStat.equals(card.getDeck().getUniqueStatName().toLowerCase()));
+            System.out.println("--------------------------------------");
+
+            return card.getCustomStat();
+        }
+        // If no stat matches, it's invalid
+        else {
+            // This will be hit if the above 'else if' evaluates to false
+            // (meaning it's not a standard stat AND not the matching custom stat)
+            System.out.println("--- Debugging Invalid Stat ---");
+            System.out.println("Invalid stat encountered: " + stat);
+            if (card != null && card.getDeck() != null) {
+                System.out.println("Expected custom stat name was: " + card.getDeck().getUniqueStatName());
+            }
+            System.out.println("----------------------------");
+            throw new IllegalArgumentException("Invalid stat: " + stat);
+        }
     }
 
     //      Finds the highest value stat on one card for CPU
@@ -296,7 +324,7 @@ public class GameService {
         if (card.getWisdom() == maxValue) return "wisdom";
         if (card.getDefence() == maxValue) return "defence";
         if (card.getLuck() == maxValue) return "luck";
-        if (card.getCustomStat() == maxValue) return "customStat";
+        if (card.getCustomStat() == maxValue) return card.getDeck().getUniqueStatName();
 
         return "unknown";
     }
