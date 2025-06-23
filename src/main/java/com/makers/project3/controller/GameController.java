@@ -111,6 +111,9 @@ public class GameController {
             return "playgame";
         }
 
+        // Sends P1's cardId out
+        model.addAttribute("cardId", cardId);
+
         // Selects P1's card from their hand using P1 and Card Id, AND REMOVES CARD FROM HAND, discardedbool=true.
         Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
 
@@ -187,6 +190,9 @@ public class GameController {
         }
         int cpuStatValue = gameService.getStatValue(chosenStat, cpuCard);
 
+        // Pass through the CPU's card to view
+        model.addAttribute("cpuPlayedCard", cpuCard);
+
         // Removes CPU's card from their hand so they cant use it again
         gameService.discardCpuChosenCardFromHand(cpuCard.getId(), cpuId);
 
@@ -230,7 +236,6 @@ public class GameController {
         model.addAttribute("statValue", statValue);
 
         // CPU's round moves
-        model.addAttribute("cpuPlayedCard", cpuCard);
         model.addAttribute("cpuChosenStat", chosenStat);
         model.addAttribute("cpuStatValue", cpuStatValue);
 
@@ -298,6 +303,7 @@ public class GameController {
         model.addAttribute("gameOver", false);
         model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
         model.addAttribute("pointsToWin", currentGame.getPointsToWin());
+        model.addAttribute("cpuPlayedCard", cpuCard);
 
         return "playgame";
     }
