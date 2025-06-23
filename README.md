@@ -67,11 +67,15 @@ mvn test -Dtest=SignUpTest
 
 ## 🎨 Screenshots
 
-## 🙋‍♂️ Contributors
+## 🙋‍♂️ Developers
 - [@Jordan](https://github.com/Jordan-Gill)
 - [@Karen](https://github.com/karencorless)
 - [@Avian](https://github.com/A-Schmigiel)
 - [@Victoria](https://github.com/vicrbsn)
 - [@Alexandre](https://github.com/twiin0)
+
+## 🙋‍♂️ Quality Engineers
+- [@Barbora](https://github.com/Bara170)
+- [@Alina](https://github.com/AlinaLupu123)
 
 
