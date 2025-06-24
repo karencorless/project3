@@ -301,7 +301,7 @@ public class GameController {
         model.addAttribute("player1Score", player1Score);
         model.addAttribute("cpuScore", cpuScore);
         model.addAttribute("roundComplete", false);
-        model.addAttribute("cpuStat", cpuStat);
+        model.addAttribute("cpuStat", cpuStat.substring(0, 1).toUpperCase() + cpuStat.substring(1));
         model.addAttribute("playerStat", null);
         model.addAttribute("p1IsAttackingNextRound", true);
         model.addAttribute("currentAttacker", "P2");

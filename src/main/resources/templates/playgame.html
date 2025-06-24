@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Play Game</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+<!--    <link rel="stylesheet" th:href="@{/css/style.css}">-->
     <link rel="stylesheet" th:href="@{/css/card.css}">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
     <link rel="stylesheet" th:href="@{/css/playgame.css}">
@@ -70,7 +70,7 @@
                 <div class="stat-row">
 <!--                    Clickable strength stat-->
                     <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
-                        <input type="hidden" name="cardId" th:value="${playedCard.name}" />
+                        <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="strength" />
                         <button type="submit" class="stat-text-box card-box-style"
                                 th:classappend="${playedCard.strength >= 90 ? ' card-box-rare' : ''}">
@@ -123,8 +123,11 @@
                 </div>
             </div>
         </div>
-        <div th:unless="${playedCard != null}" class="card-placeholder">
-            <span>No card chosen yet</span>
+        <div th:unless="${playedCard != null}" class="card-placeholder-container">
+            <h2>Your Card</h2>
+            <div class="card-placeholder">
+                <span>No card chosen yet</span>
+            </div>
         </div>
 
 <!--        Display VS image-->
@@ -174,8 +177,11 @@
                 </div>
             </div>
         </div>
-        <div th:unless="${cpuPlayedCard != null and chosenStat != null}" class="card-placeholder">
-            <span>No card chosen yet</span>
+        <div th:unless="${cpuPlayedCard != null and chosenStat != null}" class="card-placeholder-container">
+            <h2>Player 2's Card</h2>
+            <div class="card-placeholder">
+                <span>No card chosen yet</span>
+            </div>
         </div>
     </div>
 
