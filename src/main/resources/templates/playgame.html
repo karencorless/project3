@@ -218,7 +218,7 @@
     <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;"
          th:if="${roundComplete == true and p1IsAttackingNextRound == false and !gameOver}">
         <form th:action="@{/game/play/p2-attack}" method="get">
-            <button type="submit" class="button">Next Round</button>
+            <button type="submit" class="btn main-button-success btn-lg">Next Round</button>
         </form>
 
     </div>
@@ -227,7 +227,7 @@
     <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;"
          th:if="${roundComplete == true and p1IsAttackingNextRound == true and !gameOver}">
         <form th:action="@{/game/play}" method="get">
-            <button type="submit" class="button">Next Round</button>
+            <button type="submit" class="btn main-button-success btn-lg">Next Round</button>
         </form>
     </div>
 
@@ -331,18 +331,19 @@
         </div>
     </div>
 
-    <!-- Play again button at end of game -->
-    <div style="text-align: center; margin-top: 20px;">
-        <a th:if="${#lists.size(playerHand) == 0}" th:href="@{/game/reset}" class="button">Play Again</a>
-    </div>
-
     <!-- Finish Game button -->
     <div style="text-align: center; margin-top: 20px;">
-        <a th:if="${gameOver}" th:href="@{/game/reset}" class="button">Finish</a>
+        <form th:if="${gameOver}" th:action="@{/game/reset}" method="get">
+            <button type="submit" class="btn main-button-neutral btn-lg">Finish</button>
+        </form>
     </div>
 
     <!--New game/reset hand button-->
-    <a th:if="${!gameOver}" th:href="@{/game/reset}" type="submit" class="button">New Game</a>
+    <div>
+        <form th:action="@{/game/reset}" method="get">
+            <button type="submit" class="btn main-button-warning btn-lg">Quit Game</button>
+        </form>
+    </div>
 
     <div th:insert="~{fragments/footer :: footer}"></div>
     <div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
