@@ -4,38 +4,106 @@
     <meta charset="UTF-8">
     <title>New Game</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            text-align: center;
+        }
+
+        .all-decks {
+                display: inline-block;
+                gap: 30px;
+                justify-content: center;
+                padding: 10px;
+                text-align: center;
+                margin-top: 20px;
+
+                width: 70%
+                max-height: 400px;
+                max-width: 60%;
+                overflow-y: hidden;
+                overflow-x: scroll;
+            }
+
+        .deck img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .deck strong {
+            color: rgb(68, 68, 68);
+            text-decoration: none;
+            word-wrap: break-word;
+            width: 100%;
+            font-size: 22px;
+        }
+
+        .deck {
+            max-width: 250px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            border: 1.5px solid #ccc;
+            display: flex;
+            flex-wrap: wrap;
+            float: left;
+            width: 50%;
+        }
+
+    </style>
 </head>
 <body>
 
-    <div th:replace="~{fragments :: header}"></div>
-    <div th:insert="~{fragments :: tutorialModal}"></div>
+<div th:replace="~{fragments :: header}"></div>
+<div th:insert="~{fragments :: tutorialModal}"></div>
 
-    <h1>Game Setup</h1>
+<h1>Game Setup</h1>
 
-    <form id="game-setup" th:action="@{/game/new}" method="post">
-        <div id="deck-selection">
-            <!--    deck selection-->
-            <div th:each="deck: ${decks}">
+<!--    <form id="game-setup" th:action="@{/game/new}" method="post">-->
+<!--        <div class="all-decks">-->
+<!--            &lt;!&ndash;    Displays a list of decks in the database showing the name and thumbnail image for each deck    &ndash;&gt;-->
+<!--            <div th:each="deck: ${decks}" class="deck">-->
+<!--                <label th:for="'deck-' + ${deck.id}">-->
+<!--                    <img th:src="${deck.thumbnail}" alt="Deck thumbnail" class="mb-1"/>-->
+<!--                    &lt;!&ndash;    Deck Name    &ndash;&gt;-->
+<!--                    <strong th:text="${deck.name}"></strong>-->
+<!--                    &lt;!&ndash; Deck Checkbox &ndash;&gt;-->
+<!--                    <input type="checkbox" th:id="'deck-' + ${deck.id}" th:name="chosenDeckIds" th:value="${deck.id}">-->
+<!--                </label>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+<form id="game-setup" th:action="@{/game/new}" method="post">-->
+    <!--    View Decks    -->
+    <div class="all-decks">
+        <!--    Displays a list of decks in the database showing the name and thumbnail image for each deck    -->
+        <div th:each="deck: ${decks}" class="deck">
+            <!--    Link to an individual deck to view cards    -->
+            <label th:for="'deck-' + ${deck.id}">
+                <!--        Deck thumbnail image    -->
+                <img th:src="${deck.thumbnail}" alt="Deck thumbnail" class="mb-1"/>
+                <!--    Deck Name    -->
+                <strong th:text="${deck.name}"></strong><br>
                 <input type="checkbox" th:id="'deck-' + ${deck.id}" th:name="chosenDeckIds" th:value="${deck.id}">
-                <label th:for="'deck-' + ${deck.id}">
-                    <img th:src="${deck.thumbnail}" alt="Deck thumbnail" width="100"/>
-                    <strong th:text="${deck.name}"></strong>
-                </label>
-            </div>
+            </label>
         </div>
-        <div id="points-picker">
-            <label for="pointsToWin">Points to win (max 5):</label>
-            <input type="range" id="pointsToWin" name="pointsToWin" min="1" max="5" value="2" oninput="this.nextElementSibling.value = this.value">
-            <output>2</output>
-        </div>
-        <div id="buttons">
-            <input type="submit" id="submit" name="submit" value="Start Game">
-            <input type="reset" id="reset" name="reset" value="Clear Choices">
-            <!--    buttons: start game,  clear choices-->
-        </div>
-    </form>
+    </div>
 
-    <div th:replace="~{fragments :: footer}"></div>
+
+    <div id="points-picker">
+        <label for="pointsToWin">Points to win (max 5):</label>
+        <input type="range" id="pointsToWin" name="pointsToWin" min="1" max="5" value="2" oninput="this.nextElementSibling.value = this.value">
+        <output>2</output>
+    </div>
+    <div id="buttons">
+        <input type="submit" id="submit" name="submit" value="Start Game">
+        <input type="reset" id="reset" name="reset" value="Clear Choices">
+        <!--    buttons: start game,  clear choices-->
+    </div>
+</form>
+
+<div th:replace="~{fragments :: footer}"></div>
 
 </body>
 </html>

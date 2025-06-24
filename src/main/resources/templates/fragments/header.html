@@ -8,13 +8,13 @@
 
         <nav>
             <div class="nav-links">
-                <a href="/game/new" th:href="@{/game/new}">New Game</a>
+                <a href="/game/new" th:href="@{/game/new}">Play</a>
                 <a href="/decks" th:href="@{/decks}">All Decks</a>
                 <a href="javascript:void(0)" onclick="openTuto()">Tutorial</a>
                 <a href="/settings" th:href="@{/settings}">Settings</a>
             </div>
 
-            <div class="user-controls" sec:authorize="isAuthenticated()">
+            <div class="user-controls" th:if="${currentUser != null}">
                 <div class="profile-container">
                     <div class="profile-image">
                         <img th:src="@{${currentUser.imageSource}}" alt="Profile" />

@@ -14,8 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,4 +64,34 @@ public class DeckController {
 
 
     }
+
+    @GetMapping("/decks/compare")
+    public String compareCards(Model model) {
+        List<Card> allCards = new ArrayList<>();
+        cardRepository.findAll().forEach(allCards::add);
+        model.addAttribute("cards", allCards);
+        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        model.addAttribute("currentUser", currentUser);
+        return "decks/compare";
+    }
+
+    @PostMapping("/decks/compare")
+    public String compareSelectedCards(@RequestParam("card1") Long card1Id, @RequestParam("card2") Long card2Id, Model model){
+        List<Card> allCards = new ArrayList<>();
+        cardRepository.findAll().forEach(allCards::add);
+        model.addAttribute("cards", allCards);
+
+        Card card1 = cardRepository.findById(card1Id).orElseThrow(
+                () -> new NoSuchEntityExistsException("Card '" + card1Id + "'"));
+        Card card2 = cardRepository.findById(card2Id).orElseThrow(
+                () -> new NoSuchEntityExistsException("Card '" + card2Id + "'"));
+
+        model.addAttribute("card1", card1);
+        model.addAttribute("card2", card2);
+        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        model.addAttribute("currentUser", currentUser);
+        return "decks/compare-result";
+
+    }
+
 }

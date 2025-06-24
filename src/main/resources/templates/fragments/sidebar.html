@@ -1,7 +1,9 @@
 <div th:fragment="sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
-    <button class="sidebar-toggle" onclick="toggleSidebar()">≡</button>
+    <!-- Toggle button starts collapsed -->
+    <button class="sidebar-toggle collapsed" onclick="toggleSidebar()">≡</button>
 
-    <div class="sidebar" id="sidebar">
+    <!-- Sidebar starts collapsed -->
+    <div class="sidebar collapsed" id="sidebar">
         <div class="sidebar-title">Menu</div>
 
         <div class="sidebar-section">
@@ -39,11 +41,7 @@
             sidebar.classList.toggle('collapsed');
             toggleBtn.classList.toggle('collapsed');
 
-            if (sidebar.classList.contains('collapsed')) {
-                toggleBtn.textContent = "≡";
-            } else {
-                toggleBtn.textContent = "×";
-            }
+            toggleBtn.textContent = sidebar.classList.contains('collapsed') ? "≡" : "×";
         }
     </script>
 </div>
