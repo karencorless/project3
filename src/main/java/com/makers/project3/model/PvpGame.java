@@ -9,23 +9,21 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "lobby")
-public class Lobby {
+@Table(name = "pvp_games")
+public class PvpGame {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lobby_id")
-    private Long lobbyId;
-
-    @Column(name = "user1_id")
-    private Long user1Id;
-
-    @Column(name = "user2_id")
-    private Long user2Id;
-
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "player_1_id")
+    private Long playerOneId;
+    @Column(name = "player_2_id")
+    private Long playerTwoId;
+    @Column(name = "points_to_win")
+    private int pointsToWin;
     @Column(columnDefinition = "varchar default 'WAITING'")
     private String status = "WAITING";
-
     @Column(name = "created_at", columnDefinition = "timestamp default CURRENT_TIMESTAMP", updatable = false)
     private LocalDateTime createdAt;
 
@@ -35,4 +33,5 @@ public class Lobby {
             createdAt = LocalDateTime.now();
         }
     }
+
 }

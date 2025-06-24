@@ -315,7 +315,7 @@ public class GameService {
         return "unknown";
     }
 
-    //      Finds the ID of the opponent..
+    //      Finds the ID of the opponent...
     public Long getOppIdForGame(Game game, Long currentPlayerId) {
         if (game.getPlayerOneId().equals(currentPlayerId)) {
             return game.getPlayerTwoId();
@@ -357,7 +357,7 @@ public class GameService {
         return cpuHand.isEmpty() ? null : cpuHand.get(0);
     }
 
-    //      Get game iD ---- CHECK IF AVIAN ALREADY HAS ONE AND REFACTOR WHAT U USE -----
+
     public Game getGameById(Long gameId) {
         return gameRepository.findById(gameId).orElse(null);
     }

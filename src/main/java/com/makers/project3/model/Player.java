@@ -23,6 +23,9 @@ public class Player {
     private Integer currentScore = 0;
     @Column(name="game_id")
     private Long gameId;
+    @Column(name="pvp_game_id")
+    private Long pvpGameId;
+
 
 
     public Player(Long userId) {
