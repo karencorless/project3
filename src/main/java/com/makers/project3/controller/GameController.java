@@ -240,6 +240,8 @@ public class GameController {
         // CPU's round moves
         model.addAttribute("cpuChosenStat", gameService.getCardCustomStatName(cpuCard));
         model.addAttribute("cpuStatValue", cpuStatValue);
+        // Pass through the CPU's card to view
+        model.addAttribute("cpuPlayedCard", cpuCard);
 
         // Display points and mark round complete
         model.addAttribute("player1Score", player1Score);

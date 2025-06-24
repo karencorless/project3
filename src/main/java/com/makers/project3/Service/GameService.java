@@ -265,7 +265,7 @@ public class GameService {
         return null;
     }
 
-    //      Gets the card's stat value based on chosen attribute
+//          Gets the card's stat value based on chosen attribute
     public int getStatValue(String stat, Card card){
         String normalizedStat = stat.toLowerCase();
 
@@ -278,32 +278,11 @@ public class GameService {
         } else if ("luck".equals(normalizedStat)) {
             return card.getLuck();
         }
-        // This is the correct place for the debugging print statements
-        // BEFORE the actual comparison and return for the custom stat.
-        else if (card != null && card.getDeck() != null && normalizedStat.equals(card.getDeck().getUniqueStatName().toLowerCase())) {
-            // Debugging statements go here:
-            System.out.println("--- Debugging Custom Stat Comparison ---");
-            System.out.println("Card's Deck uniqueStatName: " + card.getDeck().getUniqueStatName());
-            System.out.println("Normalized Deck uniqueStatName: " + card.getDeck().getUniqueStatName().toLowerCase());
-            System.out.println("Normalized Input Stat (from frontend): " + normalizedStat);
-            System.out.println("Are they equal? " + normalizedStat.equals(card.getDeck().getUniqueStatName().toLowerCase()));
-            System.out.println("--------------------------------------");
-
+        else {
             return card.getCustomStat();
         }
-        // If no stat matches, it's invalid
-        else {
-            // This will be hit if the above 'else if' evaluates to false
-            // (meaning it's not a standard stat AND not the matching custom stat)
-            System.out.println("--- Debugging Invalid Stat ---");
-            System.out.println("Invalid stat encountered: " + stat);
-            if (card != null && card.getDeck() != null) {
-                System.out.println("Expected custom stat name was: " + card.getDeck().getUniqueStatName());
-            }
-            System.out.println("----------------------------");
-            throw new IllegalArgumentException("Invalid stat: " + stat);
-        }
     }
+
 
     //      Finds the highest value stat on one card for CPU
     public int getMaxStatValueOnACard(Card card) {
@@ -371,11 +350,11 @@ public class GameService {
         return cpuHand.isEmpty() ? null : cpuHand.get(0);
     }
 
-
     //      Get game iD ---- CHECK IF AVIAN ALREADY HAS ONE AND REFACTOR WHAT U USE -----
     public Game getGameById(Long gameId) {
         return gameRepository.findById(gameId).orElse(null);
     }
+
 
     // Mark the CPU's chosen card as discarded
     public void discardCpuChosenCardFromHand(Long cardId, Long cpuId) {
