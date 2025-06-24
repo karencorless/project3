@@ -23,8 +23,8 @@
 
     <!--Displays round winner-->
     <div th:if="${#lists.size(playerHand) > 0 and !gameOver}" class="round-result-container" style="text-align: center; margin-top: 10px;">
-        <h2 th:if="${statValue > cpuStatValue and roundComplete == true}">Player 1 Wins!</h2>
-        <h2 th:if="${statValue < cpuStatValue and roundComplete == true}">Player 2 Wins!</h2>
+        <h2 th:if="${statValue > cpuStatValue and roundComplete == true}">Player 1 Wins this round!</h2>
+        <h2 th:if="${statValue < cpuStatValue and roundComplete == true}">Player 2 Wins this round!</h2>
         <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's A Draw!</h2>
     </div>
 

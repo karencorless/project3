@@ -1,4 +1,6 @@
 -- Seed file for basic testing
+-- This file seeds two users, one deck, four cards, two players, and one game.
+-- If player card seeds are needed, uncomment lines 42-43 and 9.
 -- Run this after all migrations are complete
 
 -- Clear existing data
@@ -22,8 +24,8 @@ ALTER SEQUENCE users_id_seq RESTART WITH 1;
 INSERT into users (username, email, birthday, auth0_id)
 VALUES
 ('robouser1', 'robouser1@gmail.com', '2000-01-01', 'auth0|6852f3ed03ace7188c8886a2'),
-('robouser2', 'robouser2@yahoo.com', '2000-01-01', 'auth0|6852f3af03ace7188c888682'),  -- password = Password123!
-('testuser', 'testuser@tester.com', '2000-01-01', 'auth0|6852b1d99e1842d8a9fc6bb1');        -- pass = NAHs0n!!
+('robouser2', 'robouser2@yahoo.com', '2000-01-01', 'auth0|6852f3af03ace7188c888682'),
+('testuser', 'testuser@tester.com', '2000-01-01', 'auth0|6852b1d99e1842d8a9fc6bb1');
 
 -- Insert decks
 INSERT INTO decks (name, unique_stat_name, thumbnail)
