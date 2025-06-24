@@ -64,7 +64,7 @@
             <h2 class="mb-3">Top Players</h2>
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 <div class="col" th:each="user, iterStat : ${playersMostWins}">
-                    <div class="card border border-warning border-5">
+                    <div class="card top-player border-5">
                         <div class="card-body d-flex align-items-center">
                             <img th:src="${user.imageSource}" alt="Profile Picture"
                                  class="rounded-circle me-3"

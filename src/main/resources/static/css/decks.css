@@ -38,3 +38,13 @@ body {
     transform: scale(1.02);
     opacity: 0.8;
 }
+
+.top-player {
+    border: 5px solid transparent;
+    border-radius: 1rem;
+    background-image:
+        linear-gradient(to right, #C2F9FF, #FFC2C2),
+        linear-gradient(#fff, #fff);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}
