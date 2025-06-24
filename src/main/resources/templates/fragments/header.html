@@ -7,25 +7,52 @@
 <!--        </div>-->
 
         <nav>
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
             <div class="navbar-logo">
-                <img src="/images/sa-flare.png" alt="StatAttack Logo" height="90" >
-            </div>
-            <div class="nav-links ms-3 me-auto">
-                <a href="/game/new" th:href="@{/game/new}">PLAY</a>
-                <a href="/decks" th:href="@{/decks}">DECKS</a>
-                <a href="javascript:void(0)" onclick="openTuto()">TUTORIALS</a>
-                <a href="/settings" th:href="@{/settings}">SETTINGS</a>
+                <a href="/homepage" class="me-auto"><img src="/images/sa-flare.png" alt="StatAttack Logo" height="90"></a>
             </div>
 
-            <div class="user-controls" th:if="${currentUser != null}">
-                <div class="profile-container">
-                    <div class="profile-image">
-                        <img th:src="@{${currentUser.imageSource}}" alt="Profile" />
-                    </div>
-                    <span id="greeting" th:text="'Logged in as ' + ${currentUser.username}"></span>
-                </div>
-                <a href="#" onclick="confirmLogout(event)" class="logout-btn">Logout</a>
+
+            <div class="nav-links align-items-center">
+                <a href="/game/new" th:href="@{/game/new}" class="ms-3 me-3">PLAY</a>
+                <a href="/decks" th:href="@{/decks}" class="ms-3 me-3">DECKS</a>
+                <a href="javascript:void(0)" onclick="openTuto()" class="ms-3 me-3">TUTORIALS</a>
+<!--                <a href="/settings" th:href="@{/settings}" class="ms-3 me-3">SETTINGS</a>-->
             </div>
+
+<!--            <div class="user-controls" th:if="${currentUser != null}">-->
+<!--                <div class="profile-container">-->
+<!--                    <div class="profile-image">-->
+<!--                        <img th:src="@{${currentUser.imageSource}}" alt="Profile" />-->
+<!--                    </div>-->
+<!--                    <span id="greeting" th:text="'Logged in as ' + ${currentUser.username}"></span>-->
+<!--                </div>-->
+<!--                <a href="#" onclick="confirmLogout(event)" class="logout-btn">Logout</a>-->
+<!--            </div>-->
+
+            <li class="nav-links dropdown d-none d-md-block">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="rounded-circle me-2" th:src="@{${currentUser.imageSource}}" style="width: 40px; height: 40px; object-fit: cover;" >
+                </a>
+                <div class="dropdown-menu dropdown-menu-end navbar-dropdown">
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="dropdown-list-image mr-3">
+                            <img class="rounded-circle" th:src="@{${currentUser.imageSource}}" style="width: 50px; height: 50px; object-fit: cover;">
+                        </div>
+                        <div class="text-center">
+                            <div class="text-truncate"><span th:text="@{${currentUser.username}}" ></span></div>
+                        </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-center" href="/settings"><small> Settings</small></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-center" href="#" onclick="confirmLogout(event)"><small> Logout</small></a>
+                </div>
+            </li>
+                </div>
+            </div>
+
         </nav>
         <script>
             function confirmLogout(event) {
