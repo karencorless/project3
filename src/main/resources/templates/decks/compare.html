@@ -15,14 +15,14 @@
     <form th:action="@{/decks/compare}" method="post" class="d-flex gap-3">
         <div class="d-flex flex-column">
             <label for="card1">First Card:</label>
-            <select name="card1" id="card1" class="form-control">
+            <select name="card1" id="card1" class="form-control" required>
                 <option value="" disabled selected>Select Card</option>
-                <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.deck.name} + ' - ' + ${card.name}"></option>
+                <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.deck.name} + ' - ' + ${card.name}" ></option>
             </select>
         </div>
         <div class="d-flex flex-column">
             <label for="card2">Second Card:</label>
-            <select name="card2" id="card2" class="form-control">
+            <select name="card2" id="card2" class="form-control" required>
                 <option value="" disabled selected>Select Card</option>
                 <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.deck.name} + ' - ' + ${card.name}"></option>
             </select>
