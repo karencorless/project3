@@ -111,6 +111,9 @@ footer {
     background: #f1f1f1;
     margin-top: 3rem;
     font-size: 1.2rem;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
 
 footer a {

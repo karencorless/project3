@@ -271,17 +271,24 @@ public class GameService {
         return null;
     }
 
-    //      Gets the card's stat value based on chosen attribute
+//          Gets the card's stat value based on chosen attribute
     public int getStatValue(String stat, Card card){
-        return switch (stat.toLowerCase()) {
-            case "strength" -> card.getStrength();
-            case "wisdom" -> card.getWisdom();
-            case "defence" -> card.getDefence();
-            case "luck" -> card.getLuck();
-            case "customstat" -> card.getCustomStat();
-            default -> throw new IllegalArgumentException("Invalid stat: " + stat);
-        };
+        String normalizedStat = stat.toLowerCase();
+
+        if ("strength".equals(normalizedStat)) {
+            return card.getStrength();
+        } else if ("wisdom".equals(normalizedStat)) {
+            return card.getWisdom();
+        } else if ("defence".equals(normalizedStat)) {
+            return card.getDefence();
+        } else if ("luck".equals(normalizedStat)) {
+            return card.getLuck();
+        }
+        else {
+            return card.getCustomStat();
+        }
     }
+
 
     //      Finds the highest value stat on one card for CPU
     public int getMaxStatValueOnACard(Card card) {
@@ -302,7 +309,7 @@ public class GameService {
         if (card.getWisdom() == maxValue) return "wisdom";
         if (card.getDefence() == maxValue) return "defence";
         if (card.getLuck() == maxValue) return "luck";
-        if (card.getCustomStat() == maxValue) return "customStat";
+        if (card.getCustomStat() == maxValue) return card.getDeck().getUniqueStatName();
 
         return "unknown";
     }
@@ -349,11 +356,11 @@ public class GameService {
         return cpuHand.isEmpty() ? null : cpuHand.get(0);
     }
 
-
     //      Get game iD ---- CHECK IF AVIAN ALREADY HAS ONE AND REFACTOR WHAT U USE -----
     public Game getGameById(Long gameId) {
         return gameRepository.findById(gameId).orElse(null);
     }
+
 
     // Mark the CPU's chosen card as discarded
     public void discardCpuChosenCardFromHand(Long cardId, Long cpuId) {
