@@ -12,8 +12,8 @@
 </head>
 <body>
 
-<div th:replace="~{fragments :: header}"></div>
-<div th:insert="~{fragments :: tutorialModal}"></div>
+<div th:insert="~{fragments/header :: header}"></div>
+<div th:insert="~{fragments/sidebar :: sidebar}"></div>
 
 <h1>Game Setup</h1>
 
@@ -51,7 +51,8 @@
     </div>
 </div>
 
-<div th:replace="~{fragments :: footer}"></div>
+<div th:insert="~{fragments/footer :: footer}"></div>
+<div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
 
 </body>
 </html>
