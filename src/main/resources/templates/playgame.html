@@ -21,20 +21,19 @@
         <p th:if="${player1Score == cpuScore}"><strong>It's a draw!</strong><br>Good effort!</p>
     </div>
 
-    <!--Displays round winner-->
-    <div th:if="${#lists.size(playerHand) > 0 and !gameOver}" class="round-result-container" style="text-align: center; margin-top: 10px;">
-        <h2 th:if="${statValue > cpuStatValue and roundComplete == true}">Player 1 Wins!</h2>
-        <h2 th:if="${statValue < cpuStatValue and roundComplete == true}">Player 2 Wins!</h2>
-        <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's a Draw!</h2>
-    </div>
-
-    <!-- Score Display -->
+    <!-- Score and Round Winner Display -->
     <div style="display: flex; justify-content: space-between; padding: 10px;">
-        <div style="text-align: left;">
+        <div style="text-align: center;">
             <h2>Player 1:</h2>
             <h2><strong th:text="${player1Score}"></strong>/<strong th:text="${pointsToWin}"></strong></h2>
         </div>
-        <div style="text-align: right;">
+        <!--Displays round winner-->
+        <div th:if="${#lists.size(playerHand) > 0 and !gameOver}" class="round-result-container" style="text-align: center; margin-top: 10px;">
+            <h2 th:if="${statValue > cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 1</strong> Wins!</h2>
+            <h2 th:if="${statValue < cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 2</strong> Wins!</h2>
+            <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's a <strong>Draw</strong>!</h2>
+        </div>
+        <div style="text-align: center;">
             <h2>Player 2:</h2>
             <h2><strong th:text="${cpuScore}"></strong>/<strong th:text="${pointsToWin}"></strong></h2>
         </div>
@@ -42,8 +41,8 @@
 
     <!-- Displays who is attacking that round -->
     <div class="round-result-container" style="text-align: center; margin-top: 10px;">
-        <h2 th:if="${currentAttacker == 'P1' and roundComplete == false}"><strong>You</strong> are attacking!</h2>
-        <h2 th:if="${currentAttacker == 'P2' and roundComplete == false}"><strong>Player 2</strong> is attacking!</h2>
+        <h2 th:if="${currentAttacker == 'P1' and roundComplete == false}"><strong style="color: green;">You</strong> are attacking!</h2>
+        <h2 th:if="${currentAttacker == 'P2' and roundComplete == false}"><strong style="color: red;">Player 2</strong> is attacking!</h2>
     </div>
 
     <!--    Displays the round's chosen cards from both players-->
