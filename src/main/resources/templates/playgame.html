@@ -26,7 +26,7 @@
     <div th:if="${#lists.size(playerHand) > 0 and !gameOver}" class="round-result-container" style="text-align: center; margin-top: 10px;">
         <h2 th:if="${statValue > cpuStatValue and roundComplete == true}">Player 1 Wins!</h2>
         <h2 th:if="${statValue < cpuStatValue and roundComplete == true}">Player 2 Wins!</h2>
-        <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's A Draw!</h2>
+        <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's a Draw!</h2>
     </div>
 
     <!-- Score Display -->
@@ -41,11 +41,17 @@
         </div>
     </div>
 
+    <!-- Displays who is attacking that round -->
+    <div class="round-result-container" style="text-align: center; margin-top: 10px;">
+        <h2 th:if="${currentAttacker == 'P1' and roundComplete == false}"><strong>You</strong> are attacking!</h2>
+        <h2 th:if="${currentAttacker == 'P2' and roundComplete == false}"><strong>Player 2</strong> is attacking!</h2>
+    </div>
+
     <!--    Displays the round's chosen cards from both players-->
-    <div class="chosen-cards-container">
+    <div class="game-round-display">
     <!--    Displays P1's chosen card-->
-        <div class="P1-card-container" th:if="${playedCard != null}">
-            <h2>Your Card:</h2>
+        <div class="final-card-container" th:if="${playedCard != null}">
+            <h2>Your Card</h2>
             <div class="card-wrap"
                  th:classappend="${playedCard.deck.name == 'The Simpsons' ? ' simpson' :
                              playedCard.deck.name == 'Harry Potter' ? ' hp' :
@@ -67,7 +73,6 @@
                         <input type="hidden" name="cardId" th:value="${playedCard.name}" />
                         <input type="hidden" name="chosenStat" value="strength" />
                         <button type="submit" class="stat-text-box card-box-style"
-                                style="cursor: pointer; border: none; background: none; padding: 0;"
                                 th:classappend="${playedCard.strength >= 90 ? ' card-box-rare' : ''}">
                             <span>Strength: <strong th:text="${playedCard.strength}"></strong></span>
                         </button>
@@ -77,7 +82,6 @@
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="wisdom" />
                         <button type="submit" class="stat-text-box card-box-style"
-                                style="cursor: pointer; border: none; background: none; padding: 0;"
                                 th:classappend="${playedCard.strength >= 90 ? ' card-box-rare' : ''}">
                             <span>Wisdom: <strong th:text="${playedCard.wisdom}"></strong></span>
                         </button>
@@ -89,7 +93,6 @@
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="defence" />
                         <button type="submit" class="stat-text-box card-box-style"
-                                style="cursor: pointer; border: none; background: none; padding: 0;"
                                 th:classappend="${playedCard.defence >= 90 ? ' card-box-rare' : ''}">
                             <span>Defence: <strong th:text="${playedCard.defence}"></strong></span>
                         </button>
@@ -99,19 +102,17 @@
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="luck" />
                         <button type="submit" class="stat-text-box card-box-style"
-                                style="cursor: pointer; border: none; background: none; padding: 0;"
                                 th:classappend="${playedCard.luck >= 90 ? ' card-box-rare' : ''}">
                             <span>Luck: <strong th:text="${playedCard.luck}"></strong></span>
                         </button>
                     </form>
                 </div>
                 <!-- Clickable custom stat -->
-                <div class="unique-stat-box card-box-style text-nowrap" >
+                <div class="unique-stat-box text-nowrap" >
                 <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                     <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                     <input type="hidden" name="chosenStat" th:value="${playedCard.deck.uniqueStatName}" />
-                    <button type="submit" class="stat-text-box card-box-style"
-                            style="cursor: pointer; border: none; background: none; padding: 0;"
+                    <button type="submit" class="stat-text-box card-box-style text-nowrap"
                             th:classappend="${playedCard.customStat >= 90 ? ' card-box-rare' : ''}">
                         <span>
                             <span th:text="${playedCard.deck.uniqueStatName}"></span>:
@@ -120,13 +121,6 @@
                     </button>
                 </form>
                 </div>
-
-<!--                <div class="unique-stat-box card-box-style text-nowrap" th:classappend="${playedCard.customStat >= 90 ? ' card-box-rare' : ''}">-->
-<!--                <span>-->
-<!--                    <span th:text="' ' + ${playedCard.deck.uniqueStatName} + ': '"></span>-->
-<!--                    <strong th:text="${playedCard.customStat}"></strong>-->
-<!--                </span>-->
-<!--                </div>-->
             </div>
         </div>
         <div th:unless="${playedCard != null}" class="card-placeholder">
@@ -139,8 +133,8 @@
         </div>
 
 <!--        Display CPU's card-->
-        <div class="P2-card-container" th:if="${playedCard != null and chosenStat != null}">
-            <h2>Player 2's Card:</h2>
+        <div class="final-card-container" th:if="${playedCard != null and chosenStat != null}">
+            <h2>Player 2's Card</h2>
             <div class="card-wrap"
                  th:classappend="${cpuPlayedCard.deck.name == 'The Simpsons' ? ' simpson' :
                              cpuPlayedCard.deck.name == 'Harry Potter' ? ' hp' :
@@ -185,21 +179,15 @@
         </div>
     </div>
 
-    <!-- Displays who is attacking that round -->
-    <div class="round-result-container" style="text-align: center; margin-top: 10px;">
-        <h2 th:if="${currentAttacker == 'P1' and roundComplete == false}"><strong>You</strong> are attacking!</h2>
-        <h2 th:if="${currentAttacker == 'P2' and roundComplete == false}"><strong>Player 2</strong> is attacking!</h2>
-    </div>
-
-    <!-- Display messages from the controller -->
-    <div th:if="${successMessage}" class="message success">
-        <p th:text="${successMessage}"></p>
-    </div>
+<!--    &lt;!&ndash; Display messages from the controller &ndash;&gt;-->
+<!--    <div th:if="${successMessage}" class="message success">-->
+<!--        <p th:text="${successMessage}"></p>-->
+<!--    </div>-->
 
     <div th:if="${cpuPlayedCard != null and roundComplete}" style="display: flex; justify-content: space-between; margin-top: 3px;">
     <!-- Show results after battle -->
     <div th:if="${cpuPlayedCard != null}" style="text-align: left; margin-top: 3px;">
-        <h2>Your Card</h2>
+        <h2>Your Reveal</h2>
         <p>You played: <strong th:text="${playedCard.name}"></strong></p>
         <p th:if="${chosenStat != 'customStat'}">You picked: <strong th:text="${chosenStat}"></strong></p>
         <p th:if="${chosenStat == 'customStat'}">You picked: <strong th:text="${customStatName}"></strong></p>
@@ -208,32 +196,12 @@
 
     <!--Reveals CPU's stats after the round's completed-->
     <div th:if="${cpuPlayedCard != null}" style="float: right; text-align: right;">
-        <h2>Player 2's Card</h2>
+        <h2>Player 2's Reveal</h2>
         <p>Played: <strong th:text="${cpuPlayedCard.name}"></strong></p>
         <p th:if="${cpuChosenStat != 'customStat'}">Stat: <strong th:text="${cpuChosenStat}"></strong></p>
         <p th:if="${cpuChosenStat == 'customStat'}">Stat: <strong th:text="${cpuCustomStatName}"></strong></p>
         <p>Stat value: <strong th:text="${cpuStatValue}"></strong></p>
     </div>
-    </div>
-
-    <!-- Prompts user to select a stat after picking a card -->
-    <div class="stat-container" style="text-align: center; margin-top: 3px;"
-         th:if="${playedCard != null and cpuStat == null and roundComplete == false}">
-        <form th:action="@{'/game/play/p1-attack-2'}" method="post">
-            <input type="hidden" name="cardId" th:value="${playedCard.id}" />
-
-            <label for="stat-select">Select Your Stat:</label>
-            <select id="stat-select" name="chosenStat">
-                <option value="strength">Strength: [[${playedCard.strength}]]</option>
-                <option value="wisdom">Wisdom: [[${playedCard.wisdom}]]</option>
-                <option value="defence">Defence: [[${playedCard.defence}]]</option>
-                <option value="luck">Luck: [[${playedCard.luck}]]</option>
-                <option value="customStat"
-                        th:if="${customStatName != null}"
-                        th:text="${customStatName + ': ' + playedCard.customStat}">Custom Stat</option>
-            </select>
-            <button type="submit" class="button">Battle!</button>
-        </form>
     </div>
 
 
