@@ -24,7 +24,7 @@
 .game-round-display {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 100px;
     margin-top: 20px;
     flex-wrap: wrap;
@@ -68,6 +68,13 @@
 }
 
 .vs-image {
-    max-width: 290px;
-    height: auto;
+    max-height: 150%;
+}
+
+.vs-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    margin-top: 70px;
 }
