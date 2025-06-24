@@ -21,32 +21,30 @@
         <p th:if="${player1Score == cpuScore}"><strong>It's a draw!</strong><br>Good effort!</p>
     </div>
 
-    <!-- Score and Round Winner Display -->
-    <div style="display: flex; justify-content: space-between; padding: 10px;">
-        <div style="text-align: center;">
-            <h2>Player 1:</h2>
-            <h2><strong th:text="${player1Score}"></strong>/<strong th:text="${pointsToWin}"></strong></h2>
-        </div>
-        <!--Displays round winner-->
-        <div th:if="${#lists.size(playerHand) > 0 and !gameOver}" class="round-result-container" style="text-align: center; margin-top: 10px;">
-            <h2 th:if="${statValue > cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 1</strong> Wins!</h2>
-            <h2 th:if="${statValue < cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 2</strong> Wins!</h2>
-            <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's a <strong>Draw</strong>!</h2>
-        </div>
-        <div style="text-align: center;">
-            <h2>Player 2:</h2>
-            <h2><strong th:text="${cpuScore}"></strong>/<strong th:text="${pointsToWin}"></strong></h2>
-        </div>
-    </div>
-
     <!-- Displays who is attacking that round -->
-    <div class="round-result-container" style="text-align: center; margin-top: 10px;">
+    <div class="round-result-container" style="text-align: center; margin-top: 10px; margin-top: 30px">
         <h2 th:if="${currentAttacker == 'P1' and roundComplete == false}"><strong style="color: green;">You</strong> are attacking!</h2>
         <h2 th:if="${currentAttacker == 'P2' and roundComplete == false}"><strong style="color: red;">Player 2</strong> is attacking!</h2>
     </div>
 
+    <!--Displays round winner-->
+    <div th:if="${#lists.size(playerHand) > 0 and !gameOver}" class="round-result-container" style="text-align: center; margin-top: 10px;">
+        <h2 th:if="${statValue > cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 1</strong> Wins!</h2>
+        <h2 th:if="${statValue < cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 2</strong> Wins!</h2>
+        <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's a <strong>Draw</strong>!</h2>
+    </div>
+
     <!--    Displays the round's chosen cards from both players-->
     <div class="game-round-display">
+
+        <!-- P1 Score Display -->
+        <div class="score-container" style="justify-content: space-between; padding: 10px;">
+            <div style="text-align: right; margin-right: 20px;">
+                <h2>Player 1:</h2>
+                <h2><strong th:text="${player1Score}"></strong>/<strong th:text="${pointsToWin}"></strong></h2>
+            </div>
+        </div>
+
     <!--    Displays P1's chosen card-->
         <div class="final-card-container" th:if="${playedCard != null}">
             <h2>Your Card</h2>
@@ -181,7 +179,12 @@
                 <span>No card chosen yet</span>
             </div>
         </div>
-    </div>
+            <!-- P2 Score Display -->
+            <div class="score-container" style="text-align: left; margin-left: 20px;">
+                <h2>Player 2:</h2>
+                <h2><strong th:text="${cpuScore}"></strong>/<strong th:text="${pointsToWin}"></strong></h2>
+            </div>
+        </div>
 
     <div th:if="${cpuPlayedCard != null and roundComplete}" style="display: flex; justify-content: space-between; margin-top: 3px;">
     <!-- Show results after battle -->
