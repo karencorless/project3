@@ -67,33 +67,33 @@
                 <div class="card-text-box card-box-style">
                     <span th:text="${playedCard.flavourText}"></span>
                 </div>
-                <div class="stat-row">
+                <div class="stat-row form-stat-container">
 <!--                    Clickable strength stat-->
                     <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="strength" />
-                        <button type="submit" class="stat-text-box card-box-style"
-                                th:classappend="${playedCard.strength >= 90 ? ' card-box-rare' : ''}">
+                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
+                                th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.strength >= 90 ? ' card-box-rare' : ''}">
                             <span>Strength: <strong th:text="${playedCard.strength}"></strong></span>
                         </button>
                     </form>
 <!--                    Clickable wisdom stat-->
-                    <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
+                    <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: flex;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="wisdom" />
-                        <button type="submit" class="stat-text-box card-box-style"
-                                th:classappend="${playedCard.strength >= 90 ? ' card-box-rare' : ''}">
+                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
+                                th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.wisdom >= 90 ? ' card-box-rare' : ''}">
                             <span>Wisdom: <strong th:text="${playedCard.wisdom}"></strong></span>
                         </button>
                     </form>
                 </div>
-                <div class="stat-row">
+                <div class="stat-row form-stat-container">
 <!--                    Clickable defence stat-->
                     <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="defence" />
-                        <button type="submit" class="stat-text-box card-box-style"
-                                th:classappend="${playedCard.defence >= 90 ? ' card-box-rare' : ''}">
+                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
+                                th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.defence >= 90 ? ' card-box-rare' : ''}">
                             <span>Defence: <strong th:text="${playedCard.defence}"></strong></span>
                         </button>
                     </form>
@@ -101,8 +101,8 @@
                     <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="luck" />
-                        <button type="submit" class="stat-text-box card-box-style"
-                                th:classappend="${playedCard.luck >= 90 ? ' card-box-rare' : ''}">
+                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
+                                th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.luck >= 90 ? ' card-box-rare' : ''}">
                             <span>Luck: <strong th:text="${playedCard.luck}"></strong></span>
                         </button>
                     </form>
@@ -112,8 +112,8 @@
                 <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                     <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                     <input type="hidden" name="chosenStat" th:value="${playedCard.deck.uniqueStatName}" />
-                    <button type="submit" class="stat-text-box card-box-style text-nowrap"
-                            th:classappend="${playedCard.customStat >= 90 ? ' card-box-rare' : ''}">
+                    <button type="submit" class="stat-text-box card-box-style text-nowrap" th:disabled="${roundComplete}"
+                            th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.customStat >= 90 ? ' card-box-rare' : ''}">
                         <span>
                             <span th:text="${playedCard.deck.uniqueStatName}"></span>:
                             <strong th:text="${playedCard.customStat}"></strong>
@@ -233,15 +233,16 @@
     </div>
 
     <!--Displays player's hand, prompts player to pick card-->
+    <div class="container my-4 text-center">
     <div class="hand-container" th:if="${playerHand != null and !gameOver}">
-        <h2>Your Hand:</h2>
+        <h2 class="mt-3 mb-3">Your Hand:</h2>
         <!-- Clickable, player can choose a card -->
         <div th:if="${roundComplete == false and playedCard == null}">
-            <div class="card-row" style="display: flex; flex-wrap: wrap; gap: 16px;">
+            <div class="d-flex flex-wrap justify-content-center">
                 <div th:each="card : ${playerHand}" class="p-3">
                     <form th:action="@{${cpuStat == null ? '/game/play/p1-attack-1' : '/game/play/p1-defend'}}" method="post">
                         <input type="hidden" name="cardId" th:value="${card.id}" />
-                        <div class="card-wrap" style="cursor: pointer;"
+                        <div class="card-wrap hand" style="cursor: pointer;"
                              onclick="this.closest('form').submit();"
                              th:classappend="${card.deck.name == 'The Simpsons' ? ' simpson' :
                                          card.deck.name == 'Harry Potter' ? ' hp' :
@@ -284,10 +285,13 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
 
         <!-- Non-clickable hand, for viewign-->
+    <div class="container my-4 text-center">
         <div th:unless="${roundComplete == false and playedCard == null}">
-            <div class="card-row" style="display: flex; flex-wrap: wrap; gap: 16px;">
+            <div class="d-flex flex-wrap justify-content-center">
                 <div th:each="card : ${playerHand}" class="p-3">
                     <div class="card-wrap" style="cursor: default;"
                          th:classappend="${card.deck.name == 'The Simpsons' ? ' simpson' :

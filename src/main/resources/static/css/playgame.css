@@ -54,8 +54,13 @@
     font-size: 0.95rem;
     flex: 1;
     margin: 0.1em auto 0.1em;
-    cursor: pointer;
 }
+
+.stat-row {
+        display: flex;
+        gap: 0.1em;
+        justify-content: center;
+        }
 
 .final-card-container {
     text-align: center;
@@ -70,4 +75,22 @@
 .vs-image {
     max-width: 290px;
     height: auto;
+}
+
+.form-stat-container {
+    display: flex;
+    gap: 0.1em;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.form-stat-container form {
+    flex: 1;
+    margin: 0;
+}
+
+form button {
+    width: 100%;
+    display: block;
+    text-align: center;
 }
