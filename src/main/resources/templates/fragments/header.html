@@ -1,17 +1,20 @@
 <div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <header>
-        <div class="header-container">
-            <a class="stat-attack-logo" href="/homepage" th:href="@{/homepage}">
-                stat attack
-            </a>
-        </div>
+<!--        <div class="header-container">-->
+<!--            <a class="stat-attack-logo" href="/homepage" th:href="@{/homepage}">-->
+<!--                stat attack-->
+<!--            </a>-->
+<!--        </div>-->
 
         <nav>
-            <div class="nav-links">
-                <a href="/game/new" th:href="@{/game/new}">Play</a>
-                <a href="/decks" th:href="@{/decks}">All Decks</a>
-                <a href="javascript:void(0)" onclick="openTuto()">Tutorial</a>
-                <a href="/settings" th:href="@{/settings}">Settings</a>
+            <div class="navbar-logo">
+                <img src="/images/sa-flare.png" alt="StatAttack Logo" height="90" >
+            </div>
+            <div class="nav-links ms-3 me-auto">
+                <a href="/game/new" th:href="@{/game/new}">PLAY</a>
+                <a href="/decks" th:href="@{/decks}">DECKS</a>
+                <a href="javascript:void(0)" onclick="openTuto()">TUTORIALS</a>
+                <a href="/settings" th:href="@{/settings}">SETTINGS</a>
             </div>
 
             <div class="user-controls" th:if="${currentUser != null}">
