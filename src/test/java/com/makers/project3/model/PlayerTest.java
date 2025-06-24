@@ -6,7 +6,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PlayerTest {
-    private Player testPlayer = new Player(1L, 1L, 1L, "Luck", 3);
+    private Player testPlayer = new Player(1L, 1L, 1L, "Luck", 3, null);
 
     //    Tests that player model has an associated ID
     @Test

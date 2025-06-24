@@ -18,7 +18,8 @@
             justify-content: center;
             padding: 10px;
             text-align: center;
-            margin-top: 20px;
+            margin: 20px auto 0 auto;
+            max-width: 1120px;
         }
 
         .deck img {
@@ -70,6 +71,9 @@
                 </a>
             </div>
         </div>
+    <div class="mt-5">
+        <a href="/decks/compare" class="btn btn-primary mt-3">Compare Cards</a>
+    </div>
 
     <div th:insert="~{fragments/footer :: footer}"></div>
     <div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
