@@ -71,7 +71,7 @@
                     <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="strength" />
-                        <button type="submit" class="stat-text-box card-box-style"
+                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
                                 th:classappend="${playedCard.strength >= 90 ? ' card-box-rare' : ''}">
                             <span>Strength: <strong th:text="${playedCard.strength}"></strong></span>
                         </button>
@@ -80,7 +80,7 @@
                     <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="wisdom" />
-                        <button type="submit" class="stat-text-box card-box-style"
+                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
                                 th:classappend="${playedCard.strength >= 90 ? ' card-box-rare' : ''}">
                             <span>Wisdom: <strong th:text="${playedCard.wisdom}"></strong></span>
                         </button>
@@ -91,7 +91,7 @@
                     <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="defence" />
-                        <button type="submit" class="stat-text-box card-box-style"
+                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
                                 th:classappend="${playedCard.defence >= 90 ? ' card-box-rare' : ''}">
                             <span>Defence: <strong th:text="${playedCard.defence}"></strong></span>
                         </button>
@@ -100,7 +100,7 @@
                     <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="luck" />
-                        <button type="submit" class="stat-text-box card-box-style"
+                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
                                 th:classappend="${playedCard.luck >= 90 ? ' card-box-rare' : ''}">
                             <span>Luck: <strong th:text="${playedCard.luck}"></strong></span>
                         </button>
@@ -111,7 +111,7 @@
                 <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                     <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                     <input type="hidden" name="chosenStat" th:value="${playedCard.deck.uniqueStatName}" />
-                    <button type="submit" class="stat-text-box card-box-style text-nowrap"
+                    <button type="submit" class="stat-text-box card-box-style text-nowrap" th:disabled="${roundComplete}"
                             th:classappend="${playedCard.customStat >= 90 ? ' card-box-rare' : ''}">
                         <span>
                             <span th:text="${playedCard.deck.uniqueStatName}"></span>:
