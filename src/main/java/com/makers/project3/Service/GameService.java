@@ -60,7 +60,8 @@ public class GameService {
     //       Creates new Game
     public Game newGame(int pointsToWin, List<String> chosenDeckIds){
         Long currentUserId = userService.getCurrentUserId();
-        User roboUser = userRepository.findUserByUsername("robouser1");
+        User roboUser = userRepository.findById(1L).orElse(null);
+        assert roboUser != null;
         Long roboUserId = roboUser.getId();
         Game game;
 

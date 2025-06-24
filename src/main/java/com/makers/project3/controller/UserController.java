@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Controller
 public class UserController {
@@ -31,14 +31,13 @@ public class UserController {
     }
 
     @PostMapping("/settings")
-    public RedirectView updateSettings(@RequestParam("username") String username, @RequestParam("birthday") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthday) {
+    public RedirectView updateSettings(@RequestParam("username") String username, @RequestParam("birthday") Date birthday) {
         User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
 
         //        @RequestParam("imageFile") MultipartFile imageFile
         assert currentUser != null;
         currentUser.setUsername(username);
         currentUser.setBirthday(birthday);  //need to fix parsing issue
-
 
         userRepository.save(currentUser);
         return new RedirectView("/settings");

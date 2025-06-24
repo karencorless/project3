@@ -3,7 +3,7 @@ package com.makers.project3.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Data
@@ -21,9 +21,12 @@ public class User {
     private String imageSource;
     private Date birthday;
     @Column(name = "games_won")
-    private Integer gamesWon;
+    private Integer gamesWon =0;
     @Column(name = "total_games_played")
-    private Integer gamesPlayed;
+    private Integer gamesPlayed =0;
     @Column(name = "auth0_id", unique = true)
     private String auth0id;
+    @Column(name="favourite_deck_id")
+    private Long favouriteDeckId = null;
+
 }

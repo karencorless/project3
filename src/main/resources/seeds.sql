@@ -1,15 +1,14 @@
 -- Seed file for basic testing
--- This file seeds two users, one deck, four cards, two players, and one game.
--- If player card seeds are needed, uncomment lines 42-43 and 9.
--- Run this after all migrations are complete
+-- This file seeds users, decks, and cards.
+-- Run this after all migrations are complete, when you need to re-seed.
 
 -- Clear existing data
 DELETE FROM games CASCADE;
 DELETE FROM players CASCADE;
-DELETE FROM player_cards CASCADE;
-DELETE FROM cards CASCADE;
-DELETE FROM decks CASCADE;
-DELETE FROM users CASCADE;
+DELETE FROM player_cards;
+DELETE FROM cards;
+DELETE FROM decks;
+DELETE FROM users;
 
 
 -- Reset ID sequences
@@ -20,14 +19,8 @@ ALTER SEQUENCE cards_id_seq RESTART WITH 1;
 ALTER SEQUENCE decks_id_seq RESTART WITH 1;
 ALTER SEQUENCE users_id_seq RESTART WITH 1;
 
--- Insert users
-INSERT into users (username, email, birthday, auth0_id)
-VALUES
-('robouser1', 'robouser1@gmail.com', '2000-01-01', 'auth0|6852f3ed03ace7188c8886a2'),
-('robouser2', 'robouser2@yahoo.com', '2000-01-01', 'auth0|6852f3af03ace7188c888682'),
-('testuser', 'testuser@tester.com', '2000-01-01', 'auth0|6852b1d99e1842d8a9fc6bb1');
 
--- Insert decks
+-- Insert Decks
 INSERT INTO decks (name, unique_stat_name, thumbnail)
 VALUES
 ('The Simpsons', 'D''oh! Factor', '/deckImages/simpsons/thumbnail.jpg'),
@@ -36,9 +29,22 @@ VALUES
 ('Disney', 'Disney Magic', '/deckImages/disney/thumbnail.jpg'),
 ('Pop-culture', 'Memeability', '/deckImages/popculture/thumbnail.jpg'),
 ('Brit-tv', 'Cuppa Strength', '/deckImages/brittv/thumbnail.jpg'),
-('Kids-tv', 'Giggle Power', '/deckImages/kidstv/thumbnail.jpg');
+('Kids-tv', 'Giggle Power', '/deckImages/kidstv/thumbnail.jpg'),
+('Anime', 'Aura', '/deckImages/anime/thumbnail.jpg');
 
--- Insert cards
+
+-- Insert users
+INSERT into users (username, email, birthday, games_won, total_games_played, auth0_id, favourite_deck_id)
+VALUES
+('robouser', 'robouser2@yahoo.com',  '2020-02-02', 74243, 123434, 'auth0|6852f3af03ace7188c888682', null),
+('testuser', 'testuser@tester.com', '2011-11-11', 8, 10, 'auth0|6852b1d99e1842d8a9fc6bb1', 1),
+('roryboi', 'roryaitken@pupper.org', 	'2025-03-03', 9, 10, 'auth0|685560e577836d8efbf4644b', 4),
+('JGill', 'jordangill@stat-attack.co.uk', null, 8, 10, 'auth0|685a92a018031cfd6aeefcf5', 3),
+('v', 'v@dev.com', null, 8, 10, 'auth0|68528f520059761ab93baa0a', 8),
+('barrymorealexandre ', 'barrymorealexandre@gmail.com', null, 8, 10, 'auth0|685547db77836d8efbf45059', null);
+
+
+-- Insert Cards
 INSERT INTO cards
 (deck_id, name, strength, wisdom, defence, unique_stat, luck, flavour_text, image)
 VALUES
@@ -266,4 +272,44 @@ VALUES
 ((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Cookie Monster', 72, 39, 49, 96, 57, 'C is for cookie – and chaotic fun.', '/deckImages/kidstv/cookie_monster.jpg'),
 ((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Shaun the Sheep', 55, 58, 53, 86, 70, 'A silent schemer with woolly antics.', '/deckImages/kidstv/shaun.jpg'),
 ((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Ben and Holly', 42, 67, 45, 80, 68, 'Magic, royalty, and fairy mischief.', '/deckImages/kidstv/ben_holly.jpg'),
-((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Mister Maker', 37, 83, 40, 79, 72, 'Art and crafts faster than you can blink.', '/deckImages/kidstv/mister_maker.jpg');
+((SELECT id FROM decks WHERE name = 'Kids-tv'), 'Mister Maker', 37, 83, 40, 79, 72, 'Art and crafts faster than you can blink.', '/deckImages/kidstv/mister_maker.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Monkey D. Luffy', 98, 35, 80, 95, 80, 'The rubber personification of the sun.', '/deckImages/anime/luffy.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Roronoa Zoro', 96, 40, 70, 90, 65, 'The captains first mate who never loses his way.', '/deckImages/anime/zoro.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Ichigo Kurosaki', 90, 72, 80, 95, 65, 'A substitute Soul Reaper torn between worlds.', '/deckImages/anime/ichigo.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Rukia Kuchiki', 70, 85, 68, 88, 60, 'A noble Soul Reaper with an icy resolve.', '/deckImages/anime/rukia.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Light Yagami', 30, 90, 40, 75, 68, ' A genius with a god complex and a notebook of death.', '/deckImages/anime/light.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'L', 25, 91, 42, 75, 65, 'A brilliant mind, hunched over sweets and secrets.', '/deckImages/anime/L.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Goku', 89, 50, 50, 94, 75, 'A Saiyan warrior whose strength grows each day.', '/deckImages/anime/goku.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Naruto Uzumaki', 80, 52, 80, 70, 75, 'The loud ninja who turned loneliness into a legacy.', '/deckImages/anime/naruto.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Sailor Moon', 80, 45, 65, 90, 75, 'Shining as the universe’s greatest guardian.', '/deckImages/anime/sailorMoon.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Edward Elric', 81, 92, 78, 89, 56, 'A short-tempered alchemist chasing redemption.', '/deckImages/anime/edward.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Satoru Gojo', 99, 45, 75, 98, 80, 'A sorcerer whose blindfold hides the eyes of a god.', '/deckImages/anime/gojo.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Eren Yeager', 96, 75, 84, 91, 43, 'A freedom-seeking soul caught in the chains of fate.', '/deckImages/anime/eren.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Levi Ackerman', 87, 80, 87, 98, 40, 'Humanity’s clean cut strongest soldier', '/deckImages/anime/levi.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Ash Ketchum', 35, 32, 45, 30, 95, 'A young trainer chasing to be the very best.', '/deckImages/anime/ash.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Senshi', 63, 94, 88, 42, 54, 'A warrior chef armed with a blade and a ladle.', '/deckImages/anime/senshi.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Natsu Dragneel', 92, 50, 75, 85, 65, 'A fire-breathing brawler with even stronger loyalty.', '/deckImages/anime/natsu.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Spike Spiegel', 79, 46, 64, 70, 63, 'A space cowboy haunted by jazz, smoke, and the past.', '/deckImages/anime/spike.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Joseph Joestar', 90, 87, 74, 95, 71, 'A trickster renowned for his brains and brawn', '/deckImages/anime/joseph.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Jotaro Kujo', 85, 71, 81, 95, 79, 'Stoic and steel-eyed, with a Stand that stops time.', '/deckImages/anime/jotaro.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Vash the Stampede', 70, 56, 82, 67, 16, '"LOVE AND PEACE..!"', '/deckImages/anime/vash.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Sora', 58, 10, 46, 50, 47, 'An optimist who believes hearts can save worlds.', '/deckImages/anime/sora.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Shiro', 35, 100, 43, 50, 48, 'A quiet genius with a mechanical mind.', '/deckImages/anime/shiro.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Gon Freeccss', 87, 34, 60, 87, 93, 'A wild-hearted boy with terrifying potential.', '/deckImages/anime/gon.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Killua Zoldyck', 95, 86, 79, 100, 30, 'A child assassin with lightning in his veins.', '/deckImages/anime/killua.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Seishiro Nagi', 55, 10, 20, 70, 40, 'A lazy genius striker, finding life a hassle.', '/deckImages/anime/nagi.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Shinji Ikari', 29, 39, 21, 20, 46, 'A reluctant pilot screaming for love in a broken world.', '/deckImages/anime/shinji.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Lucy', 55, 80, 45, 75, 55, 'A netrunner chasing for the stars.', '/deckImages/anime/lucy.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Tanjiro Kamada', 85, 60, 68, 70, 50, ' A gentle soul who turns grief into blade-swinging resolve.', '/deckImages/anime/tanjiro.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Power', 75, 30, 57, 74, 15, 'A bloodthirsty fiend with the appetite of a demon.', '/deckImages/anime/power.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Shoto Todoroki', 80, 34, 70, 80, 30, 'A walking storm of fire and ice, thawing from within.', '/deckImages/anime/shoto.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Izuku Midoriya', 82, 40, 75, 73, 22, 'A born hero in borrowed power, making his legacy.', '/deckImages/anime/izuku.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'All Might', 89, 40, 87, 95, 50, 'The Symbol of Peace, there for those in need.', '/deckImages/anime/allMight.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Ken Kaneki', 78, 54, 60, 78, 28, 'A tragic hybrid torn between hunger and humanity.', '/deckImages/anime/ken.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Saitama', 99, 59, 99, 90, 89, 'A hero so strong he’s bored out of his bald head.', '/deckImages/anime/saitama.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Howl', 77, 89, 78, 93, 82, 'A dazzling wizard with a hard heart to pin down.', '/deckImages/anime/howl.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Sung Jinwoo', 86, 60, 75, 98, 70, 'A weak hunter who now walks as a shadowed god.', '/deckImages/anime/jinwoo.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Totoro', 70, 87, 60, 64, 91, 'A forest spirit of soft silences and wide-eyed wonder.', '/deckImages/anime/totoro.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Gintoki', 82, 76, 70, 88, 95, 'A lazy samurai who only swings when necessary.', '/deckImages/anime/gintoki.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Crona', 84, 26, 57, 90, 29, 'A twisted soul unsure how to deal with anyone.', '/deckImages/anime/crona.jpg'),
+((SELECT id FROM decks WHERE name = 'Anime'), 'Shigeo Kageyama', 99, 25, 95, 88, 86, 'A quiet boy hiding explosive power beneath calm waters.', '/deckImages/anime/mob.jpg');
