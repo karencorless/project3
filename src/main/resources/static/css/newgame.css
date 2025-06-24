@@ -134,11 +134,11 @@ input[type="checkbox"] {
 }
 
 #buttons #submit:hover {
-    box-shadow: rgba(157, 161, 226, .35) 0 -25px 18px -14px inset,rgba(157, 161, 226, .25) 0 1px 2px,rgba(157, 161, 226, .25) 0 2px 4px,rgba(157, 161, 226, .25) 0 4px 8px,rgba(157, 161, 226, .25) 0 8px 16px,rgba(157, 161, 226, .25) 0 16px 32px;
+    box-shadow: rgba(61, 42, 150, .35) 0 -25px 18px -14px inset,rgba(61, 42, 150, .25) 0 1px 2px,rgba(61, 42, 150, .25) 0 2px 4px,rgba(61, 42, 150, .25) 0 4px 8px,rgba(61, 42, 150, .25) 0 8px 16px,rgba(61, 42, 150, .25) 0 16px 32px;
     transform: scale(1.05) rotate(-1deg);
 }
 
  #buttons #reset:hover {
-    box-shadow: rgba(110, 115, 19, .35) 0 -25px 18px -14px inset,rgba(110, 115, 19, .25) 0 1px 2px,rgba(110, 115, 19, .25) 0 2px 4px,rgba(110, 115, 19, .25) 0 4px 8px,rgba(110, 115, 19, .25) 0 8px 16px,rgba(110, 115, 19, .25) 0 16px 32px;
+    box-shadow: rgba(229, 69, 0, .35) 0 -25px 18px -14px inset,rgba(229, 69, 0, .25) 0 1px 2px,rgba(229, 69, 0, .25) 0 2px 4px,rgba(229, 69, 0, .25) 0 4px 8px,rgba(229, 69, 0, .25) 0 8px 16px,rgba(229, 69, 0, .25) 0 16px 32px;
     transform: scale(1.05) rotate(1deg);
  }
