@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>All Decks</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <title>All Decks</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
 
-        <style>
-            body {
-                text-align: center;
-            }
+    <style>
+        body {
+            text-align: center;
+        }
 
-            .all-decks {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 30px;
-                justify-content: center;
-                padding: 10px;
-                text-align: center;
-                margin-top: 20px;
-            }
+        .all-decks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            padding: 10px;
+            text-align: center;
+            margin: 20px auto 0 auto;
+            max-width: 1120px;
+        }
 
-            .deck img {
-                width: 100%;
-                height: auto;
-                border-bottom: 1px solid #ccc;
-            }
+        .deck img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ccc;
+        }
 
-            .deck strong {
-                color: rgb(68, 68, 68);
-                text-decoration: none;
-                word-wrap: break-word;
-                width: 100%;
-                font-size: 22px;
-            }
+        .deck strong {
+            color: rgb(68, 68, 68);
+            text-decoration: none;
+            word-wrap: break-word;
+            width: 100%;
+            font-size: 22px;
+        }
 
-            .deck {
-                max-width: 250px;
-                box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-                transition: 0.3s;
-                border: 1.5px solid #ccc;
-            }
+        .deck {
+            max-width: 250px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            transition: 0.3s;
+            border: 1.5px solid #ccc;
+        }
 
-            .deck:hover {
-                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-                transform: scale(1.02);
-                opacity: 0.8;
-            }
-        </style>
-    </head>
-    <body>
+        .deck:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            transform: scale(1.02);
+            opacity: 0.8;
+        }
+    </style>
+</head>
 
-    <div th:insert="~{fragments :: header}"></div>
+<body>
+    <div th:insert="~{fragments/header :: header}"></div>
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
         <h1>Decks</h1>
         <h5>Select a deck to view cards within the deck.</h5>
@@ -68,7 +71,11 @@
                 </a>
             </div>
         </div>
+    <div class="mt-5">
+        <a href="/decks/compare" class="btn btn-primary mt-3">Compare Cards</a>
+    </div>
 
-        <div th:replace="~{fragments :: footer}"></div>
-    </body>
+    <div th:insert="~{fragments/footer :: footer}"></div>
+    <div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
+</body>
 </html>

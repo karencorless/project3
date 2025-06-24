@@ -12,7 +12,7 @@ public class CardTest {
     @Autowired
     DeckRepository deckRepository;
 
-    private Card testCard = new Card(1L, 1L, "Johnny Silverhand", "Legendary rockerboy, visionary, and rebel.", "placeholder.png", 75, 40, 75, 60, 85, deckRepository.findById(1L).orElse(null));
+    private Card testCard = new Card(1L, 1L, "Johnny Silverhand", "Legendary rockerboy, visionary, and rebel.", "placeholder.png", 75, 40, 75, 60, 85, null);
 
     //    Tests that card model has an associated ID
     @Test

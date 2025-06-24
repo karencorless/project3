@@ -78,7 +78,13 @@ public class GameService {
         } else {
             game = new Game(null, roboPlayer.getId(), player.getId(), pointsToWin);
         }
+
         gameRepository.save(game);
+        player.setGameId(game.getId());
+        roboPlayer.setGameId(game.getId());
+        playerRepository.save(player);
+        playerRepository.save(roboPlayer);
+
         return game;
     }
 
@@ -189,7 +195,7 @@ public class GameService {
 
     @Transactional
     public void winPoint(Long playerId) {
-        // Updatedas previous wasn't updating for some reason
+        // Updated as previous wasn't updating for some reason
         Player player = playerRepository.findById(playerId).orElse(null);
         if (player != null) {
             player.setCurrentScore(player.getCurrentScore() + 1);
@@ -202,17 +208,17 @@ public class GameService {
 
 
     //          Compare players' scores
-    public Long compareCurrentScores(Long playerOneId, Long playerTwoId){
+    public Player compareCurrentScores(Long playerOneId, Long playerTwoId){
         assert checkCurrentUserIsPlayer(playerOneId) || checkCurrentUserIsPlayer(playerTwoId);
 
         Integer playerOneScore = getScore(playerOneId);
         Integer playerTwoScore = getScore(playerTwoId);
         if (playerOneScore > playerTwoScore) {
-            return playerOneId;
+            return playerRepository.findById(playerOneId).orElse(null);
         } else if (playerTwoScore > playerOneScore) {
-            return playerTwoId;
+            return playerRepository.findById(playerTwoId).orElse(null);
         } else {
-            return null; // need error handling
+            return null;
         }
     }
 
@@ -364,7 +370,7 @@ public class GameService {
                 break;
             }
             else {
-                System.out.println("Error removing card with ID " + cardId + "from CPU deck.");
+                System.out.println("Error removing card with ID " + cardId + "from CPU hand.");
             }
         }
 
@@ -381,73 +387,93 @@ public class GameService {
 
     // Get P1's selected cards custom stat name
     public String getCardCustomStatName(Card card) {
-
-        Long cardDeckId = card.getParentDeckId();
-        String customStatName = "Special";
-
-        // The Simpsons
-        if (cardDeckId == 1) {
-            customStatName = "D'oh Factor";
-        }
-        // Harry Potter
-        else if(cardDeckId == 2) {
-            customStatName = "Spellcasting";
-        }
-        // Marvel
-        else if(cardDeckId == 3) {
-            customStatName = "Superpower";
-        }
-        // Disney
-        else if(cardDeckId == 4) {
-            customStatName = "Disney Magic";
-        }
-
-        // Add remaining deck names later.
-
-        return customStatName;
+        return card.getDeck().getUniqueStatName();
     }
-
 
     //  Deletion and end game related methods:
 
-    //        End Game, determine winner
-    public boolean endGame(Long gameId) {
-        assert checkCurrentUserIsPlayerInGame(gameId);
-
-        Long currentUserId = userService.getCurrentUserId();
-        Player[] players = getPlayersFromGame(gameId);
-        Long winnerPlayerId = compareCurrentScores(players[0].getId(), players[1].getId());
-        if (winnerPlayerId == null){
-            return false;
-        }
-        Long winnerUserId = playerRepository.findById(winnerPlayerId).get().getPlayerUserId();
-        boolean currentUserWinner = Objects.equals(winnerUserId, currentUserId);
-        if (currentUserWinner) {
-            User currentUser = userRepository.findById(currentUserId).orElse(null);
-            assert currentUser != null;
-            currentUser.setGamesWon(currentUser.getGamesWon() + 1);
-        }
-        return currentUserWinner;
-    }
-
-
-    //          Clears the game from the DB, deleting the playerCard, player, and game objects.
-    @Transactional
-    public void deleteGame(Long gameId){
+    public void endGameTally(Long gameId) {
         assert checkCurrentUserIsPlayerInGame(gameId);
 
         Game game = gameRepository.findById(gameId).orElse(null);
-        assert game != null;
+        if (game == null) {
+            throw new NoSuchEntityExistsException("Game");}
 
-        Long playerOneId = game.getPlayerOneId();
-        Long playerTwoId = game.getPlayerTwoId();
+        Player playerOne = playerRepository.findById(game.getPlayerOneId()).orElse(null);
+        Player playerTwo = playerRepository.findById(game.getPlayerTwoId()).orElse(null);
+        if (playerOne == null || playerTwo == null) {
+            throw new NoSuchEntityExistsException("Player");
+        }
 
-        playerCardRepository.deleteAllByPlayerId(playerOneId);
-        playerCardRepository.deleteAllByPlayerId(playerTwoId);
-        playerRepository.deleteAllById(playerOneId);
-        playerRepository.deleteAllById(playerTwoId);
-        gameRepository.deleteAllById(gameId);
+        User userOne = userRepository.findById(playerOne.getPlayerUserId()).orElse(null);
+        User userTwo = userRepository.findById(playerTwo.getPlayerUserId()).orElse(null);
+        assert userOne != null;
+        assert userTwo != null;
+        userOne.setGamesPlayed(userOne.getGamesPlayed()+1);
+        userTwo.setGamesPlayed(userTwo.getGamesPlayed()+1);
+
+        Player winnerPlayer = compareCurrentScores(playerOne.getId(), playerTwo.getId());
+        if (winnerPlayer == null) {return;}
+        User winner =  userRepository.findById(winnerPlayer.getPlayerUserId()).orElse(null);
+        if (winner == null) {
+            throw new NoSuchEntityExistsException("User");
+        } else if (winner == userOne) {
+            userOne.setGamesWon(userOne.getGamesWon()+1);
+        } else if (winner == userTwo) {
+            userTwo.setGamesWon(userTwo.getGamesWon()+1);
+        }
+        userRepository.save(userOne);
+        userRepository.save(userTwo);
     }
+
+//    //        End Game, determine winner
+//    public void endGame(Long gameId) {
+//        assert checkCurrentUserIsPlayerInGame(gameId);
+//
+//        Long currentUserId = userService.getCurrentUserId();
+//        Player[] players = getPlayersFromGame(gameId);
+//        Long winnerPlayerId = compareCurrentScores(players[0].getId(), players[1].getId());
+//
+//
+//        Player winnerPlayer = playerRepository.findById(winnerPlayerId).orElse(null);
+//        if (winnerPlayer == null) {
+//            return;
+//        }
+//        User winner = userRepository.findById(winnerPlayer.getPlayerUserId()).orElse(null);
+//        if (winner == null) {
+//            throw new NoSuchEntityExistsException("User");
+//        }
+//        winner.setGamesWon(winner.getGamesWon()+1);
+//        winner.setGamesPlayed(winner.getGamesPlayed()+1);
+//        if (Objects.equals(winnerPlayer, players[0])) {
+//            User loser = userRepository.findById(players[1].getPlayerUserId()).orElse(null);
+//            assert loser != winner;
+//            assert loser != null;
+//            loser.setGamesPlayed(loser.getGamesPlayed()+1);
+//        }
+//    }
+
+//
+//    //          Clears the game from the DB, deleting the playerCard, player, and game objects.
+//    @Transactional
+//    public void deleteGame(Long gameId){
+//        assert checkCurrentUserIsPlayerInGame(gameId);
+//
+//        Game game = gameRepository.findById(gameId).orElse(null);
+//        assert game != null;
+//
+//        Long playerOneId = game.getPlayerOneId();
+//        Long playerTwoId = game.getPlayerTwoId();
+//        Long roboUserId = userRepository.findUserByUsername("robouser1").getId();
+//
+//
+//
+//        playerCardRepository.deleteAllByPlayerId(playerOneId);
+//        playerCardRepository.deleteAllByPlayerId(playerTwoId);
+//        playerRepository.deleteAllById(playerOneId);
+//        playerRepository.deleteAllById(playerTwoId);
+//        gameRepository.deleteAllById(gameId);
+//    }
 
 
     //    Delete all playerCards currently in player's hand
@@ -456,15 +482,16 @@ public class GameService {
         playerCardRepository.deleteAllByPlayerId(playerId);
     }
 
+
     @Transactional
     public void cleanUp(){
         Long userId = userService.getCurrentUserId();
         List<Player> playersForCurrentUser = playerRepository.findAllByPlayerUserId(userId);
         for (Player player : playersForCurrentUser){
-            Long playerId = player.getId();
-            playerCardRepository.deleteAllByPlayerId(playerId);
-            playerRepository.deleteAllById(playerId);
+            gameRepository.deleteAllById(player.getGameId());
+//            Long playerId = player.getId();
+//            playerCardRepository.deleteAllByPlayerId(playerId);
+//            playerRepository.deleteAllById(playerId);
         }
     }
-
 }
