@@ -21,6 +21,8 @@ public class Player {
     private String currentStat = null;
     @Column(name = "current_score")
     private Integer currentScore = 0;
+    @Column(name="game_id")
+    private Long gameId;
 
 
     public Player(Long userId) {

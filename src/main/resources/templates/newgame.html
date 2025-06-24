@@ -1,42 +1,57 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
 <head>
+
     <meta charset="UTF-8">
     <title>New Game</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
+    <link rel="stylesheet" th:href="@{/css/newgame.css}">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon.ico">
+
 </head>
 <body>
 
-    <div th:insert="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments :: header}"></div>
+<div th:insert="~{fragments :: tutorialModal}"></div>
 
-    <h1>Game Setup</h1>
+<h1>Game Setup</h1>
 
-    <form id="game-setup" th:action="@{/game/new}" method="post">
-        <div id="deck-selection">
-            <!--    deck selection-->
-            <div th:each="deck: ${decks}">
-                <input type="checkbox" th:id="'deck-' + ${deck.id}" th:name="chosenDeckIds" th:value="${deck.id}">
-                <label th:for="'deck-' + ${deck.id}">
-                    <img th:src="${deck.thumbnail}" alt="Deck thumbnail" width="100"/>
-                    <strong th:text="${deck.name}"></strong>
-                </label>
+<div class="container" id="game-setup-container">
+    <div class="justify-content-center" id="game-setup-container-div">
+        <form id="game-setup" th:action="@{/game/new}" method="post">
+            <!--    View Decks    -->
+            <div class="all-decks">
+                <!--    Displays a list of decks in the database showing the name and thumbnail image for each deck    -->
+                <div th:each="deck: ${decks}" id="deck" class="deck">
+                    <!--    Link to an individual deck to view cards    -->
+                    <label th:for="'deck-' + ${deck.id}">
+                        <!--        Deck thumbnail image    -->
+                        <img th:src="${deck.thumbnail}" alt="Deck thumbnail" class="mb-1"/>
+                        <!--    Deck Name    -->
+                        <strong th:text="${deck.name}"></strong><br>
+                        <input type="checkbox" id="check" th:id="'deck-' + ${deck.id}" th:name="chosenDeckIds" th:value="${deck.id}">
+                    </label>
+                </div>
             </div>
-        </div>
-        <div id="points-picker">
-            <label for="pointsToWin">Points to win (max 5):</label>
-            <input type="range" id="pointsToWin" name="pointsToWin" min="1" max="5" value="2" oninput="this.nextElementSibling.value = this.value">
-            <output>2</output>
-        </div>
-        <div id="buttons">
-            <input type="submit" id="submit" name="submit" value="Start Game">
-            <input type="reset" id="reset" name="reset" value="Clear Choices">
-            <!--    buttons: start game,  clear choices-->
-        </div>
-    </form>
 
-    <div th:insert="~{fragments/footer :: footer}"></div>
-    <div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
+
+            <div id="points-picker">
+                <label for="pointsToWin">Points to win (max 5):</label> <br>
+                <input type="range" id="pointsToWin" name="pointsToWin" min="1" max="5" value="2" oninput="this.nextElementSibling.value = this.value">
+                <output>2</output>
+            </div>
+            <div id="buttons">
+                <!--        <input type="button" id="select-all" value="Select All">-->
+                <input type="submit" id="submit" name="submit" value="Start Game">
+                <input type="reset" id="reset" name="reset" value="Clear Choices">
+                <!--    buttons: start game,  clear choices-->
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments :: footer}"></div>
+
 </body>
 </html>
