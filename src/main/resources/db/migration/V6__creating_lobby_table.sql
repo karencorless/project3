@@ -1,0 +1,7 @@
+CREATE TABLE lobby (
+  lobby_id BIGSERIAL PRIMARY KEY,
+  user1_id BIGINT,
+  user2_id BIGINT,
+  status VARCHAR(20),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
