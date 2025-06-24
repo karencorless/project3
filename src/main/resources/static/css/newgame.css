@@ -94,7 +94,7 @@ input[type="checkbox"] {
 #buttons #submit {
     margin-top: 15px;
     border-radius: 100px;
-    box-shadow: rgba(45, 107, 186, 0.2) 0 -25px 18px -14px inset,rgba(45, 107, 186, 0.15) 0 1px 2px,rgba(45, 107, 186, 0.15) 0 2px 4px,rgba(45, 107, 186, 0.15) 0 4px 8px,rgba(45, 107, 186, 0.15) 0 8px 16px,rgba(45, 107, 186, 0.15) 0 16px 32px;
+    box-shadow: rgba(48, 82, 155, 0.2) 0 -25px 18px -14px inset,rgba(48, 82, 1555, 0.15) 0 1px 2px,rgba(48, 82, 155, 0.15) 0 2px 4px,rgba(48, 82, 155, 0.15) 0 4px 8px,rgba(48, 82, 155, 0.15) 0 8px 16px,rgba(48, 82, 155, 0.15) 0 16px 32px;
     cursor: pointer;
     display: inline-block;
     padding: 7px 20px;
@@ -106,7 +106,7 @@ input[type="checkbox"] {
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    background-color: #c2e5fb;
+    background-color: #d2e4ee;
     color: blue;
     width: 8em;
     height: 3em;
@@ -115,7 +115,7 @@ input[type="checkbox"] {
 #buttons #reset {
     margin-top: 15px;
     border-radius: 100px;
-    box-shadow: rgba(186, 45, 45, .2) 0 -25px 18px -14px inset,rgba(186, 45, 45, .15) 0 1px 2px,rgba(186, 45, 45, .15) 0 2px 4px,rgba(186, 45, 45, .15) 0 4px 8px,rgba(186, 45, 45, .15) 0 8px 16px,rgba(186, 45, 45, .15) 0 16px 32px;
+    box-shadow: rgba(229, 69, 0, .2) 0 -25px 18px -14px inset,rgba(229, 69, 0, .15) 0 1px 2px,rgba(229, 69, 0, .15) 0 2px 4px,rgba(229, 69, 0, .15) 0 4px 8px,rgba(229, 69, 0, .15) 0 8px 16px,rgba(229, 69, 0, .15) 0 16px 32px;
     cursor: pointer;
     display: inline-block;
     padding: 7px 20px;
@@ -127,18 +127,18 @@ input[type="checkbox"] {
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    background-color: #fbc2c2;
+    background-color: rgb(251, 207, 191);
     color: red;
     width: 8em;
     height: 3em;
 }
 
 #buttons #submit:hover {
-    box-shadow: rgba(45, 107, 186,.35) 0 -25px 18px -14px inset,rgba(45, 107, 186, .25) 0 1px 2px,rgba(45, 107, 186, .25) 0 2px 4px,rgba(45, 107, 186, .25) 0 4px 8px,rgba(45, 107, 186, .25) 0 8px 16px,rgba(45, 107, 186, .25) 0 16px 32px;
+    box-shadow: rgba(157, 161, 226, .35) 0 -25px 18px -14px inset,rgba(157, 161, 226, .25) 0 1px 2px,rgba(157, 161, 226, .25) 0 2px 4px,rgba(157, 161, 226, .25) 0 4px 8px,rgba(157, 161, 226, .25) 0 8px 16px,rgba(157, 161, 226, .25) 0 16px 32px;
     transform: scale(1.05) rotate(-1deg);
 }
 
  #buttons #reset:hover {
-    box-shadow: rgba(186, 45, 45, .35) 0 -25px 18px -14px inset,rgba(186, 45, 45, .25) 0 1px 2px,rgba(186, 45, 45, .25) 0 2px 4px,rgba(186, 45, 45, .25) 0 4px 8px,rgba(186, 45, 45, .25) 0 8px 16px,rgba(186, 45, 45, .25) 0 16px 32px;
+    box-shadow: rgba(110, 115, 19, .35) 0 -25px 18px -14px inset,rgba(110, 115, 19, .25) 0 1px 2px,rgba(110, 115, 19, .25) 0 2px 4px,rgba(110, 115, 19, .25) 0 4px 8px,rgba(110, 115, 19, .25) 0 8px 16px,rgba(110, 115, 19, .25) 0 16px 32px;
     transform: scale(1.05) rotate(1deg);
  }
