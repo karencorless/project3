@@ -46,7 +46,11 @@ jobs:
           java-version: 21
           distribution: 'temurin'
           maven-version: ${{ matrix.maven }}
-
+      - name: Install ChromeDriver
+        run: |
+            sudo apt update
+            sudo apt install -y chromium-chromedriver
+            sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver
       - name: Build and test with Maven
         run: mvn clean install
 
