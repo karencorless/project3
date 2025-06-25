@@ -50,6 +50,24 @@
             transform: scale(1.02);
             opacity: 0.8;
         }
+
+        .main-button-neutral {
+            background: linear-gradient(-45deg, rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
+            color: black;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .main-button-neutral:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+            border-color: rgba(0, 0, 0, 0.4);
+            color: black;
+        }
     </style>
 </head>
 
@@ -74,7 +92,7 @@
             </div>
         </div>
     <div class="mt-5">
-        <a href="/decks/compare" class="btn btn-primary mt-3">Compare Cards</a>
+        <a href="/decks/compare" class="btn main-button-neutral mt-3">Compare Cards</a>
     </div>
 
     <div th:insert="~{fragments/footer :: footer}"></div>
