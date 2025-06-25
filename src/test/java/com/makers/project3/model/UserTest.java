@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.sql.Date;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class UserTest {
