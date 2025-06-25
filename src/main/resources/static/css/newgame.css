@@ -91,6 +91,11 @@ input[type="checkbox"] {
     font-size: 20px;
 }
 
+#buttons {
+    text-align: center;
+    margin: auto;
+}
+
 #buttons #submit {
     margin-top: 15px;
     border-radius: 100px;
@@ -98,7 +103,6 @@ input[type="checkbox"] {
     cursor: pointer;
     display: inline-block;
     padding: 7px 20px;
-    text-align: center;
     text-decoration: none;
     transition: all 250ms;
     border: 0;
