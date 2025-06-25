@@ -276,7 +276,10 @@ public class GameService {
     public int getStatValue(String stat, Card card){
         String normalizedStat = stat.toLowerCase();
 
-        if ("strength".equals(normalizedStat)) {
+        if (card.getDeck().getUniqueStatName() != null && card.getDeck().getUniqueStatName().toLowerCase().equals(normalizedStat)) {
+            return card.getCustomStat();
+        }
+        else if ("strength".equals(normalizedStat)) {
             return card.getStrength();
         } else if ("wisdom".equals(normalizedStat)) {
             return card.getWisdom();
@@ -284,8 +287,7 @@ public class GameService {
             return card.getDefence();
         } else if ("luck".equals(normalizedStat)) {
             return card.getLuck();
-        }
-        else {
+        } else {
             return card.getCustomStat();
         }
     }

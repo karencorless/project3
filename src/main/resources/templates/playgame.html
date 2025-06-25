@@ -191,20 +191,20 @@
 
     <div th:if="${cpuPlayedCard != null and roundComplete}" style="display: flex; justify-content: space-between; margin-top: 3px;">
     <!-- Show results after battle -->
-    <div th:if="${cpuPlayedCard != null}" style="text-align: left; margin-top: 3px;">
+    <div style="text-align: left; margin-top: 3px;">
         <h2>Your Reveal</h2>
         <p>You played: <strong th:text="${playedCard.name}"></strong></p>
-        <p th:if="${chosenStat != 'customStat'}">You picked: <strong th:text="${chosenStat}"></strong></p>
-        <p th:if="${chosenStat == 'customStat'}">You picked: <strong th:text="${customStatName}"></strong></p>
+        <p th:if="${chosenStat == 'strength' or chosenStat == 'wisdom' or chosenStat == 'defence' or chosenStat == 'luck'}">You picked: <strong th:text="${chosenStat}" style="text-transform: capitalize;"></strong></p>
+        <p th:if="${chosenStat != 'strength' and chosenStat != 'wisdom' and chosenStat != 'defence' and chosenStat != 'luck'}">You picked: <strong th:text="${customStatName}" style="text-transform: capitalize;"></strong></p>
         <p>Stat value: <strong th:text="${statValue}"></strong></p>
     </div>
 
     <!--Reveals CPU's stats after the round's completed-->
-    <div th:if="${cpuPlayedCard != null}" style="float: right; text-align: right;">
+    <div style="float: right; text-align: right;">
         <h2>Player 2's Reveal</h2>
         <p>Played: <strong th:text="${cpuPlayedCard.name}"></strong></p>
-        <p th:if="${cpuChosenStat != 'customStat'}">Stat: <strong th:text="${cpuChosenStat}"></strong></p>
-        <p th:if="${cpuChosenStat == 'customStat'}">Stat: <strong th:text="${cpuCustomStatName}"></strong></p>
+        <p th:if="${chosenStat == 'strength' or chosenStat == 'wisdom' or chosenStat == 'defence' or chosenStat == 'luck'}">Stat: <strong th:text="${chosenStat}" style="text-transform: capitalize;"></strong></p>
+        <p th:if="${chosenStat != 'strength' and chosenStat != 'wisdom' and chosenStat != 'defence' and chosenStat != 'luck'}">Stat: <strong th:text="${cpuCustomStatName}" style="text-transform: capitalize;"></strong></p>
         <p>Stat value: <strong th:text="${cpuStatValue}"></strong></p>
     </div>
     </div>
@@ -341,14 +341,14 @@
     </div>
 
     <!-- Finish Game button -->
-    <div style="text-align: center; margin-top: 20px;">
+    <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;">
         <form th:if="${gameOver}" th:action="@{/game/reset}" method="get">
             <button type="submit" class="btn main-button-neutral btn-lg">Finish</button>
         </form>
     </div>
 
     <!--New game/reset hand button-->
-    <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;">
+    <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;" th:if="!gameOver">
         <form th:action="@{/game/reset}" method="get">
             <button type="submit" class="btn main-button-warning btn-lg">Quit Game</button>
         </form>

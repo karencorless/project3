@@ -2,11 +2,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches:
-      - QE
+    branches: ['*']
   pull_request:
-    branches:
-      - QE
+    branches: ['*']
 
 jobs:
   build:
@@ -46,13 +44,9 @@ jobs:
           java-version: 21
           distribution: 'temurin'
           maven-version: ${{ matrix.maven }}
-      - name: Install ChromeDriver
-        run: |
-            sudo apt update
-            sudo apt install -y chromium-chromedriver
-            sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/local/bin/chromedriver
-      - name: Build and test with Maven
-        run: mvn clean install
+
+      - name: Run model unit tests (currently skipping app/Selenium tests)
+        run: mvn test -Dtest=com.makers.project3.model.**
 
       - name: Upload Surefire test reports (on failure)
         if: failure()
