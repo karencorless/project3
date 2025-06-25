@@ -11,7 +11,6 @@
         inset 0 0 0 3px rgba(255, 255, 255, 0.4),
         0px 10px 20px rgba(0, 0, 0, 0.19),
         0px 6px 6px rgba(0, 0, 0, 0.23);
-        cursor: pointer;
         transition: all .2s ease-in-out;
         padding: 4px;
         min-height: 370px;
@@ -38,16 +37,18 @@
         }
 
         .card-wrap.brit-tv {
-                background: linear-gradient(145deg, #D0CBDD, #AFA9C5, #8C7FB2, #5E5B84, #2F2C45);
+        background: linear-gradient(145deg, #D0CBDD, #AFA9C5, #8C7FB2, #5E5B84, #2F2C45);
         }
 
         .card-wrap.kids-tv {
-            background: linear-gradient(145deg, #FFE082, #FFC107, #FF8F00, #F57C00, #E65100);
+        background: linear-gradient(145deg, #FFE082, #FFC107, #FF8F00, #F57C00, #E65100);
         }
 
-        /* .card-wrap:hover {
+
+
+        .card-wrap.hand:hover {
         transform: scale(1.1);
-        } */
+        }
 
         .card-name {
           display: block;
@@ -132,10 +133,10 @@
         }
 
 
-        /* .card-box-style:hover {
+        .card-box-style.selected:hover {
         box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
         transform: scale(1.03);
-        } */
+        }
 
         .card-text-box {
         max-width: 100%;
@@ -180,3 +181,8 @@
                     0 6px 12px rgba(0, 0, 0, 0.3);
                     transition: all 0.3s ease;
                     }
+
+        .compare-card-spacing {
+        margin-left: 50px;
+        margin-right: 50px;
+        }

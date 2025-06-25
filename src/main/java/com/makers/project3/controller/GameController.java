@@ -111,6 +111,9 @@ public class GameController {
             return "playgame";
         }
 
+        // Sends P1's cardId out
+        model.addAttribute("cardId", cardId);
+
         // Selects P1's card from their hand using P1 and Card Id, AND REMOVES CARD FROM HAND, discardedbool=true.
         Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
 
@@ -149,6 +152,8 @@ public class GameController {
     @PostMapping("/game/play/p1-attack-2")
     public String selectP1Stat(@RequestParam("cardId") Long cardId, @RequestParam("chosenStat") String chosenStat,
                                Model model) {
+        System.out.println("Received chosenStat: " + chosenStat);
+
 
         //Get current game object
         Boolean roundComplete = false;
@@ -186,6 +191,9 @@ public class GameController {
             return "playgame";
         }
         int cpuStatValue = gameService.getStatValue(chosenStat, cpuCard);
+
+        // Pass through the CPU's card to view
+        model.addAttribute("cpuPlayedCard", cpuCard);
 
         // Removes CPU's card from their hand so they cant use it again
         gameService.discardCpuChosenCardFromHand(cpuCard.getId(), cpuId);
@@ -231,9 +239,10 @@ public class GameController {
         model.addAttribute("statValue", statValue);
 
         // CPU's round moves
-        model.addAttribute("cpuPlayedCard", cpuCard);
-        model.addAttribute("cpuChosenStat", chosenStat);
+        model.addAttribute("cpuChosenStat", gameService.getCardCustomStatName(cpuCard));
         model.addAttribute("cpuStatValue", cpuStatValue);
+        // Pass through the CPU's card to view
+        model.addAttribute("cpuPlayedCard", cpuCard);
 
         // Display points and mark round complete
         model.addAttribute("player1Score", player1Score);
@@ -292,13 +301,14 @@ public class GameController {
         model.addAttribute("player1Score", player1Score);
         model.addAttribute("cpuScore", cpuScore);
         model.addAttribute("roundComplete", false);
-        model.addAttribute("cpuStat", cpuStat);
+        model.addAttribute("cpuStat", cpuStat.substring(0, 1).toUpperCase() + cpuStat.substring(1));
         model.addAttribute("playerStat", null);
         model.addAttribute("p1IsAttackingNextRound", true);
         model.addAttribute("currentAttacker", "P2");
         model.addAttribute("gameOver", false);
         model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
         model.addAttribute("pointsToWin", currentGame.getPointsToWin());
+        model.addAttribute("cpuPlayedCard", cpuCard);
 
         return "playgame";
     }
