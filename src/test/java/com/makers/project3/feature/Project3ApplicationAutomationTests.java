@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,6 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Project3ApplicationAutomationTests {
     private static ChromeDriver driver;
@@ -49,9 +51,29 @@ public class Project3ApplicationAutomationTests {
         assertEquals(username,userDetail.getText() );
     }
     @Test
-    public void startNewGame() {
+    public void startNewGame() throws InterruptedException {
         automationPage.login();
         driver.findElement(By.linkText("Start Game")).click();
+        //choose decks
+        automationPage.chooseDeck(2);
+        assertTrue(driver.findElement(By.id("deck-2")).isSelected());
+        //choose points to win
+        automationPage.pointsToWin(driver, "pointsToWin", 1);
+        WebElement output = driver.findElement(By.cssSelector("#pointsToWin + output"));
+        assertEquals("1", output.getText());
+
+        WebElement startGame = wait.until(ExpectedConditions.elementToBeClickable(By.id("submit")));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'}); arguments[0].click();", startGame);
+
+        automationPage.selectACard(driver);
+        WebElement chosenCard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".final-card-container .card-wrap.hp")));
+        assertTrue(chosenCard.isDisplayed());
+
+        automationPage.clickRandomStat(driver);
+        WebElement gameResult = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.game-result-container")));
+        String headerText = gameResult.findElement(By.tagName("h1")).getText();
+        assertTrue(headerText.contains("Game Over!"));
 
     }
 
