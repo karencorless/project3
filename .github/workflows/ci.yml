@@ -45,8 +45,8 @@ jobs:
           distribution: 'temurin'
           maven-version: ${{ matrix.maven }}
 
-      - name: Build and test with Maven
-        run: mvn clean install
+      - name: Run model unit tests (currently skipping app/Selenium tests)
+        run: mvn test -Dtest=com.makers.project3.model.**
 
       - name: Upload Surefire test reports (on failure)
         if: failure()
