@@ -24,13 +24,13 @@
 
 <!-- Displays who is attacking that round -->
 <div class="round-result-container" style="text-align: center; margin-top: 10px; margin-top: 30px">
-    <h2 th:if="${currentAttacker == 'P1' and roundComplete == false}"><strong style="color: green;">You</strong> are attacking!</h2>
-    <h2 th:if="${currentAttacker == 'P2' and roundComplete == false}"><strong style="color: red;">Player 2</strong> is attacking!</h2>
+    <h2 th:if="${currentAttacker == 'P1' and roundComplete == false}"><strong style="#92D0D6;">You</strong> are attacking!</h2>
+    <h2 th:if="${currentAttacker == 'P2' and roundComplete == false}"><strong style="color: rgba(255, 194, 194, 1);">Player 2</strong> is attacking!</h2>
 </div>
 
 <!--Displays round winner-->
 <div th:if="${#lists.size(playerHand) > 0 and !gameOver}" class="round-result-container" style="text-align: center; margin-top: 10px;">
-    <h2 th:if="${statValue > cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 1</strong> Wins!</h2>
+    <h2 th:if="${statValue > cpuStatValue and roundComplete == true}"><strong style="color: green;">Player 1</strong> Wins!</h2>
     <h2 th:if="${statValue < cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 2</strong> Wins!</h2>
     <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's a <strong>Draw</strong>!</h2>
 </div>
@@ -245,7 +245,7 @@
 
 <!--Displays player's hand, prompts player to pick card-->
 <div class="container my-4 text-center">
-    <div class="hand-container" th:if="${playerHand != null and !gameOver}">
+    <div class="hand-container" th:if="${playerHand != null and !gameOver}" style="margin-top: 40px;">
         <h2 class="mt-3 mb-3">Your Hand:</h2>
         <!-- Clickable, player can choose a card -->
         <div th:if="${roundComplete == false and playedCard == null}">
