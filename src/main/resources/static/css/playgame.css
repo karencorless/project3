@@ -1,6 +1,6 @@
 .card-placeholder {
-    width: 220px;
-    height: 320px;
+    width: 250px;
+    height: 432px;
     background-color: #ccc;
     border: 2px dashed #999;
     display: flex;
@@ -15,10 +15,16 @@
     margin: 0 auto;
 }
 
+.card-placeholder-container {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
 .game-round-display {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 100px;
     margin-top: 20px;
     flex-wrap: wrap;
@@ -48,8 +54,13 @@
     font-size: 0.95rem;
     flex: 1;
     margin: 0.1em auto 0.1em;
-    cursor: pointer;
 }
+
+.stat-row {
+        display: flex;
+        gap: 0.1em;
+        justify-content: center;
+        }
 
 .final-card-container {
     text-align: center;
@@ -62,6 +73,94 @@
 }
 
 .vs-image {
-    max-width: 290px;
-    height: auto;
+      max-height: 100%;
+}
+
+.form-stat-container {
+    display: flex;
+    gap: 0.1em;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.form-stat-container form {
+    flex: 1;
+    margin: 0;
+}
+
+/*Might need dot in name*/
+form button {
+    width: 100%;
+    display: block;
+    text-align: center;
+}
+
+.vs-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    margin-top: 40px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 90px;
+}
+
+.main-button-success {
+    background: linear-gradient(-45deg, rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
+    color: black;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+.main-button-success:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+    border-color: rgba(0, 0, 0, 0.4);
+    color: #28a745;
+}
+
+.main-button-neutral {
+    background: linear-gradient(-45deg, rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
+    color: black;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+.main-button-neutral:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+    border-color: rgba(0, 0, 0, 0.4);
+    color: black;
+}
+
+.main-button-warning {
+    background: linear-gradient(-45deg, rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
+    color: black;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+}
+
+.main-button-warning:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+    border-color: rgba(0, 0, 0, 0.4);
+    color: red;
+}
+
+.score-container {
+    vertical-align: top;
+    align-self: flex-start;
 }

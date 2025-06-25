@@ -364,6 +364,7 @@ public class GameService {
 
 
     // Mark the CPU's chosen card as discarded
+    @Transactional
     public void discardCpuChosenCardFromHand(Long cardId, Long cpuId) {
 
         // Get the cpu's hand
@@ -375,6 +376,7 @@ public class GameService {
             if (playerCard.getCardId().equals(cardId)) {
                 selectedCardInCpuCards = playerCard;
                 selectedCardInCpuCards.setDiscarded(true);
+                playerCardRepository.save(selectedCardInCpuCards);
                 break;
             }
             else {
