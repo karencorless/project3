@@ -198,4 +198,19 @@ public class PvpService {
         return model;
     }
 
+
+//    public Card getOpponentCardWithStat(Long opponentId, String chosenStat) {
+//        List<PlayerCard> opponentCardsInHand = playerCardRepository.findByPlayerIdopponent(opponentId);
+//
+//        List<Card> opponentHand = new ArrayList<>();
+//        for (PlayerCard card : opponentCardsInHand) {
+//            if (!card.getDiscarded()) {
+//                cardRepository.findById(card.getCardId()).ifPresent(opponentHand::add);
+//            }
+//        }
+//        opponentHand.sort(Comparator.comparingInt((Card card) -> gameService.getStatValue(chosenStat, card)).reversed());
+//
+//        return opponentHand.isEmpty() ? null : opponentHand.get(0);
+//    }
+
 }

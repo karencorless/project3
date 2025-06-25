@@ -68,9 +68,9 @@ public class PvpController {
         return mav;
     }
 
-//      View set up page for a new game
+    //      View set up page for a new game
     @GetMapping("/pvp/new")
-    public String beginNewPvpGame(Model model){
+    public String beginNewPvpGame(Model model) {
         Iterable<Deck> decks = deckRepository.findAll();
         User currentUser = authenticatedUserService.getAuthenticatedUser();
         model.addAttribute("currentUser", currentUser);
@@ -80,23 +80,23 @@ public class PvpController {
     }
 
 
-//       Initialize a new game. Takes input for chosen decks and points to win
+    //       Initialize a new game. Takes input for chosen decks and points to win
     @PostMapping("/pvp/new")
-    public RedirectView setupGame(@RequestParam List<String> chosenDeckIds, @RequestParam Integer pointsToWin){
+    public RedirectView setupGame(@RequestParam List<String> chosenDeckIds, @RequestParam Integer pointsToWin) {
 //        pvpService.cleanUp();
         PvpGame game = pvpService.newPvpGame(pointsToWin, chosenDeckIds);
         return new RedirectView("/pvp/waiting");
     }
 
 
-//    MAY NEED TO CHECK/UPDATE WHEN WE FIGURE OUT HOW PLAYERS JOIN IN, but works so far.
+    //    MAY NEED TO CHECK/UPDATE WHEN WE FIGURE OUT HOW PLAYERS JOIN IN, but works so far.
     @PostMapping("/pvp/join")
     public String joinPvpGame(@RequestParam Long pvpGameId, Model model) {
         User currentUser = authenticatedUserService.getAuthenticatedUser();
         Long playerTwoId = pvpService.addPlayerTwoToPvpGame(pvpGameId, currentUser.getId());
         pvpService.dealPvpPlayerCards(playerTwoId, pvpGameId);
         PvpGame currentPvpGame = pvpGameRepository.findById(pvpGameId).orElse(null);
-        if (currentPvpGame == null){
+        if (currentPvpGame == null) {
             throw new NoSuchEntityExistsException("PvP Game");
         }
 
@@ -125,7 +125,7 @@ public class PvpController {
 
 
     @GetMapping("pvp/waiting")
-    public String  continuePvpGame(Model model){
+    public String continuePvpGame(Model model) {
         User currentUser = authenticatedUserService.getAuthenticatedUser();
         Iterable<Deck> decks = deckRepository.findAll();
         List<User> playersMostWins = leaderboardService.getTopPlayersByWins(3);
@@ -136,7 +136,7 @@ public class PvpController {
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("mode", "pvp");
         return "waiting";
-        }
+    }
 
 
     @GetMapping("/pvp/play")
@@ -203,7 +203,7 @@ public class PvpController {
         } else if (isPlayerTwo) {
             currentPlayer = playerTwo;
             opponent = playerOne;
-        } else{
+        } else {
             throw new RuntimeException("Current user not found in Game.");
         }
 
@@ -225,30 +225,30 @@ public class PvpController {
     public String p1PvpSelectCard(@RequestParam("cardId") Long cardId, Model model) {
 //        pvpService.prepModel(model);
 //        Player currentPlayer = (Player) model.getAttribute("currentPlayer");
-            User currentUser = authenticatedUserService.getAuthenticatedUser();
-            PvpGame currentPvpGame = pvpService.findCurrentUserPvpGame();
+        User currentUser = authenticatedUserService.getAuthenticatedUser();
+        PvpGame currentPvpGame = pvpService.findCurrentUserPvpGame();
 
-            Player playerOne = playerRepository.findById(currentPvpGame.getPlayerOneId()).orElse(null);
-            Player playerTwo = playerRepository.findById(currentPvpGame.getPlayerTwoId()).orElse(null);
-            if (playerOne == null || playerTwo == null) {
-                throw new NoSuchEntityExistsException("Player");
-            }
+        Player playerOne = playerRepository.findById(currentPvpGame.getPlayerOneId()).orElse(null);
+        Player playerTwo = playerRepository.findById(currentPvpGame.getPlayerTwoId()).orElse(null);
+        if (playerOne == null || playerTwo == null) {
+            throw new NoSuchEntityExistsException("Player");
+        }
 
-            Player currentPlayer = null;
-            Player opponent = null;
+        Player currentPlayer = null;
+        Player opponent = null;
 
-            boolean isPlayerOne = (Objects.equals(currentUser.getId(), playerOne.getPlayerUserId()));
-            boolean isPlayerTwo = (Objects.equals(currentUser.getId(), playerTwo.getPlayerUserId()));
+        boolean isPlayerOne = (Objects.equals(currentUser.getId(), playerOne.getPlayerUserId()));
+        boolean isPlayerTwo = (Objects.equals(currentUser.getId(), playerTwo.getPlayerUserId()));
 
-            if (isPlayerOne) {
-                currentPlayer = playerOne;
-                opponent = playerTwo;
-            } else if (isPlayerTwo) {
-                currentPlayer = playerTwo;
-                opponent = playerOne;
-            } else{
-                throw new RuntimeException("Current user not found in Game.");
-            }
+        if (isPlayerOne) {
+            currentPlayer = playerOne;
+            opponent = playerTwo;
+        } else if (isPlayerTwo) {
+            currentPlayer = playerTwo;
+            opponent = playerOne;
+        } else {
+            throw new RuntimeException("Current user not found in Game.");
+        }
 
 
         if (cardId == null) {
@@ -261,8 +261,7 @@ public class PvpController {
         // Displays the selected
         if (playedCard != null) {
             model.addAttribute("playedCard", playedCard);
-        }
-        else {
+        } else {
             model.addAttribute("errorMessage", "Card isn't available in your hand or could not be played.");
         }
 
@@ -281,174 +280,73 @@ public class PvpController {
         model.addAttribute("currentAttacker", "P1");
         model.addAttribute("gameOver", false);
         model.addAttribute("roundComplete", roundComplete);
-        return "playgame";
+        return "play";
     }
 
 //    // P1 SUBMITTING THEIR SELECTED STAT.
-//    @PostMapping("/game/play/p1-attack-2")
-//    public String selectP1Stat(@RequestParam("cardId") Long cardId, @RequestParam("chosenStat") String chosenStat,
-//        Model model) {
-//
-//
-//
-//    }
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//    // P1 SUBMITTING THEIR SELECTED CARD.
-//    @PostMapping("/game/play/p1-attack-1")
-//    public String p1SelectCard(@RequestParam("cardId") Long cardId, Model model) {
-//
-//        // Player 1, CPU, and game info.
-//        User currentUser = authenticatedUserService.getAuthenticatedUser();
-//        Game currentGame = gameService.findCurrentUserGame();
-//        Long userId = userService.getCurrentUserId();
-////        Long gameId = currentGame.getId();
-////        Long currentPlayerId = playerRepository.findByPlayerUserId(userId).getId();
-////        Long cpuId = gameService.getOppIdForGame(currentGame, currentPlayerId);
-//
-//        // more safely finds Players by the Game id and determines who is user and who is cpu
-//        Long currentPlayerId = null;
-//        Long cpuId = null;
-//        Player playerOne = playerRepository.findById(currentGame.getPlayerOneId()).orElse(null);
-//        Player playerTwo = playerRepository.findById(currentGame.getPlayerTwoId()).orElse(null);
-//        if (playerOne == null || playerTwo == null) {
-//            throw new NoSuchEntityExistsException("Player");
-//        }
-//        List<Card> currentHand = new ArrayList<>();
-//        boolean isPlayerOne = (Objects.equals(currentUser.getId(), playerOne.getPlayerUserId()));
-//        boolean isPlayerTwo = (Objects.equals(currentUser.getId(), playerTwo.getPlayerUserId()));
-//        if (isPlayerOne) {
-//            currentPlayerId = playerOne.getId();
-//            cpuId = playerTwo.getId();
-//            currentHand = gameService.showPlayerHand(playerOne.getId());
-//            model.addAttribute("playerHand", currentHand);
-//        } else if (isPlayerTwo) {
-//            currentPlayerId = playerTwo.getId();
-//            cpuId = playerOne.getId();
-//            currentHand = gameService.showPlayerHand(playerTwo.getId());
-//            model.addAttribute("playerHand", currentHand);
-//        } else {
-//            throw new RuntimeException("Current user not found in game.");
-//        }
-//
-//
-//        if (currentPlayerId == null || cardId == null) {
-//            model.addAttribute("errorMessage", "Player ID and Card ID are required to play a card.");
-//            currentHand = gameService.showPlayerHand(currentPlayerId != null ? currentPlayerId : 1L);
-//            model.addAttribute("playerHand", currentHand);
-//            return "playgame";
-//        }
-//
-//
-//
-//        // Sends P1's cardId out
-//        model.addAttribute("cardId", cardId);
-//
-//        // Selects P1's card from their hand using P1 and Card Id, AND REMOVES CARD FROM HAND, discardedbool=true.
-//        Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
-//
-//        // Displays the selected
-//        if (playedCard != null) {
-//            model.addAttribute("playedCard", playedCard);
-//            model.addAttribute("successMessage", "You played: " + playedCard.getName() + "!");
-//            model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
-//        }
-//        else {
-//            model.addAttribute("errorMessage", "Card isn't available in your hand or could not be played.");
-//        }
-//
-//        // Show player's updated hand
-//        List<Card> playerHand = gameService.showPlayerHand(currentPlayerId);
-//
-//        // Show updated player scores.
-//        int player1Score = gameService.getScore(currentPlayerId);
-//        int cpuScore = gameService.getScore(cpuId);
-//
-//        model.addAttribute("currentUser", currentUser);
-//        model.addAttribute("playerHand", playerHand);
-//        model.addAttribute("player1Score", player1Score);
-//        model.addAttribute("cpuScore", cpuScore);
-//        model.addAttribute("roundComplete", false);
-//        model.addAttribute("p1IsAttackingNextRound", true);
-//        model.addAttribute("currentAttacker", "P1");
-//        model.addAttribute("gameOver", false);
-//        model.addAttribute("pointsToWin", currentGame.getPointsToWin());
-//        model.addAttribute("mode", "game");
-//        return "playgame";
-//    }
-//
-//
-//    // P1 SUBMITTING THEIR SELECTED STAT.
-//    @PostMapping("/game/play/p1-attack-2")
+//    @PostMapping("/pvp/play/p1-attack-2")
 //    public String selectP1Stat(@RequestParam("cardId") Long cardId, @RequestParam("chosenStat") String chosenStat,
 //                               Model model) {
-//        System.out.println("Received chosenStat: " + chosenStat);
-//
-//
-//        //Get current game object
-//        Boolean roundComplete = false;
 //        User currentUser = authenticatedUserService.getAuthenticatedUser();
-//        Game currentGame = gameService.findCurrentUserGame();
-//        Long userId = userService.getCurrentUserId();
+//        PvpGame currentPvpGame = pvpService.findCurrentUserPvpGame();
 //
-//        // more safely finds Players by the Game id and determines who is user and who is cpu
-//        Long currentPlayerId = null;
-//        Long cpuId = null;
-//        Player playerOne = playerRepository.findById(currentGame.getPlayerOneId()).orElse(null);
-//        Player playerTwo = playerRepository.findById(currentGame.getPlayerTwoId()).orElse(null);
+//        Player playerOne = playerRepository.findById(currentPvpGame.getPlayerOneId()).orElse(null);
+//        Player playerTwo = playerRepository.findById(currentPvpGame.getPlayerTwoId()).orElse(null);
 //        if (playerOne == null || playerTwo == null) {
 //            throw new NoSuchEntityExistsException("Player");
-//        }
-//        List<Card> playerHand = new ArrayList<>();
-//        boolean isPlayerOne = (Objects.equals(currentUser.getId(), playerOne.getPlayerUserId()));
-//        boolean isPlayerTwo = (Objects.equals(currentUser.getId(), playerTwo.getPlayerUserId()));
-//        if (isPlayerOne) {
-//            currentPlayerId = playerOne.getId();
-//            cpuId = playerTwo.getId();
-//            playerHand = gameService.showPlayerHand(playerOne.getId());
-//        } else if (isPlayerTwo) {
-//            currentPlayerId = playerTwo.getId();
-//            cpuId = playerOne.getId();
-//            playerHand = gameService.showPlayerHand(playerTwo.getId());
-//        } else {
-//            throw new RuntimeException("Current user not found in game.");
-//        }
 //
-//        if (cpuId == null) {
-//            model.addAttribute("errorMessage", "Opponent not found.");
-//            return "playgame";
-//        }
+//            Player currentPlayer = null;
+//            Player opponent = null;
 //
-//        // Selects P1's card, AND REMOVES IT FROM THEIR HAND.
-//        Card playedCard = gameService.pickCardFromHand(currentPlayerId, cardId);
-//        if (playedCard == null) {
-//            model.addAttribute("errorMessage", "Selected card not found.");
-//            return "playgame";
-//        }
+//            boolean isPlayerOne = (Objects.equals(currentUser.getId(), playerOne.getPlayerUserId()));
+//            boolean isPlayerTwo = (Objects.equals(currentUser.getId(), playerTwo.getPlayerUserId()));
 //
-//        // Gets P1's selected card ID and stat value
-//        Long playedCardId = playedCard.getId();
-//        int statValue = gameService.getStatValue(chosenStat, playedCard);
+//            if (isPlayerOne) {
+//                currentPlayer = playerOne;
+//                opponent = playerTwo;
+//            } else if (isPlayerTwo) {
+//                currentPlayer = playerTwo;
+//                opponent = playerOne;
+//            } else {
+//                throw new NoSuchEntityExistsException("Player");
+//            }
 //
-//        // Gets CPU's chosen card and stat value
-//        Card cpuCard = gameService.getCpuCardWithP1sStat(cpuId, chosenStat);
-//        if (cpuCard == null) {
-//            model.addAttribute("errorMessage", "Opponent has no cards.");
-//            return "playgame";
-//        }
-//        int cpuStatValue = gameService.getStatValue(chosenStat, cpuCard);
+//            List<Card> playerHand = gameService.showPlayerHand(currentPlayer.getId());
+//            if (opponent == null) {
+//                model.addAttribute("errorMessage", "Opponent not found.");
+//                return "playgame";
+//            }
+//
+//            // Selects P1's card, AND REMOVES IT FROM THEIR HAND.
+//            Card playedCard = gameService.pickCardFromHand(currentPlayer.getId(), cardId);
+//            if (playedCard == null) {
+//                model.addAttribute("errorMessage", "Selected card not found.");
+//                return "play";
+//            }
+//
+//            // Gets P1's selected card ID and stat value
+//            Long playedCardId = playedCard.getId();
+//            int statValue = gameService.getStatValue(chosenStat, playedCard);
+//
+//            // Gets Opponents's chosen card and stat value
+//            Card opponentCard = gameService.getopponentCardWithP1sStat(opponent.getId(), chosenStat);
+//            if (opponentCard == null) {
+//                model.addAttribute("errorMessage", "Opponent has no cards.");
+//                return "playgame";
+//            }
+//            int cpuStatValue = gameService.getStatValue(chosenStat, opponentCard);
+
+
+
+
+//            ^^^^ HERE ^^^^
+
+
+
+
+
+
+
 //
 //        // Pass through the CPU's card to view
 //        model.addAttribute("cpuPlayedCard", cpuCard);
@@ -722,5 +620,6 @@ public class PvpController {
 //        gameRepository.delete(gameService.findCurrentUserGame());
 ////        gameService.cleanUp();
 //        return new RedirectView("/game/new");
+//    }
 //    }
 }
