@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 /* fragments.css */
 /* Header Styles */
 
@@ -34,11 +36,12 @@ nav {
     background: #3567dc;
     background: linear-gradient(350deg,rgba(53, 103, 220, 1) 0%, rgba(220, 53, 69, 1) 100%);
     padding: 0rem 2rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Noto Sans", sans-serif;
     font-size: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-weight: 500;
 }
 
 
@@ -46,12 +49,15 @@ nav {
 .nav-links {
     display: flex;
     gap: 2 rem;
+    font-family: "Noto Sans", sans-serif;
 }
 
 nav a {
     text-decoration: none;
     color: #ffffff;
     white-space: nowrap;
+    font-family: "Noto Sans", sans-serif;
+
 }
 
 .user-controls {
@@ -107,10 +113,10 @@ nav a {
 /* Footer Styles */
 footer {
     text-align: center;
-    padding: 2rem;
+    padding: 1rem;
     background: #f1f1f1;
     margin-top: 3rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
     position: relative;
     bottom: 0;
     width: 100%;
@@ -120,7 +126,6 @@ footer a {
     text-decoration: none;
     color: #777;
     font-weight: 500;
-    margin-right: 20px;
 }
 
 /* Tutorial Modal Styles */
@@ -222,7 +227,7 @@ footer a {
     color: #000;
     margin-bottom: 2rem;
     padding-bottom: 1rem;
-    border-bottom: 2px solid #14D2FD;
+    border-bottom: 2px solid #C2F9FF;
 }
 
 /* Sections inside sidebar */
@@ -313,7 +318,7 @@ footer a {
     margin: 0.5rem 0;
     background-color: #f8f8f8;
     border-radius: 4px;
-    border-left: 3px solid #14D2FD;
+    border-left: 3px solid #C2F9FF;
 }
 
 .stat-label {
@@ -326,12 +331,13 @@ footer a {
     font-size: 1.3rem;
     font-weight: 600;
     color: #000;
-    background: #C2F9FF;
+    background: #fff;
     background: linear-gradient(-45deg,rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
     padding: 0.2rem 0.6rem;
     border-radius: 4px;
     min-width: 50px;
     text-align: center;
+    border: 2px solid transparent;
 }
 
 .navbar-dropdown {

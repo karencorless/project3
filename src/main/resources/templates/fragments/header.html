@@ -15,9 +15,9 @@
 
 
             <div class="nav-links align-items-center">
-                <a href="/game/new" th:href="@{/game/new}" class="ms-3 me-3">PLAY</a>
-                <a href="/decks" th:href="@{/decks}" class="ms-3 me-3">DECKS</a>
-                <a href="javascript:void(0)" onclick="openTuto()" class="ms-3 me-3">TUTORIALS</a>
+                <a href="/game/new" th:href="@{/game/new}" class="me-5"><i class="bi bi-controller"></i> PLAY</a>
+                <a href="/decks" th:href="@{/decks}" class="ms-3 me-5"><i class="bi bi-view-stacked"></i> DECKS</a>
+                <a href="javascript:void(0)" onclick="openTuto()" class="ms-3"><i class="bi bi-journal-text"></i> TUTORIALS</a>
 <!--                <a href="/settings" th:href="@{/settings}" class="ms-3 me-3">SETTINGS</a>-->
             </div>
 
@@ -45,9 +45,9 @@
                         </div>
                     </div>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-center" href="/settings"><small> Settings</small></a>
+                    <a class="dropdown-item text-center" href="/settings"><small><i class="bi bi-gear"></i> Settings</small></a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-center" href="#" onclick="confirmLogout(event)"><small> Logout</small></a>
+                    <a class="dropdown-item text-center" href="#" onclick="confirmLogout(event)"><small class="text-danger"><i class="bi bi-box-arrow-left"></i> Logout</small></a>
                 </div>
             </li>
                 </div>
