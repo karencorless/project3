@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public class UserTest {
 
-    Date birthday = new Date(1999, 12, 31);
+    Date birthday = new Date(1999, Calendar.DECEMBER, 31);
     private User testUser = new User(1L, "test@test.com", "username", "/uploads/profilePics/default.jpg", birthday, 4, 10, "####abcd", 1L);
 
     //    Tests that the user has an associated ID
@@ -36,7 +36,7 @@ public class UserTest {
     //    Tests that the user model saved the profile picture source name correctly
     @Test
     public void userHasPfp() {
-        assertThat(testUser.getImageSource(), equalTo("pfp.jpg"));
+        assertThat(testUser.getImageSource(), equalTo("/uploads/profilePics/default.jpg"));
     }
 
     //    Tests that the user model saved the birthday correctly

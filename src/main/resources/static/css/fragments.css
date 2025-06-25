@@ -201,10 +201,10 @@ footer a {
 /* Sidebar Styles */
 .sidebar {
     position: fixed;
-    top: 211px;
+    top: 90px;
     left: 0;
     width: 250px;
-    height: calc(100vh - 184px);
+    height: calc(100vh);
     background: #fff;
     border-right: 2px solid #ddd;
     padding: 2rem 1.5rem;
@@ -276,7 +276,7 @@ footer a {
 /* Toggle button styles */
 .sidebar-toggle {
     position: fixed;
-    top: 206px;
+    top: 90px;
     left: 250px;
     background: #C2F9FF;
     background: linear-gradient(-45deg,rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
