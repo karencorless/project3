@@ -6,7 +6,6 @@ import com.makers.project3.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
 
@@ -66,13 +63,13 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
-    @ExceptionHandler(NoResourceFoundException.class)
-    public String handleNoResourceFoundException(Model model, NoResourceFoundException ex) {
-        makeModel(model);
-        model.addAttribute("errorMessage", "What you seek cannot be found!  " + ex.getMessage());
-        System.out.println("No Resource Found Exception: " + ex);
-        return "error";
-    }
+//    @ExceptionHandler(NoResourceFoundException.class)
+//    public String handleNoResourceFoundException(Model model, NoResourceFoundException ex) {
+//        makeModel(model);
+//        model.addAttribute("errorMessage", "What you seek cannot be found!  " + ex.getMessage());
+//        System.out.println("No Resource Found Exception: " + ex);
+//        return "error";
+//    }
 
     @ExceptionHandler(NoSuchElementException.class)
     public String handleNotFoundException(Model model, NoSuchElementException ex) {
@@ -97,14 +94,14 @@ public class GlobalExceptionHandler {
         System.out.println("Bad Request Exception: " + ex);
         return "error";
     }
-
-    @ExceptionHandler({SQLException.class, DataAccessException.class})
-    public String handleDatabaseError(Model model, MethodArgumentNotValidException ex) {
-        makeModel(model);
-        model.addAttribute("errorMessage", "Database Error:: " + ex.getMessage());
-        System.out.println("Database Error : " + ex);
-        return "error";
-    }
+//
+//    @ExceptionHandler({SQLException.class, DataAccessException.class})
+//    public String handleDatabaseError(Model model, MethodArgumentNotValidException ex) {
+//        makeModel(model);
+//        model.addAttribute("errorMessage", "Database Error:: " + ex.getMessage());
+//        System.out.println("Database Error : " + ex);
+//        return "error";
+//    }
 
 //    @ExceptionHandler(NoSuchDeckExistsException.class)
 //    @ResponseStatus(HttpStatus.NOT_FOUND)

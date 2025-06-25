@@ -45,7 +45,6 @@ public class GameService {
         return Objects.equals(currentUserId, player.getPlayerUserId());
     }
 
-
     //  Creation/game start related methods:
 
     //       Creates new Game
@@ -76,7 +75,6 @@ public class GameService {
         roboPlayer.setGameId(game.getId());
         playerRepository.save(player);
         playerRepository.save(roboPlayer);
-
         return game;
     }
 
@@ -166,11 +164,11 @@ public class GameService {
             return null;
         }
 
-        Optional<Card> optionalCard = cardRepository.findById(selectedCardInPlayerCards.getCardId());
+        Card playedCard = cardRepository.findById(selectedCardInPlayerCards.getCardId()).orElse(null);
 
-        Card playedCard = optionalCard.get();
         Player currentPlayer = playerRepository.findById(playerId).orElse(null);
 
+        assert currentPlayer != null;
         currentPlayer.setCurrentCardId(selectedCardId);
         selectedCardInPlayerCards.setDiscarded(true);
 
@@ -257,8 +255,9 @@ public class GameService {
         Long userId = userService.getCurrentUserId();
         List<Player> associatedPlayers = playerRepository.findAllByPlayerUserId(userId);
         for (Player player : associatedPlayers){
-            if (Objects.equals(player.getPlayerUserId(), userId)) {
-                return gameRepository.findByPlayerOneIdOrPlayerTwoId(player.getId(), player.getId());
+            Game game = gameRepository.findByPlayerOneIdOrPlayerTwoId(player.getId(), player.getId()).orElse(null);
+            if (game!=null) {
+                return game;
             }
         }
         return null;

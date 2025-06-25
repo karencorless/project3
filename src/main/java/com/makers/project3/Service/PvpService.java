@@ -6,6 +6,7 @@ import com.makers.project3.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +35,8 @@ public class PvpService {
     CardRepository cardRepository;
     @Autowired
     PlayerCardRepository playerCardRepository;
+    @Autowired
+    AuthenticatedUserService authenticatedUserService;
 
 
 //          Create new PvpGame
@@ -77,13 +80,16 @@ public class PvpService {
         }
     }
 
-    public void addPlayerTwoToPvpGame(Long pvpGameId, Long currentUserId) {
+    public Long addPlayerTwoToPvpGame(Long pvpGameId, Long currentUserId) {
         PvpGame game = pvpGameRepository.findById(pvpGameId).orElse(null);
         if (game == null) {
             throw new NoSuchEntityExistsException("PvP Game");
         }
-        game.setPlayerTwoId(currentUserId);
+        Player playerTwo = new Player(currentUserId);
+        playerRepository.save(playerTwo);
+        game.setPlayerTwoId(playerTwo.getId());
         pvpGameRepository.save(game);
+        return playerTwo.getId();
     }
 
 
@@ -101,8 +107,8 @@ public class PvpService {
             List<Card> deckCards = new ArrayList<>(cardRepository.findAllByParentDeckId(deck.getDeckId()));
             allCardsInPlay.addAll(deckCards);
         }
-        boolean playerOneDraw = gameService.coinFlip();
         Collections.shuffle(allCardsInPlay);
+        boolean playerOneDraw = gameService.coinFlip();
         for (int i = 0; i <(pvpGame.getPointsToWin() * 4); i ++) {
             Card card = allCardsInPlay.removeFirst();
             PlayerCard newCard;
@@ -120,8 +126,76 @@ public class PvpService {
         pvpGameRepository.save(pvpGame);
     }
 
+    //          Allows player to select card from hand, updates playerCards accordingly.
+    @Transactional
+    public Card pickCardFromHand(Player player, Long selectedCardId) {
+        // Makes sure player id and card id are valid
+        if (player == null || selectedCardId == null) {
+            System.out.println("Error: Player ID or Selected Card ID is null in pickCardFromHand.");
+            return null;
+        }
 
+        List<PlayerCard> playerCardsActiveInHand = playerCardRepository.findByPlayerId(player.getId());
 
+        // Find the card id from playerCards and store it
+        PlayerCard selectedCardInPlayerCards = null;
+        for (PlayerCard playerCard : playerCardsActiveInHand) {
+            if (playerCard.getCardId().equals(selectedCardId)) {
+                selectedCardInPlayerCards = playerCard;
+                break;
+            }
+        }
 
+        // If card not found, prints warning
+        if (selectedCardInPlayerCards == null) {
+            System.out.println("Warning: Card with ID " + selectedCardId + " not found in hand for player " + player.getId());
+            return null;
+        }
+
+        Card playedCard = cardRepository.findById(selectedCardInPlayerCards.getCardId()).orElse(null);
+        if (playedCard == null) {throw new NoSuchEntityExistsException("Card");}
+
+        player.setCurrentCardId(selectedCardId);
+        selectedCardInPlayerCards.setDiscarded(true);
+
+        System.out.println("This is P1's current hand: " + playerCardsActiveInHand);
+
+        return playedCard;
+    }
+
+    public Model prepModel(Model model){
+        User currentUser = authenticatedUserService.getAuthenticatedUser();
+        PvpGame currentPvpGame = findCurrentUserPvpGame();
+
+        Player playerOne = playerRepository.findById(currentPvpGame.getPlayerOneId()).orElse(null);
+        Player playerTwo = playerRepository.findById(currentPvpGame.getPlayerTwoId()).orElse(null);
+        if (playerOne == null || playerTwo == null) {
+            throw new NoSuchEntityExistsException("Player");
+        }
+
+        Player currentPlayer = null;
+        Player opponent = null;
+
+        boolean isPlayerOne = (Objects.equals(currentUser.getId(), playerOne.getPlayerUserId()));
+        boolean isPlayerTwo = (Objects.equals(currentUser.getId(), playerTwo.getPlayerUserId()));
+
+        if (isPlayerOne) {
+            currentPlayer = playerOne;
+            opponent = playerTwo;
+        } else if (isPlayerTwo) {
+            currentPlayer = playerTwo;
+            opponent = playerOne;
+        } else{
+            throw new RuntimeException("Current user not found in Game.");
+        }
+//        List<Card> playerHand = gameService.showPlayerHand(currentPlayer.getId());
+
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("currentPlayer", currentPlayer);
+        model.addAttribute("opponent", opponent);
+        model.addAttribute("game", currentPvpGame);
+        model.addAttribute("mode", "pvp");
+        return model;
+    }
 
 }
