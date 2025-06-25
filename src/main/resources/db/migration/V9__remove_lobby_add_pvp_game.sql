@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS lobby;
 
 CREATE TABLE pvp_games (
     id BIGSERIAL PRIMARY KEY,
-    player_1_id BIGINT NOT NULL,
+    player_1_id BIGINT,
     player_2_id BIGINT DEFAULT NULL,
     points_to_win SMALLINT DEFAULT 1,
     status VARCHAR(20) DEFAULT 'WAITING',

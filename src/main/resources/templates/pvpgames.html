@@ -73,7 +73,7 @@
                   <td>
                         <form th:action="@{/pvp/join}" method="post" style="display:inline;" th:if="${pvpGame.status == 'WAITING'}">
                               <input type="hidden" name="pvpGameId" th:value="${pvpGame.id}"/>
-                          <button type="submit" class="text-decoration-none text-reset">Join!</button>
+                                <button type="submit" class="text-decoration-none text-reset">Join!</button>
                         </form>
                   </td>
             </tr>
