@@ -28,6 +28,8 @@ public class PvpGame {
     private String status = "WAITING";
     @Column(name = "created_at", columnDefinition = "timestamp default CURRENT_TIMESTAMP", updatable = false)
     private LocalDateTime createdAt;
+    @Column(name="is_player_one_turn")
+    private boolean isPlayerOneTurn = true;
 
     @PrePersist
     protected void onCreate() {
@@ -36,8 +38,8 @@ public class PvpGame {
         }
     }
 
-    public PvpGame(Long userId, int pointsToWin) {
-        this.playerOneId = userId;
+    public PvpGame(Long playerId, int pointsToWin) {
+        this.playerOneId = playerId;
         this.pointsToWin = pointsToWin;
     }
 

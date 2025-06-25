@@ -8,6 +8,7 @@ CREATE TABLE pvp_games (
     points_to_win SMALLINT DEFAULT 1,
     status VARCHAR(20) DEFAULT 'WAITING',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_player_one_turn boolean DEFAULT true,
 
     FOREIGN KEY (player_1_id) REFERENCES players(id) ON DELETE CASCADE,
     FOREIGN KEY (player_2_id) REFERENCES players(id) ON DELETE CASCADE,
