@@ -1,7 +1,7 @@
 .card-placeholder-left {
     width: 250px;
     height: 432px;
-    background-color: #ccc;
+    background-color: rgba(194, 249, 255, 1);
     border: 2px dashed #999;
     display: flex;
     justify-content: center;
@@ -18,7 +18,7 @@
 .card-placeholder-right {
     width: 250px;
     height: 432px;
-    background-color: #ccc;
+    background-color: rgba(255, 194, 194, 1);
     border: 2px dashed #999;
     display: flex;
     justify-content: center;
