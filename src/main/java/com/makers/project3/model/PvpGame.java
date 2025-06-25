@@ -1,7 +1,9 @@
 package com.makers.project3.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +34,11 @@ public class PvpGame {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }
+    }
+
+    public PvpGame(Long userId, int pointsToWin) {
+        this.playerOneId = userId;
+        this.pointsToWin = pointsToWin;
     }
 
 }

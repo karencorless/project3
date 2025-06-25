@@ -19,7 +19,7 @@
 
 <div class="container" id="game-setup-container">
     <div class="justify-content-center" id="game-setup-container-div">
-        <form id="game-setup" th:action="@{/game/new}" method="post">
+        <form id="game-setup" th:action="@{|/${mode}/new|}" method="post">
             <!--    View Decks    -->
             <div class="all-decks">
                 <!--    Displays a list of decks in the database showing the name and thumbnail image for each deck    -->

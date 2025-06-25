@@ -1,3 +1,4 @@
+--V9
 DROP TABLE IF EXISTS lobby;
 
 CREATE TABLE pvp_games (
@@ -15,6 +16,7 @@ CREATE TABLE pvp_games (
 
 --  join table for pvp decks and pvp games
 CREATE TABLE pvp_decks (
+	id BIGSERIAL,
   	pvp_game_id BIGINT NOT NULL,
   	deck_id BIGINT,
 

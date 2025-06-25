@@ -1,17 +1,8 @@
 package com.makers.project3.Service;
 
 import com.makers.project3.exception.NoSuchEntityExistsException;
-import com.makers.project3.model.PlayerCard;
-import com.makers.project3.model.Player;
-import com.makers.project3.model.Game;
-import com.makers.project3.model.Card;
-import com.makers.project3.model.User;
-import com.makers.project3.repository.PlayerCardRepository;
-import com.makers.project3.repository.PlayerRepository;
-import com.makers.project3.repository.GameRepository;
-import com.makers.project3.repository.UserRepository;
-import com.makers.project3.repository.CardRepository;
-
+import com.makers.project3.model.*;
+import com.makers.project3.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,8 +102,9 @@ public class GameService {
         }
         //      Random draw, alternating between players
         boolean playerOneDraw = true;
+        Collections.shuffle(allCardsInPlay);
+
         for (int i = 0; i <(pointsToWin * 4); i ++) {
-            Collections.shuffle(allCardsInPlay);
             Card card = allCardsInPlay.removeFirst();
             PlayerCard newCard;
 
@@ -434,62 +426,6 @@ public class GameService {
         userRepository.save(userTwo);
     }
 
-//    //        End Game, determine winner
-//    public void endGame(Long gameId) {
-//        assert checkCurrentUserIsPlayerInGame(gameId);
-//
-//        Long currentUserId = userService.getCurrentUserId();
-//        Player[] players = getPlayersFromGame(gameId);
-//        Long winnerPlayerId = compareCurrentScores(players[0].getId(), players[1].getId());
-//
-//
-//        Player winnerPlayer = playerRepository.findById(winnerPlayerId).orElse(null);
-//        if (winnerPlayer == null) {
-//            return;
-//        }
-//        User winner = userRepository.findById(winnerPlayer.getPlayerUserId()).orElse(null);
-//        if (winner == null) {
-//            throw new NoSuchEntityExistsException("User");
-//        }
-//        winner.setGamesWon(winner.getGamesWon()+1);
-//        winner.setGamesPlayed(winner.getGamesPlayed()+1);
-//        if (Objects.equals(winnerPlayer, players[0])) {
-//            User loser = userRepository.findById(players[1].getPlayerUserId()).orElse(null);
-//            assert loser != winner;
-//            assert loser != null;
-//            loser.setGamesPlayed(loser.getGamesPlayed()+1);
-//        }
-//    }
-
-//
-//    //          Clears the game from the DB, deleting the playerCard, player, and game objects.
-//    @Transactional
-//    public void deleteGame(Long gameId){
-//        assert checkCurrentUserIsPlayerInGame(gameId);
-//
-//        Game game = gameRepository.findById(gameId).orElse(null);
-//        assert game != null;
-//
-//        Long playerOneId = game.getPlayerOneId();
-//        Long playerTwoId = game.getPlayerTwoId();
-//        Long roboUserId = userRepository.findUserByUsername("robouser1").getId();
-//
-//
-//
-//        playerCardRepository.deleteAllByPlayerId(playerOneId);
-//        playerCardRepository.deleteAllByPlayerId(playerTwoId);
-//        playerRepository.deleteAllById(playerOneId);
-//        playerRepository.deleteAllById(playerTwoId);
-//        gameRepository.deleteAllById(gameId);
-//    }
-
-
-    //    Delete all playerCards currently in player's hand
-    @Transactional
-    public void clearHand(Long playerId){
-        playerCardRepository.deleteAllByPlayerId(playerId);
-    }
-
 
     @Transactional
     public void cleanUp(){
@@ -497,9 +433,6 @@ public class GameService {
         List<Player> playersForCurrentUser = playerRepository.findAllByPlayerUserId(userId);
         for (Player player : playersForCurrentUser){
             gameRepository.deleteAllById(player.getGameId());
-//            Long playerId = player.getId();
-//            playerCardRepository.deleteAllByPlayerId(playerId);
-//            playerRepository.deleteAllById(playerId);
         }
     }
 }

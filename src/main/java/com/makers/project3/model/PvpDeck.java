@@ -19,7 +19,11 @@ public class PvpDeck {
     private Long id;
     @Column(name = "pvp_game_id")
     private Long pvpGameId;
-    @Column(name="card_id")
-    private Long cardId;
+    @Column(name="deck_id")
+    private Long deckId;
 
+    public PvpDeck(Long pvpGameId, Long deckId) {
+        this.pvpGameId = pvpGameId;
+        this.deckId = deckId;
+    }
 }

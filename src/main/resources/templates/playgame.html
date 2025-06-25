@@ -69,7 +69,7 @@
                 </div>
                 <div class="stat-row">
 <!--                    Clickable strength stat-->
-                    <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
+                    <form th:action="@{'/{mode}/play/p1-attack-2'(mode=${mode})}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.name}" />
                         <input type="hidden" name="chosenStat" value="strength" />
                         <button type="submit" class="stat-text-box card-box-style"
@@ -78,7 +78,7 @@
                         </button>
                     </form>
 <!--                    Clickable wisdom stat-->
-                    <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
+                    <form th:action="@{'/{mode}/play/p1-attack-2'(mode=${mode})}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="wisdom" />
                         <button type="submit" class="stat-text-box card-box-style"
@@ -89,7 +89,7 @@
                 </div>
                 <div class="stat-row">
 <!--                    Clickable defence stat-->
-                    <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
+                    <form th:action="@{'/{mode}/play/p1-attack-2'(mode=${mode})}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="defence" />
                         <button type="submit" class="stat-text-box card-box-style"
@@ -98,7 +98,7 @@
                         </button>
                     </form>
 <!--                    Clickable luck stat-->
-                    <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
+                    <form th:action="@{'/{mode}/play/p1-attack-2'(mode=${mode})}" method="post" style="display: inline;">
                         <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                         <input type="hidden" name="chosenStat" value="luck" />
                         <button type="submit" class="stat-text-box card-box-style"
@@ -109,7 +109,7 @@
                 </div>
                 <!-- Clickable custom stat -->
                 <div class="unique-stat-box text-nowrap" >
-                <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
+                <form th:action="@{'/{mode}/play/p1-attack-2'(mode=${mode})}" method="post" style="display: inline;">
                     <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                     <input type="hidden" name="chosenStat" th:value="${playedCard.deck.uniqueStatName}" />
                     <button type="submit" class="stat-text-box card-box-style text-nowrap"
@@ -217,7 +217,7 @@
     <!-- Next round: if CPU's turn to attack -->
     <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;"
          th:if="${roundComplete == true and p1IsAttackingNextRound == false and !gameOver}">
-        <form th:action="@{/game/play/p2-attack}" method="get">
+        <form th:action="@{/{mode}/play/p2-attack(mode=${mode})}" method="get">
             <button type="submit" class="button">Next Round</button>
         </form>
 
@@ -226,7 +226,7 @@
     <!-- Next round: if P1's turn to attack -->
     <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;"
          th:if="${roundComplete == true and p1IsAttackingNextRound == true and !gameOver}">
-        <form th:action="@{/game/play}" method="get">
+        <form th:action="@{/{mode}/play(mode=${mode})}" method="get">
             <button type="submit" class="button">Next Round</button>
         </form>
     </div>
@@ -333,16 +333,16 @@
 
     <!-- Play again button at end of game -->
     <div style="text-align: center; margin-top: 20px;">
-        <a th:if="${#lists.size(playerHand) == 0}" th:href="@{/game/reset}" class="button">Play Again</a>
+        <a th:if="${#lists.size(playerHand) == 0}" th:href="@{/{mode}/reset(mode=${mode})}" class="button">Play Again</a>
     </div>
 
     <!-- Finish Game button -->
     <div style="text-align: center; margin-top: 20px;">
-        <a th:if="${gameOver}" th:href="@{/game/reset}" class="button">Finish</a>
+        <a th:if="${gameOver}" th:href="@{/{mode}/reset(mode=${mode})}" class="button">Finish</a>
     </div>
 
     <!--New game/reset hand button-->
-    <a th:if="${!gameOver}" th:href="@{/game/reset}" type="submit" class="button">New Game</a>
+    <a th:if="${!gameOver}" th:href="@{/{mode}/reset(mode=${mode})}" type="submit" class="button">New Game</a>
 
     <div th:insert="~{fragments/footer :: footer}"></div>
     <div th:insert="~{fragments/tutorial :: tutorialModal}"></div>

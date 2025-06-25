@@ -1,26 +1,22 @@
 package com.makers.project3.controller;
 
+import com.makers.project3.Service.AuthenticatedUserService;
 import com.makers.project3.Service.GameService;
 import com.makers.project3.Service.UserService;
 import com.makers.project3.model.Card;
 import com.makers.project3.model.Deck;
 import com.makers.project3.model.Game;
 import com.makers.project3.model.User;
-import com.makers.project3.repository.DeckRepository;
-import com.makers.project3.repository.GameRepository;
-import com.makers.project3.repository.PlayerCardRepository;
-import com.makers.project3.repository.PlayerRepository;
-import com.makers.project3.repository.UserRepository;
+import com.makers.project3.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.*;
+import java.util.List;
 
 @Controller
 public class GameController {
@@ -39,13 +35,18 @@ public class GameController {
     PlayerCardRepository playerCardRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    AuthenticatedUserService authenticatedUserService;
 
+
+    //         View set up page for a new game
     @GetMapping("/game/new")
     public String newGame(Model model) {
         Iterable<Deck> decks = deckRepository.findAll();
-        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        User currentUser = authenticatedUserService.getAuthenticatedUser();
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("decks", decks);
+        model.addAttribute("mode", "game");
         return "newgame";
     }
 
@@ -63,7 +64,7 @@ public class GameController {
     @GetMapping("/game/play")
     public String playGame(Model model){
         // Player 1, CPU, and game info.
-        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        User currentUser = authenticatedUserService.getAuthenticatedUser();
         Game currentGame = gameService.findCurrentUserGame();
 //        Long gameId = currentGame.getId();
         Long userId = userService.getCurrentUserId();
@@ -87,7 +88,7 @@ public class GameController {
         model.addAttribute("currentAttacker", "P1");
         model.addAttribute("gameOver", false);
         model.addAttribute("pointsToWin", currentGame.getPointsToWin());
-
+        model.addAttribute("mode", "game");
         return "playgame";
     }
 
@@ -143,7 +144,7 @@ public class GameController {
         model.addAttribute("customStatName", gameService.getCardCustomStatName(playedCard));
         model.addAttribute("gameOver", false);
         model.addAttribute("pointsToWin", game.getPointsToWin());
-
+        model.addAttribute("mode", "game");
         return "playgame";
     }
 
@@ -266,7 +267,7 @@ public class GameController {
 //        System.out.println("Current player Id: " + currentPlayerId);
 //        System.out.println("Incrementing score for playerId: " + currentPlayerId);
 //        System.out.println("Game points to win: " + game.getPointsToWin());
-
+        model.addAttribute("mode", "game");
         return "playgame";
     }
 
@@ -309,7 +310,7 @@ public class GameController {
         model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard));
         model.addAttribute("pointsToWin", currentGame.getPointsToWin());
         model.addAttribute("cpuPlayedCard", cpuCard);
-
+        model.addAttribute("mode", "game");
         return "playgame";
     }
 
@@ -416,6 +417,7 @@ public class GameController {
 //        System.out.println("Incrementing score for playerId: " + currentPlayerId);
 //        System.out.println("Game points to win: " + game.getPointsToWin());
 
+        model.addAttribute("mode", "game");
         return "playgame";
     }
 
