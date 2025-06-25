@@ -1,59 +1,41 @@
 <div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <header>
-<!--        <div class="header-container">-->
-<!--            <a class="stat-attack-logo" href="/homepage" th:href="@{/homepage}">-->
-<!--                stat attack-->
-<!--            </a>-->
-<!--        </div>-->
-
         <nav class="fixed-top">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-            <div class="navbar-logo">
-                <a href="/homepage" class="me-auto"><img src="/images/sa-flare.png" alt="StatAttack Logo" height="90"></a>
-            </div>
-
-
-            <div class="nav-links align-items-center">
-                <a href="/game/new" th:href="@{/game/new}" class="me-5"><i class="bi bi-controller"></i> PLAY</a>
-                <a href="/decks" th:href="@{/decks}" class="ms-3 me-5"><i class="bi bi-view-stacked"></i> DECKS</a>
-                <a href="javascript:void(0)" onclick="openTuto()" class="ms-3"><i class="bi bi-journal-text"></i> TUTORIALS</a>
-<!--                <a href="/settings" th:href="@{/settings}" class="ms-3 me-3">SETTINGS</a>-->
-            </div>
-
-<!--            <div class="user-controls" th:if="${currentUser != null}">-->
-<!--                <div class="profile-container">-->
-<!--                    <div class="profile-image">-->
-<!--                        <img th:src="@{${currentUser.imageSource}}" alt="Profile" />-->
-<!--                    </div>-->
-<!--                    <span id="greeting" th:text="'Logged in as ' + ${currentUser.username}"></span>-->
-<!--                </div>-->
-<!--                <a href="#" onclick="confirmLogout(event)" class="logout-btn">Logout</a>-->
-<!--            </div>-->
-
-            <li class="nav-links dropdown d-none d-md-block">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="rounded-circle me-2" th:src="@{${currentUser.imageSource}}" style="width: 40px; height: 40px; object-fit: cover;" >
-                </a>
-                <div class="dropdown-menu dropdown-menu-end navbar-dropdown">
-                    <div class="d-flex flex-column align-items-center">
-                        <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" th:src="@{${currentUser.imageSource}}" style="width: 50px; height: 50px; object-fit: cover;">
-                        </div>
-                        <div class="text-center">
-                            <div class="text-truncate"><span th:text="@{${currentUser.username}}" ></span></div>
-                        </div>
+                    <div class="navbar-logo">
+                        <a href="/homepage" class="me-auto"><img src="/images/sa-flare.png" alt="StatAttack Logo" height="90"></a>
                     </div>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-center" href="/settings"><small><i class="bi bi-gear"></i> Settings</small></a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-center" href="#" onclick="confirmLogout(event)"><small class="text-danger"><i class="bi bi-box-arrow-left"></i> Logout</small></a>
-                </div>
-            </li>
+
+                    <div class="nav-links align-items-center">
+                        <a href="/game/new" th:href="@{/game/new}" class="me-5"><i class="bi bi-controller"></i> PLAY</a>
+                        <a href="/decks" th:href="@{/decks}" class="ms-3 me-5"><i class="bi bi-view-stacked"></i> DECKS</a>
+                        <a href="javascript:void(0)" onclick="openTuto()" class="ms-3"><i class="bi bi-journal-text"></i> TUTORIALS</a>
+                    </div>
+
+                    <li class="nav-links dropdown d-none d-md-block">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img class="rounded-circle me-2" th:src="@{${currentUser.imageSource}}" style="width: 40px; height: 40px; object-fit: cover;" >
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end navbar-dropdown">
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="dropdown-list-image mr-3">
+                                    <img class="rounded-circle" th:src="@{${currentUser.imageSource}}" style="width: 50px; height: 50px; object-fit: cover;">
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-truncate"><span th:text="@{${currentUser.username}}" ></span></div>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-center" href="/settings"><small><i class="bi bi-gear"></i> Settings</small></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-center" href="#" onclick="confirmLogout(event)"><small class="text-danger"><i class="bi bi-box-arrow-left"></i> Logout</small></a>
+                        </div>
+                    </li>
                 </div>
             </div>
-
         </nav>
+
         <script>
             function confirmLogout(event) {
                 event.preventDefault();
@@ -65,7 +47,14 @@
     </header>
     <style>
         body {
-            padding-top: 90px; /* Adjust this based on your navbar height */
+            padding-top: 90px;
+        }
+
+        .dropdown-toggle::after {
+            border-top: .4em solid white !important;
+            border-right: .4em solid transparent;
+            border-bottom: 0;
+            border-left: .4em solid transparent;
         }
     </style>
 </div>
