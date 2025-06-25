@@ -1,7 +1,3 @@
--- Seed file for basic testing
--- This file seeds users, decks, and cards.
--- Run this after all migrations are complete, when you need to re-seed.
-
 -- Clear existing data
 DELETE FROM games CASCADE;
 DELETE FROM players CASCADE;
@@ -36,9 +32,9 @@ VALUES
 -- Insert users
 INSERT into users (username, email, birthday, games_won, total_games_played, auth0_id, favourite_deck_id)
 VALUES
-('robouser', 'robouser2@yahoo.com',  '2020-02-02', 74243, 123434, 'auth0|6852f3af03ace7188c888682', null),
-('testuser', 'testuser@tester.com', '2011-11-11', 8, 10, 'auth0|6852b1d99e1842d8a9fc6bb1', 1),
-('roryboi', 'roryaitken@pupper.org', 	'2025-03-03', 9, 10, 'auth0|685560e577836d8efbf4644b', 4),
+('MrRoboto', 'robouser2@yahoo.com',  '2020-02-02', 74243, 123434, 'auth0|6852f3af03ace7188c888682', null),
+('TestyTerri', 'testuser@tester.com', '2011-11-11', 8, 10, 'auth0|6852b1d99e1842d8a9fc6bb1', 1),
+('roryboi', 'roryaitken@pupper.org', 	'2025-03-03', 8, 10, 'auth0|685560e577836d8efbf4644b', 4),
 ('JGill', 'jordangill@stat-attack.co.uk', null, 8, 10, 'auth0|685a92a018031cfd6aeefcf5', 3),
 ('v', 'v@dev.com', null, 8, 10, 'auth0|68528f520059761ab93baa0a', 8),
 ('barrymorealexandre ', 'barrymorealexandre@gmail.com', null, 8, 10, 'auth0|685547db77836d8efbf45059', null);
