@@ -5,12 +5,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 
 import org.junit.jupiter.api.Test;
 
 public class UserTest {
-    private User testUser = new User(1L, "test@test.com", "username", "pfp.jpg", new Date(1999, Calendar.DECEMBER, 31), 4, 10, "####abcd");
+
+    Date birthday = new Date(1999, Calendar.DECEMBER, 31);
+    private User testUser = new User(1L, "test@test.com", "username", "/uploads/profilePics/default.jpg", birthday, 4, 10, "####abcd", 1L);
 
     //    Tests that the user has an associated ID
     @Test
@@ -33,7 +35,7 @@ public class UserTest {
     //    Tests that the user model saved the profile picture source name correctly
     @Test
     public void userHasPfp() {
-        assertThat(testUser.getImageSource(), equalTo("pfp.jpg"));
+        assertThat(testUser.getImageSource(), equalTo("/uploads/profilePics/default.jpg"));
     }
 
     //    Tests that the user model saved the birthday correctly

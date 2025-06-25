@@ -44,16 +44,15 @@ public class AfterLogin {
         return new ModelAndView("redirect:/homepage");
     }
 
-    @GetMapping("")
-    public ModelAndView redirectEmpty() {
-        authenticatedUserService.getAuthenticatedUser();
-        return new ModelAndView("redirect:/homepage");
-    }
+//    @GetMapping("")
+//    public ModelAndView redirectEmpty() {
+//        authenticatedUserService.getAuthenticatedUser();
+//        return new ModelAndView("redirect:/homepage");
+//    }
 
     @GetMapping("/")
-    public ModelAndView redirectSlash() {
-        authenticatedUserService.getAuthenticatedUser();
-        return new ModelAndView("redirect:/homepage");
+    public ModelAndView landingPage() {
+        return new ModelAndView("landingpage");
     }
 
 

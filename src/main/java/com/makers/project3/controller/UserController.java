@@ -1,5 +1,6 @@
 package com.makers.project3.controller;
 
+import com.makers.project3.Service.ImageUploadService;
 import com.makers.project3.Service.UserService;
 import com.makers.project3.model.User;
 import com.makers.project3.repository.UserRepository;
@@ -11,9 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Controller
 public class UserController {
@@ -22,6 +24,8 @@ public class UserController {
     UserRepository userRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    ImageUploadService imageUploadService;
 
     @GetMapping("/settings")
     public String viewSettingsPage(Model model) {
@@ -31,14 +35,26 @@ public class UserController {
     }
 
     @PostMapping("/settings")
-    public RedirectView updateSettings(@RequestParam("username") String username, @RequestParam("birthday") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date birthday) {
-        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+    public RedirectView updateSettings(
+            @RequestParam("username") String username,
+            @RequestParam("birthday") Date birthday,
+            @RequestParam("imageFile") MultipartFile imageFile) {
 
-        //        @RequestParam("imageFile") MultipartFile imageFile
+        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
         assert currentUser != null;
+
         currentUser.setUsername(username);
         currentUser.setBirthday(birthday);  //need to fix parsing issue
 
+        if (imageFile != null && !imageFile.isEmpty()) {
+            try {
+                String imagePath = imageUploadService.handleProfileImageUpload(imageFile);
+                System.out.println("image path set to: " + imagePath);
+            } catch (Exception e) {
+                // Handle upload error
+                System.err.println("Failed to upload profile image: " + e.getMessage());
+            }
+        }
 
         userRepository.save(currentUser);
         return new RedirectView("/settings");
