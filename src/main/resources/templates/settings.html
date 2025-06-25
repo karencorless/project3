@@ -37,7 +37,7 @@
                     </div>
                     <div class="mb-3">
                         <label th:for="birthday" class="form-label">Birthday:</label>
-                        <input type="date" th:field="*{birthday}" class="form-control" th:value="${#dates.format(currentUser.birthday, 'yyyy-MM-dd')}" max="2019-12-31"/>
+                        <input type="date" th:field="*{birthday}" class="form-control" th:value="${#dates.format(currentUser.birthday, 'yyyy-MM-dd')}" max="2019-12-31" required/>
                     </div>
                     <div class="d-flex justify-content-center">
                         <div id="buttons" class="mt-3">
