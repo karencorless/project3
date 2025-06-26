@@ -43,10 +43,12 @@ public class ImageUploadService {
         if (user.getImageSource() != null && !user.getImageSource().isEmpty()) {
             String oldFileName = user.getImageSource().replace("/uploads/profilePics/", "");
             Path oldImagePath = uploadPath.resolve(oldFileName);
-            try {
-                Files.deleteIfExists(oldImagePath);
-            } catch (IOException e) {
-                System.err.println("Failed to delete old profile image: " + e.getMessage());
+            if (!oldFileName.equals("default.jpg")) {
+                try {
+                    Files.deleteIfExists(oldImagePath);
+                } catch (IOException e) {
+                    System.err.println("Failed to delete old profile image: " + e.getMessage());
+                }
             }
         }
 
