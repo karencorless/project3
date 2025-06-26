@@ -3,38 +3,23 @@
         <nav class="fixed-top">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-<<<<<<< Styling
+
                     <div class="navbar-logo">
-                        <a href="/homepage" class="me-auto"><img src="/images/sa-flare.png" alt="StatAttack Logo" height="90"></a>
+                        <a href="/homepage" class="me-auto"><img src="/images/SA-Flare.png" alt="StatAttack Logo" height="90"></a>
                     </div>
-=======
-            <div class="navbar-logo">
-                <a href="/homepage" class="me-auto"><img src="/images/SA-Flare.png" alt="StatAttack Logo" height="90"></a>
-            </div>
-
-
-            <div class="nav-links align-items-center">
-                <a href="/game/new" th:href="@{/game/new}" class="me-5"><i class="bi bi-controller"></i> PLAY</a>
-                <a href="/decks" th:href="@{/decks}" class="ms-3 me-5"><i class="bi bi-view-stacked"></i> DECKS</a>
-                <a href="javascript:void(0)" onclick="openTuto()" class="ms-3 me-5"><i class="bi bi-journal-text"></i> TUTORIALS</a>
-                <a href="#" onclick="confirmLogout(event)" class="ms-3" th:if="${currentUser == null}">LOGOUT</a>
-
-<!--                <a href="/settings" th:href="@{/settings}" class="ms-3 me-3">SETTINGS</a>-->
-            </div>
->>>>>>> main
 
                     <div class="nav-links align-items-center">
                         <a href="/game/new" th:href="@{/game/new}" class="me-5"><i class="bi bi-controller"></i> PLAY</a>
                         <a href="/decks" th:href="@{/decks}" class="ms-3 me-5"><i class="bi bi-view-stacked"></i> DECKS</a>
                         <a href="javascript:void(0)" onclick="openTuto()" class="ms-3"><i class="bi bi-journal-text"></i> TUTORIALS</a>
+                        <a href="#" onclick="confirmLogout(event)" class="ms-3" th:if="${currentUser == null}">LOGOUT</a>
                     </div>
 
-<<<<<<< Styling
                     <li class="nav-links dropdown d-none d-md-block">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img class="rounded-circle me-2" th:src="@{${currentUser.imageSource}}" style="width: 40px; height: 40px; object-fit: cover;" >
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end navbar-dropdown">
+                        <div class="dropdown-menu dropdown-menu-end navbar-dropdown" th:if="${currentUser != null}">
                             <div class="d-flex flex-column align-items-center">
                                 <div class="dropdown-list-image mr-3">
                                     <img class="rounded-circle" th:src="@{${currentUser.imageSource}}" style="width: 50px; height: 50px; object-fit: cover;">
@@ -47,16 +32,7 @@
                             <a class="dropdown-item text-center" href="/settings"><small><i class="bi bi-gear"></i> Settings</small></a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item text-center" href="#" onclick="confirmLogout(event)"><small class="text-danger"><i class="bi bi-box-arrow-left"></i> Logout</small></a>
-=======
-            <li class="nav-links dropdown d-none d-md-block" th:if="${currentUser != null}">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="rounded-circle me-2" th:src="@{${currentUser.imageSource}}" style="width: 40px; height: 40px; object-fit: cover;" >
-                </a>
-                <div class="dropdown-menu dropdown-menu-end navbar-dropdown" th:if="${currentUser != null}">
-                    <div class="d-flex flex-column align-items-center">
-                        <div class="dropdown-list-image mr-3">
-                            <img class="rounded-circle" th:src="@{${currentUser.imageSource}}" style="width: 50px; height: 50px; object-fit: cover;">
->>>>>>> main
+
                         </div>
                     </li>
                 </div>
