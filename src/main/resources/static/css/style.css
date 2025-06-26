@@ -4,7 +4,7 @@ body {
     font-family: 'Inter', Arial, sans-serif; /* Using Inter font, fallback to Arial */
     margin: 20px;
     background-color: #f0f2f5; /* Light grey background */
-    color: #333;
+    color: rgb(59, 47, 93, .90);
     line-height: 1.6;
 }
 
@@ -12,6 +12,8 @@ h1 {
     color: #2c3e50;
     text-align: center;
     margin-bottom: 25px;
+    font-weight: 500;
+    color: rgb(59, 47, 93, .90);
 }
 
 h2 {

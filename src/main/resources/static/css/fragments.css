@@ -192,7 +192,7 @@ footer a {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.8rem;
     font-weight: bold;
-    color: #000;
+    color: rgb(59, 47, 93, .90)color: rgb(59, 47, 93, .90)
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 2px solid #C2F9FF;
@@ -206,7 +206,7 @@ footer a {
 .sidebar-section-title {
     font-size: 1.4rem;
     font-weight: 600;
-    color: #333;
+    color: rgb(59, 47, 93, .90)
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -227,7 +227,7 @@ footer a {
     display: block;
     padding: 0.8rem 1rem;
     margin: 0.5rem 0;
-    color: #555;
+    color: rgb(59, 47, 93, .90);
     text-decoration: none;
     font-size: 1.2rem;
     border-radius: 4px;
@@ -237,7 +237,7 @@ footer a {
 .sidebar-link:hover {
     background: #C2F9FF;
     background: linear-gradient(-45deg,rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
-    color: #000;
+    color: rgb(59, 47, 93, .90);
     font-weight: 600;
 }
 
@@ -292,13 +292,13 @@ footer a {
 .stat-label {
     font-size: 1.2rem;
     font-weight: 500;
-    color: #555;
+    color: rgb(59, 47, 93, .80);
 }
 
 .stat-value {
     font-size: 1.3rem;
     font-weight: 600;
-    color: #000;
+   color: rgb(59, 47, 93, .90);
     background: #fff;
     background: linear-gradient(-45deg,rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
     padding: 0.2rem 0.6rem;
