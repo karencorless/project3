@@ -2,11 +2,10 @@ package com.makers.project3.controller;
 
 import com.makers.project3.Service.ImageUploadService;
 import com.makers.project3.Service.UserService;
+import com.makers.project3.exception.EntityAlreadyExistsException;
 import com.makers.project3.model.User;
 import com.makers.project3.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +42,9 @@ public class UserController {
         User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
         assert currentUser != null;
 
+        if (userRepository.countByUsername(username) > 0 ) {
+            throw new EntityAlreadyExistsException("Username");
+        }
         currentUser.setUsername(username);
         currentUser.setBirthday(birthday);  //need to fix parsing issue
 
