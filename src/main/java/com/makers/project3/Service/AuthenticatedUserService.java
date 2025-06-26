@@ -38,11 +38,10 @@ public class AuthenticatedUserService {
     private User createNewUser(String authId) {
         OAuth2User principal = getPrincipal();
         String email = (String) principal.getAttributes().get("email");
-        String imageSource = (String) principal.getAttributes().get("picture");
         String username = (String) principal.getAttributes().get("nickname");
         User newUser = new User();
         newUser.setEmail(email);
-        newUser.setImageSource(imageSource);
+        newUser.setImageSource("/uploads/profilePics/default.jpg");
         newUser.setAuth0id(authId);
         newUser.setUsername(username);
         newUser.setGamesWon(0);
