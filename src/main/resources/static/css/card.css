@@ -67,6 +67,7 @@
     max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
+    color: black !important;
 }
 
 .card-image-box{
@@ -135,10 +136,10 @@
 }
 
 
-        .card-box-style.selected:hover {
-        box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
-        transform: scale(1.03);
-        }
+.card-box-style.selected:hover {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+    transform: scale(1.03);
+}
 
 .card-text-box {
     max-width: 100%;

@@ -17,7 +17,7 @@ h1 {
 }
 
 h2 {
-    color: #34495e;
+    color: rgb(59, 47, 93, .85);
     margin-top: 30px;
     margin-bottom: 15px;
     border-bottom: 2px solid #ddd;
