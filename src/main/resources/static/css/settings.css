@@ -3,6 +3,12 @@ body {
             justify-content: center;
         }
 
+
+#buttons {
+    text-align: center;
+    margin: auto;
+}
+
 #buttons #submit {
     margin-top: 15px;
     border-radius: 100px;
@@ -10,7 +16,6 @@ body {
     cursor: pointer;
     display: inline-block;
     padding: 7px 20px;
-    text-align: center;
     text-decoration: none;
     transition: all 250ms;
     border: 0;
@@ -22,6 +27,12 @@ body {
     color: blue;
     width: 8em;
     height: 3em;
+}
+
+body.dark-theme #buttons #submit {
+    box-shadow: rgba(135, 155, 199, 0.2) 0 -25px 18px -14px inset,rgba(135, 155, 199, 0.15) 0 1px 2px,rgba(135, 155, 199, 0.15) 0 2px 4px,rgba(135, 155, 199, 0.15) 0 4px 8px,rgba(135, 155, 199, 0.15) 0 8px 16px,rgba(135, 155, 199, 0.15) 0 16px 32px;
+    background-color: rgb(87, 52, 185);
+    color: #d2e4ee;
 }
 
 #buttons #reset {
@@ -45,15 +56,21 @@ body {
     height: 3em;
 }
 
+body.dark-theme #buttons #reset {
+    box-shadow: rgba(229, 69, 0, .2) 0 -25px 18px -14px inset,rgba(229, 69, 0, .15) 0 1px 2px,rgba(229, 69, 0, .15) 0 2px 4px,rgba(229, 69, 0, .15) 0 4px 8px,rgba(229, 69, 0, .15) 0 8px 16px,rgba(229, 69, 0, .15) 0 16px 32px;
+    background-color: rgb(187, 62, 93);
+    color: #eed2d2;
+}
+
 #buttons #submit:hover {
     box-shadow: rgba(61, 42, 150, .35) 0 -25px 18px -14px inset,rgba(61, 42, 150, .25) 0 1px 2px,rgba(61, 42, 150, .25) 0 2px 4px,rgba(61, 42, 150, .25) 0 4px 8px,rgba(61, 42, 150, .25) 0 8px 16px,rgba(61, 42, 150, .25) 0 16px 32px;
     transform: scale(1.05) rotate(-1deg);
 }
 
- #buttons #reset:hover {
+#buttons #reset:hover {
     box-shadow: rgba(229, 69, 0, .35) 0 -25px 18px -14px inset,rgba(229, 69, 0, .25) 0 1px 2px,rgba(229, 69, 0, .25) 0 2px 4px,rgba(229, 69, 0, .25) 0 4px 8px,rgba(229, 69, 0, .25) 0 8px 16px,rgba(229, 69, 0, .25) 0 16px 32px;
     transform: scale(1.05) rotate(1deg);
- }
+}
 
 .settings-image {
     width: 300px;
