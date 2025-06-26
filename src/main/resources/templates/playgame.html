@@ -11,135 +11,148 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/images/SA-Flare.png">
 </head>
 <body>
-    <!--Inserts header.html as a fragment-->
-    <div th:insert="~{fragments/header :: header}"></div>
+<!--Inserts header.html as a fragment-->
+<div th:insert="~{fragments/header :: header}"></div>
 
-    <!--Displays GAME OVER and game winner-->
-    <div class="game-result-container" th:if="${gameOver}" style="text-align: center; margin-top: 10px;">
-        <h1>Game Over!</h1>
-        <p th:if="${player1Score > cpuScore}"><strong>Congratulations!</strong><br>You have won the game.</p>
-        <p th:if="${player1Score < cpuScore}"><strong>Player 2 has won the game.</strong><br>Better luck next time!</p>
-        <p th:if="${player1Score == cpuScore}"><strong>It's a draw!</strong><br>Good effort!</p>
-    </div>
+<!--Displays GAME OVER and game winner-->
+<div class="game-result-container" th:if="${gameOver}" style="text-align: center; margin-top: 10px;">
+    <h1>Game Over!</h1>
+    <p th:if="${player1Score > cpuScore}"><strong>Congratulations!</strong><br>You have won the game.</p>
+    <p th:if="${player1Score < cpuScore}"><strong>Player 2 has won the game.</strong><br>Better luck next time!</p>
+    <p th:if="${player1Score == cpuScore}"><strong>It's a draw!</strong><br>Good effort!</p>
+</div>
 
-    <!-- Displays who is attacking that round -->
-    <div class="round-result-container" style="text-align: center; margin-top: 10px; margin-top: 30px">
-        <h2 th:if="${currentAttacker == 'P1' and roundComplete == false}"><strong style="color: green;">You</strong> are attacking!</h2>
-        <h2 th:if="${currentAttacker == 'P2' and roundComplete == false}"><strong style="color: red;">Player 2</strong> is attacking!</h2>
-    </div>
+<!-- Displays who is attacking that round -->
+<div class="round-result-container" style="text-align: center; margin-top: 10px; margin-top: 30px">
+    <h2 th:if="${currentAttacker == 'P1' and roundComplete == false}"><strong style="#92D0D6;">You</strong> are attacking!</h2>
+    <h2 th:if="${currentAttacker == 'P2' and roundComplete == false}"><strong style="color: rgba(255, 194, 194, 1);">Player 2</strong> is attacking!</h2>
+</div>
 
-    <!--Displays round winner-->
-    <div th:if="${#lists.size(playerHand) > 0 and !gameOver}" class="round-result-container" style="text-align: center; margin-top: 10px;">
-        <h2 th:if="${statValue > cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 1</strong> Wins!</h2>
-        <h2 th:if="${statValue < cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 2</strong> Wins!</h2>
-        <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's a <strong>Draw</strong>!</h2>
-    </div>
+<!--Displays round winner-->
+<div th:if="${#lists.size(playerHand) > 0 and !gameOver}" class="round-result-container" style="text-align: center; margin-top: 10px;">
+    <h2 th:if="${statValue > cpuStatValue and roundComplete == true}"><strong style="color: green;">Player 1</strong> Wins!</h2>
+    <h2 th:if="${statValue < cpuStatValue and roundComplete == true}"><strong style="color: red;">Player 2</strong> Wins!</h2>
+    <h2 th:if="${statValue == cpuStatValue and roundComplete == true}">It's a <strong>Draw</strong>!</h2>
+</div>
 
-    <!--    Displays the round's chosen cards from both players-->
-    <div class="game-round-display">
+<!--    Displays the round's chosen cards from both players-->
+<div class="game-round-display">
 
+    <div class="score-reveal-container">
         <!-- P1 Score Display -->
         <div class="score-container" style="justify-content: space-between; padding: 10px;">
-            <div style="text-align: right; margin-right: 20px;">
+            <div style="text-align: center; margin-right: 20px;">
                 <h2>Player 1:</h2>
                 <h2><strong th:text="${player1Score}"></strong>/<strong th:text="${pointsToWin}"></strong></h2>
             </div>
         </div>
 
+        <!-- Show results after battle -->
+        <div th:if="${cpuPlayedCard != null and roundComplete}" style="display: flex; justify-content: space-between; margin-top: 3px;">
+            <div class="reveal">
+                <h2>Your Reveal</h2>
+                <!--                    <p>You played: <strong th:text="${playedCard.name}"></strong></p>-->
+                <p th:if="${chosenStat == 'strength' or chosenStat == 'wisdom' or chosenStat == 'defence' or chosenStat == 'luck'}">You picked: <strong th:text="${chosenStat}" style="text-transform: capitalize;"></strong></p>
+                <p th:if="${chosenStat != 'strength' and chosenStat != 'wisdom' and chosenStat != 'defence' and chosenStat != 'luck'}">You picked: <strong th:text="${customStatName}" style="text-transform: capitalize;"></strong></p>
+                <p>Stat value: <strong th:text="${statValue}"></strong></p>
+            </div>
+        </div>
+    </div>
+
     <!--    Displays P1's chosen card-->
-        <div class="final-card-container" th:if="${playedCard != null}">
-            <h2>Your Card</h2>
-            <div class="card-wrap"
-                 th:classappend="${playedCard.deck.name == 'The Simpsons' ? ' simpson' :
+    <div class="final-card-container" th:if="${playedCard != null}">
+        <h2>Your Card</h2>
+        <div class="card-wrap"
+             th:classappend="${playedCard.deck.name == 'The Simpsons' ? ' simpson' :
                              playedCard.deck.name == 'Harry Potter' ? ' hp' :
                              playedCard.deck.name == 'Marvel' ? ' marvel' :
                              playedCard.deck.name == 'Disney' ? ' disney' :
                              playedCard.deck.name == 'Pop-culture' ? ' pop-culture' :
                              playedCard.deck.name == 'Brit-tv' ? ' brit-tv' :
                              playedCard.deck.name == 'Kids-tv' ? ' kids-tv' :
-	                     playedCard.deck.name == 'Anime' ? ' anime' : ''}">
-                <strong class="card-name" th:text="${#strings.toUpperCase(playedCard.name)}"></strong>
-                <div class="card-image-box">
-                    <img th:src="${playedCard.imageSource}" alt="Card image" width="220"/>
-                </div>
-                <div class="card-text-box card-box-style">
-                    <span th:text="${playedCard.flavourText}"></span>
-                </div>
-                <div class="stat-row form-stat-container">
-<!--                    Clickable strength stat-->
-                    <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
-                        <input type="hidden" name="cardId" th:value="${playedCard.id}" />
-                        <input type="hidden" name="chosenStat" value="strength" />
-                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
-                                th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.strength >= 90 ? ' card-box-rare' : ''}">
-                            <span>Strength: <strong th:text="${playedCard.strength}"></strong></span>
-                        </button>
-                    </form>
-<!--                    Clickable wisdom stat-->
-                    <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: flex;">
-                        <input type="hidden" name="cardId" th:value="${playedCard.id}" />
-                        <input type="hidden" name="chosenStat" value="wisdom" />
-                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
-                                th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.wisdom >= 90 ? ' card-box-rare' : ''}">
-                            <span>Wisdom: <strong th:text="${playedCard.wisdom}"></strong></span>
-                        </button>
-                    </form>
-                </div>
-                <div class="stat-row form-stat-container">
+                             playedCard.deck.name == 'Anime' ? ' anime' : ''}">
+            <strong class="card-name" th:text="${#strings.toUpperCase(playedCard.name)}"></strong>
+            <div class="card-image-box">
+                <img th:src="${playedCard.imageSource}" alt="Card image" width="220"/>
+            </div>
+            <div class="card-text-box card-box-style">
+                <span th:text="${playedCard.flavourText}"></span>
+            </div>
+            <div class="stat-row form-stat-container">
+                <!--                    Clickable strength stat-->
+                <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
+                    <input type="hidden" name="cardId" th:value="${playedCard.id}" />
+                    <input type="hidden" name="chosenStat" value="strength" />
+                    <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
+                            th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.strength >= 90 ? ' card-box-rare' : ''}">
+                        <span>Strength: <strong th:text="${playedCard.strength}"></strong></span>
+                    </button>
+                </form>
+                <!--                    Clickable wisdom stat-->
+                <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: flex;">
+                    <input type="hidden" name="cardId" th:value="${playedCard.id}" />
+                    <input type="hidden" name="chosenStat" value="wisdom" />
+                    <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
+                            th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.wisdom >= 90 ? ' card-box-rare' : ''}">
+                        <span>Wisdom: <strong th:text="${playedCard.wisdom}"></strong></span>
+                    </button>
+                </form>
+            </div>
+            <div class="stat-row form-stat-container">
 
-<!--                    Clickable defence stat-->
-                    <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
-                        <input type="hidden" name="cardId" th:value="${playedCard.id}" />
-                        <input type="hidden" name="chosenStat" value="defence" />
-                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
-                                th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.defence >= 90 ? ' card-box-rare' : ''}">
-                            <span>Defence: <strong th:text="${playedCard.defence}"></strong></span>
-                        </button>
-                    </form>
-<!--                    Clickable luck stat-->
-                    <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
-                        <input type="hidden" name="cardId" th:value="${playedCard.id}" />
-                        <input type="hidden" name="chosenStat" value="luck" />
-                        <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
-                             th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.luck >= 90 ? ' card-box-rare' : ''}">
+                <!--                    Clickable defence stat-->
+                <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
+                    <input type="hidden" name="cardId" th:value="${playedCard.id}" />
+                    <input type="hidden" name="chosenStat" value="defence" />
+                    <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
+                            th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.defence >= 90 ? ' card-box-rare' : ''}">
+                        <span>Defence: <strong th:text="${playedCard.defence}"></strong></span>
+                    </button>
+                </form>
+                <!--                    Clickable luck stat-->
+                <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
+                    <input type="hidden" name="cardId" th:value="${playedCard.id}" />
+                    <input type="hidden" name="chosenStat" value="luck" />
+                    <button type="submit" class="stat-text-box card-box-style" th:disabled="${roundComplete}"
+                            th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.luck >= 90 ? ' card-box-rare' : ''}">
 
-                            <span>Luck: <strong th:text="${playedCard.luck}"></strong></span>
-                        </button>
-                    </form>
-                </div>
-                <!-- Clickable custom stat -->
-                <div class="unique-stat-box text-nowrap" >
+                        <span>Luck: <strong th:text="${playedCard.luck}"></strong></span>
+                    </button>
+                </form>
+            </div>
+            <!-- Clickable custom stat -->
+            <div class="unique-stat-box text-nowrap" >
                 <form th:action="@{'/game/play/p1-attack-2'}" method="post" style="display: inline;">
                     <input type="hidden" name="cardId" th:value="${playedCard.id}" />
                     <input type="hidden" name="chosenStat" th:value="${playedCard.deck.uniqueStatName}" />
                     <button type="submit" class="stat-text-box card-box-style text-nowrap" th:disabled="${roundComplete}"
-                          th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.customStat >= 90 ? ' card-box-rare' : ''}">
+                            th:classappend="${roundComplete ? '' : ' selected'} + ${playedCard.customStat >= 90 ? ' card-box-rare' : ''}">
                         <span>
                             <span th:text="${playedCard.deck.uniqueStatName}"></span>:
                             <strong th:text="${playedCard.customStat}"></strong>
                         </span>
                     </button>
                 </form>
-                </div>
             </div>
         </div>
-        <div th:unless="${playedCard != null}" class="card-placeholder-container">
-            <h2>Your Card</h2>
-            <div class="card-placeholder">
-                <span>No card chosen yet</span>
-            </div>
+    </div>
+    <div th:unless="${playedCard != null}" class="card-placeholder-container">
+        <h2>Your Card</h2>
+        <div class="card-placeholder-left">
+            <span>No card chosen yet</span>
         </div>
+    </div>
 
-<!--        Display VS image-->
-        <div class="vs-image-container">
-            <img src="/images/VS-Flare.png" alt="VS" class="vs-image">
-        </div>
+    <!--        Display VS image-->
+    <div class="vs-image-container">
+        <img src="/images/VS-Flare.png" alt="VS" class="vs-image">
+    </div>
 
-<!--        Display CPU's card-->
-        <div class="final-card-container" th:if="${playedCard != null and chosenStat != null}">
-            <h2>Player 2's Card</h2>
-            <div class="card-wrap"
-                 th:classappend="${cpuPlayedCard.deck.name == 'The Simpsons' ? ' simpson' :
+    <!--        Display CPU's card-->
+    <div class="final-card-container" th:if="${playedCard != null and chosenStat != null}">
+        <h2>Player 2's Card</h2>
+        <div class="card-wrap"
+             th:classappend="${cpuPlayedCard.deck.name == 'The Simpsons' ? ' simpson' :
                              cpuPlayedCard.deck.name == 'Harry Potter' ? ' hp' :
                              cpuPlayedCard.deck.name == 'Marvel' ? ' marvel' :
                              cpuPlayedCard.deck.name == 'Disney' ? ' disney' :
@@ -147,100 +160,94 @@
                              cpuPlayedCard.deck.name == 'Brit-tv' ? ' brit-tv' :
                              cpuPlayedCard.deck.name == 'Kids-tv' ? ' kids-tv' :
                              cpuPlayedCard.deck.name == 'Anime' ? ' anime' : ''}">
-                <strong class="card-name" th:text="${#strings.toUpperCase(cpuPlayedCard.name)}"></strong>
-                <div class="card-image-box">
-                    <img th:src="${cpuPlayedCard.imageSource}" alt="Card image" width="220"/>
+            <strong class="card-name" th:text="${#strings.toUpperCase(cpuPlayedCard.name)}"></strong>
+            <div class="card-image-box">
+                <img th:src="${cpuPlayedCard.imageSource}" alt="Card image" width="220"/>
+            </div>
+            <div class="card-text-box card-box-style">
+                <span th:text="${cpuPlayedCard.flavourText}"></span>
+            </div>
+            <div class="stat-row">
+                <div class="stat-text-box card-box-style" th:classappend="${cpuPlayedCard.strength >= 90 ? ' card-box-rare' : ''}">
+                    <span>Strength: <strong th:text="${cpuPlayedCard.strength}"></strong></span>
                 </div>
-                <div class="card-text-box card-box-style">
-                    <span th:text="${cpuPlayedCard.flavourText}"></span>
+                <div class="stat-text-box card-box-style" th:classappend="${cpuPlayedCard.wisdom >= 90 ? ' card-box-rare' : ''}">
+                    <span>Wisdom: <strong th:text="${cpuPlayedCard.wisdom}"></strong></span>
                 </div>
-                <div class="stat-row">
-                    <div class="stat-text-box card-box-style" th:classappend="${cpuPlayedCard.strength >= 90 ? ' card-box-rare' : ''}">
-                        <span>Strength: <strong th:text="${cpuPlayedCard.strength}"></strong></span>
-                    </div>
-                    <div class="stat-text-box card-box-style" th:classappend="${cpuPlayedCard.wisdom >= 90 ? ' card-box-rare' : ''}">
-                        <span>Wisdom: <strong th:text="${cpuPlayedCard.wisdom}"></strong></span>
-                    </div>
+            </div>
+            <div class="stat-row">
+                <div class="stat-text-box card-box-style" th:classappend="${cpuPlayedCard.defence >= 90 ? ' card-box-rare' : ''}">
+                    <span>Defence: <strong th:text="${cpuPlayedCard.defence}"></strong></span>
                 </div>
-                <div class="stat-row">
-                    <div class="stat-text-box card-box-style" th:classappend="${cpuPlayedCard.defence >= 90 ? ' card-box-rare' : ''}">
-                        <span>Defence: <strong th:text="${cpuPlayedCard.defence}"></strong></span>
-                    </div>
-                    <div class="stat-text-box card-box-style" th:classappend="${cpuPlayedCard.luck >= 90 ? ' card-box-rare' : ''}">
-                        <span>Luck: <strong th:text="${cpuPlayedCard.luck}"></strong></span>
-                    </div>
+                <div class="stat-text-box card-box-style" th:classappend="${cpuPlayedCard.luck >= 90 ? ' card-box-rare' : ''}">
+                    <span>Luck: <strong th:text="${cpuPlayedCard.luck}"></strong></span>
                 </div>
-                <div class="unique-stat-box card-box-style text-nowrap" th:classappend="${cpuPlayedCard.customStat >= 90 ? ' card-box-rare' : ''}">
+            </div>
+            <div class="unique-stat-box card-box-style text-nowrap" th:classappend="${cpuPlayedCard.customStat >= 90 ? ' card-box-rare' : ''}">
                 <span>
                     <span th:text="' ' + ${cpuPlayedCard.deck.uniqueStatName} + ': '"></span>
                     <strong th:text="${cpuPlayedCard.customStat}"></strong>
                 </span>
-                </div>
             </div>
         </div>
-        <div th:unless="${cpuPlayedCard != null and chosenStat != null}" class="card-placeholder-container">
-            <h2>Player 2's Card</h2>
-            <div class="card-placeholder">
-                <span>No card chosen yet</span>
+    </div>
+    <div th:unless="${cpuPlayedCard != null and chosenStat != null}" class="card-placeholder-container">
+        <h2>Player 2's Card</h2>
+        <div class="card-placeholder-right">
+            <span>No card chosen yet</span>
+        </div>
+    </div>
+
+    <div class="score-reveal-container">
+        <!-- P2 Score Display -->
+        <div class="score-container" style="text-align: center; margin-left: 20px;">
+            <h2>Player 2:</h2>
+            <h2><strong th:text="${cpuScore}"></strong>/<strong th:text="${pointsToWin}"></strong></h2>
+        </div>
+        <!--        Displays CPU's reveal-->
+        <div th:if="${cpuPlayedCard != null and roundComplete}" style="display: flex; justify-content: space-between; margin-top: 3px;">
+            <!--Reveals CPU's stats after the round's completed-->
+            <div class="reveal">
+                <h2>Player 2's Reveal</h2>
+                <!--                    <p>Played: <strong th:text="${cpuPlayedCard.name}"></strong></p>-->
+                <p th:if="${chosenStat == 'strength' or chosenStat == 'wisdom' or chosenStat == 'defence' or chosenStat == 'luck'}">Stat: <strong th:text="${chosenStat}" style="text-transform: capitalize;"></strong></p>
+                <p th:if="${chosenStat != 'strength' and chosenStat != 'wisdom' and chosenStat != 'defence' and chosenStat != 'luck'}">Stat: <strong th:text="${cpuCustomStatName}" style="text-transform: capitalize;"></strong></p>
+                <p>Stat value: <strong th:text="${cpuStatValue}"></strong></p>
             </div>
         </div>
-            <!-- P2 Score Display -->
-            <div class="score-container" style="text-align: left; margin-left: 20px;">
-                <h2>Player 2:</h2>
-                <h2><strong th:text="${cpuScore}"></strong>/<strong th:text="${pointsToWin}"></strong></h2>
-            </div>
-        </div>
-
-    <div th:if="${cpuPlayedCard != null and roundComplete}" style="display: flex; justify-content: space-between; margin-top: 3px;">
-    <!-- Show results after battle -->
-    <div style="text-align: left; margin-top: 3px;">
-        <h2>Your Reveal</h2>
-        <p>You played: <strong th:text="${playedCard.name}"></strong></p>
-        <p th:if="${chosenStat == 'strength' or chosenStat == 'wisdom' or chosenStat == 'defence' or chosenStat == 'luck'}">You picked: <strong th:text="${chosenStat}" style="text-transform: capitalize;"></strong></p>
-        <p th:if="${chosenStat != 'strength' and chosenStat != 'wisdom' and chosenStat != 'defence' and chosenStat != 'luck'}">You picked: <strong th:text="${customStatName}" style="text-transform: capitalize;"></strong></p>
-        <p>Stat value: <strong th:text="${statValue}"></strong></p>
     </div>
-
-    <!--Reveals CPU's stats after the round's completed-->
-    <div style="float: right; text-align: right;">
-        <h2>Player 2's Reveal</h2>
-        <p>Played: <strong th:text="${cpuPlayedCard.name}"></strong></p>
-        <p th:if="${chosenStat == 'strength' or chosenStat == 'wisdom' or chosenStat == 'defence' or chosenStat == 'luck'}">Stat: <strong th:text="${chosenStat}" style="text-transform: capitalize;"></strong></p>
-        <p th:if="${chosenStat != 'strength' and chosenStat != 'wisdom' and chosenStat != 'defence' and chosenStat != 'luck'}">Stat: <strong th:text="${cpuCustomStatName}" style="text-transform: capitalize;"></strong></p>
-        <p>Stat value: <strong th:text="${cpuStatValue}"></strong></p>
-    </div>
-    </div>
+</div>
 
 
-    <!--Shows the CPU's selected stat, IF they go first in that round.-->
-    <div class="cpu-stat-container" style="width: 300px; margin: 0 auto; text-align: center;" th:if="${cpuStat != null && playerStat == null}">
-        <h2>Battle Stat: </h2>
+<!--Shows the CPU's selected stat, IF they go first in that round.-->
+<div class="cpu-stat-container" style="width: 300px; margin: 0 auto; text-align: center;" th:if="${cpuStat != null && playerStat == null}">
+    <h2>Battle Stat: </h2>
     <!--    <h2><strong th:text="${cpuStat}"></strong></h2>-->
-        <h2 th:if="${cpuStat != 'customStat'}"><strong th:text="${cpuStat}"></strong></h2>
-        <h2 th:if="${cpuStat == 'customStat'}"><strong th:text="${cpuCustomStatName}"></strong></h2>
-    </div>
+    <h2 th:if="${cpuStat != 'customStat'}"><strong th:text="${cpuStat}"></strong></h2>
+    <h2 th:if="${cpuStat == 'customStat'}"><strong th:text="${cpuCustomStatName}"></strong></h2>
+</div>
 
 
-    <!-- Next round: if CPU's turn to attack -->
-    <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;"
-         th:if="${roundComplete == true and p1IsAttackingNextRound == false and !gameOver}">
-        <form th:action="@{/game/play/p2-attack}" method="get">
-            <button type="submit" class="btn main-button-success btn-lg">Next Round</button>
-        </form>
+<!-- Next round: if CPU's turn to attack -->
+<div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;"
+     th:if="${roundComplete == true and p1IsAttackingNextRound == false and !gameOver}">
+    <form th:action="@{/game/play/p2-attack}" method="get">
+        <button type="submit" class="btn main-button-success btn-lg">Next Round</button>
+    </form>
 
-    </div>
+</div>
 
-    <!-- Next round: if P1's turn to attack -->
-    <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;"
-         th:if="${roundComplete == true and p1IsAttackingNextRound == true and !gameOver}">
-        <form th:action="@{/game/play}" method="get">
-            <button type="submit" class="btn main-button-success btn-lg">Next Round</button>
-        </form>
-    </div>
+<!-- Next round: if P1's turn to attack -->
+<div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;"
+     th:if="${roundComplete == true and p1IsAttackingNextRound == true and !gameOver}">
+    <form th:action="@{/game/play}" method="get">
+        <button type="submit" class="btn main-button-success btn-lg">Next Round</button>
+    </form>
+</div>
 
-    <!--Displays player's hand, prompts player to pick card-->
-    <div class="container my-4 text-center">
-    <div class="hand-container" th:if="${playerHand != null and !gameOver}">
+<!--Displays player's hand, prompts player to pick card-->
+<div class="container my-4 text-center">
+    <div class="hand-container" th:if="${playerHand != null and !gameOver}" style="margin-top: 40px;">
         <h2 class="mt-3 mb-3">Your Hand:</h2>
         <!-- Clickable, player can choose a card -->
         <div th:if="${roundComplete == false and playedCard == null}">
@@ -293,73 +300,73 @@
             </div>
         </div>
     </div>
-    </div>
+</div>
 
-        <!-- Non-clickable hand, for viewign-->
-    <div class="container my-4 text-center">
-        <div th:unless="${roundComplete == false and playedCard == null}">
-            <div class="d-flex flex-wrap justify-content-center">
-                <div th:each="card : ${playerHand}" class="p-3">
-                    <div class="card-wrap" style="cursor: default;"
-                         th:classappend="${card.deck.name == 'The Simpsons' ? ' simpson' :
+<!-- Non-clickable hand, for viewign-->
+<div class="container my-4 text-center">
+    <div th:unless="${roundComplete == false and playedCard == null}">
+        <div class="d-flex flex-wrap justify-content-center">
+            <div th:each="card : ${playerHand}" class="p-3">
+                <div class="card-wrap" style="cursor: default;"
+                     th:classappend="${card.deck.name == 'The Simpsons' ? ' simpson' :
                                      card.deck.name == 'Harry Potter' ? ' hp' :
                                      card.deck.name == 'Marvel' ? ' marvel' :
                                      card.deck.name == 'Disney' ? ' disney' :
                                      card.deck.name == 'Pop-culture' ? ' pop-culture' :
                                      card.deck.name == 'Brit-tv' ? ' brit-tv' :
                                      card.deck.name == 'Kids-tv' ? ' kids-tv' :
- 		  		     card.deck.name == 'Anime' ? ' anime' : ''}">
-                        <strong class="card-name" th:text="${#strings.toUpperCase(card.name)}"></strong>
-                        <div class="card-image-box">
-                            <img th:src="${card.imageSource}" alt="Card image" width="220"/>
+                                     card.deck.name == 'Anime' ? ' anime' : ''}">
+                    <strong class="card-name" th:text="${#strings.toUpperCase(card.name)}"></strong>
+                    <div class="card-image-box">
+                        <img th:src="${card.imageSource}" alt="Card image" width="220"/>
+                    </div>
+                    <div class="card-text-box card-box-style">
+                        <span th:text="${card.flavourText}"></span>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-text-box card-box-style" th:classappend="${card.strength >= 90 ? ' card-box-rare' : ''}">
+                            <span>Strength: <strong th:text="${card.strength}"></strong></span>
                         </div>
-                        <div class="card-text-box card-box-style">
-                            <span th:text="${card.flavourText}"></span>
+                        <div class="stat-text-box card-box-style" th:classappend="${card.wisdom >= 90 ? ' card-box-rare' : ''}">
+                            <span>Wisdom: <strong th:text="${card.wisdom}"></strong></span>
                         </div>
-                        <div class="stat-row">
-                            <div class="stat-text-box card-box-style" th:classappend="${card.strength >= 90 ? ' card-box-rare' : ''}">
-                                <span>Strength: <strong th:text="${card.strength}"></strong></span>
-                            </div>
-                            <div class="stat-text-box card-box-style" th:classappend="${card.wisdom >= 90 ? ' card-box-rare' : ''}">
-                                <span>Wisdom: <strong th:text="${card.wisdom}"></strong></span>
-                            </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-text-box card-box-style" th:classappend="${card.defence >= 90 ? ' card-box-rare' : ''}">
+                            <span>Defence: <strong th:text="${card.defence}"></strong></span>
                         </div>
-                        <div class="stat-row">
-                            <div class="stat-text-box card-box-style" th:classappend="${card.defence >= 90 ? ' card-box-rare' : ''}">
-                                <span>Defence: <strong th:text="${card.defence}"></strong></span>
-                            </div>
-                            <div class="stat-text-box card-box-style" th:classappend="${card.luck >= 90 ? ' card-box-rare' : ''}">
-                                <span>Luck: <strong th:text="${card.luck}"></strong></span>
-                            </div>
+                        <div class="stat-text-box card-box-style" th:classappend="${card.luck >= 90 ? ' card-box-rare' : ''}">
+                            <span>Luck: <strong th:text="${card.luck}"></strong></span>
                         </div>
-                        <div class="unique-stat-box card-box-style text-nowrap" th:classappend="${card.customStat >= 90 ? ' card-box-rare' : ''}">
+                    </div>
+                    <div class="unique-stat-box card-box-style text-nowrap" th:classappend="${card.customStat >= 90 ? ' card-box-rare' : ''}">
                         <span>
                             <span th:text="' ' + ${card.deck.uniqueStatName} + ': '"></span>
                             <strong th:text="${card.customStat}"></strong>
                         </span>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Finish Game button -->
-    <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;">
-        <form th:if="${gameOver}" th:action="@{/game/reset}" method="get">
-            <button type="submit" class="btn main-button-neutral btn-lg">Finish</button>
-        </form>
-    </div>
+<!-- Finish Game button -->
+<div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;">
+    <form th:if="${gameOver}" th:action="@{/game/reset}" method="get">
+        <button type="submit" class="btn main-button-neutral btn-lg">Finish</button>
+    </form>
+</div>
 
-    <!--New game/reset hand button-->
-    <div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;" th:if="!gameOver">
-        <form th:action="@{/game/reset}" method="get">
-            <button type="submit" class="btn main-button-warning btn-lg">Quit Game</button>
-        </form>
-    </div>
+<!--New game/reset hand button-->
+<div style="width: 300px; margin: 0 auto; text-align: center; margin-top: 10px;" th:if="!gameOver">
+    <form th:action="@{/game/reset}" method="get">
+        <button type="submit" class="btn main-button-warning btn-lg">Quit Game</button>
+    </form>
+</div>
 
-    <div th:insert="~{fragments/footer :: footer}"></div>
-    <div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+<div th:insert="~{fragments/footer :: footer}"></div>
+<div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
