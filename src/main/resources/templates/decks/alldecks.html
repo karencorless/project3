@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
     <link rel="stylesheet" th:href="@{css/decks.css}">
+    <link rel="stylesheet" th:href="@{/css/compare.css}">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/SA-Flare.png">
 
     <style>
@@ -54,36 +55,44 @@
     </style>
 </head>
 
-<body>
-    <div th:insert="~{fragments/header :: header}"></div>
-    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+<body class="d-flex flex-column min-vh-100">
 
-        <h1 class="mt-4">Decks</h1>
-        <h5 class="mb-4">Select a deck to view cards within the deck.</h5>
+<!--    Header and sidebar    -->
+<div th:insert="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
 
-        <!--    View Decks    -->
-        <div class="all-decks">
-            <!--    Displays a list of decks in the database showing the name and thumbnail image for each deck    -->
-            <div th:each="deck: ${decks}" class="deck">
-                <!--    Link to an individual deck to view cards    -->
-                <label>
-                    <a th:href="@{/decks/{name}(name=${deck.name})}" class="text-decoration-none text-reset">
-                        <!--        Deck thumbnail image    -->
-                        <img th:src="${deck.thumbnail}" alt="Deck thumbnail" width="100" class="mb-1"/>
-                        <!--    Deck Name    -->
-                        <div class="text-center mb-2">
-                            <strong th:text="${deck.name}"></strong>
-                        </div>
-                    </a>
-                </label>
-            </div>
+<!--    Main Content    -->
+<div class="container-fluid flex-grow-1">
+    <h1 class="mt-4">Decks</h1>
+    <h5 class="mb-4">Select a deck to view cards within the deck.</h5>
+
+    <!--    View Decks    -->
+    <div class="all-decks">
+        <!--    Displays a list of decks in the database showing the name and thumbnail image for each deck    -->
+        <div th:each="deck: ${decks}" class="deck">
+            <!--    Link to an individual deck to view cards    -->
+            <label>
+                <a th:href="@{/decks/{name}(name=${deck.name})}" class="text-decoration-none text-reset">
+                    <!--        Deck thumbnail image    -->
+                    <img th:src="${deck.thumbnail}" alt="Deck thumbnail" width="100" class="mb-1"/>
+                    <!--    Deck Name    -->
+                    <div class="text-center mb-2">
+                        <strong th:text="${deck.name}"></strong>
+                    </div>
+                </a>
+            </label>
         </div>
+    </div>
+    <!--    Button link to compare cards page    -->
     <div class="mt-5">
         <a href="/decks/compare" class="btn main-button-neutral mt-3">Compare Cards</a>
     </div>
+</div>
 
-    <div th:insert="~{fragments/footer :: footer}"></div>
-    <div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+<!--    Footer and tutorial modal    -->
+<div th:insert="~{fragments/footer :: footer}"></div>
+<div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
+<!--    Bootstrap script for navbar dropdown    -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

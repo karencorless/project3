@@ -34,6 +34,10 @@
         .card-preview:hover {
             transform: scale(1.05);
         }
+        h1{
+            font-family: Impact;
+            weight: 0;
+        }
 
         .top-player {
             border: 5px solid transparent;
@@ -55,23 +59,26 @@
         }
     </style>
 </head>
+<body class="d-flex flex-column min-vh-100">
 
-<body>
-    <div th:insert="~{fragments/header :: header}"></div>
-    <div th:insert="~{fragments/sidebar :: sidebar}"></div>
+<!--    Header and sidebar    -->
+<div th:insert="~{fragments/header :: header}"></div>
+<div th:insert="~{fragments/sidebar :: sidebar}"></div>
 
-    <main class="main-content container mt-4">
-        <!-- Hero Banner -->
-        <section class="hero">
-            <h1 class="display-4">Welcome to Stat Attack</h1>
-            <p class="lead">
-                Outsmart your friends. Dominate with data. <br>
-                Stat Attack is the only card game where knowledge <em>is</em> power —
-                and a walrus can beat a robot (depending on the stats).
-            </p>
-            <a href="/game/new" th:href="@{/game/new}" class="btn btn-light btn-lg me-2">Start Game</a>
-            <a href="javascript:void(0)" onclick="openTuto()" class="btn btn-outline-light btn-lg">How to Play</a>
-        </section>
+<!--    Main Content    -->
+<div class="container-fluid flex-grow-1">
+<main class="main-content container mt-4">
+    <!-- Main Banner -->
+    <section class="hero">
+        <h1 class="display-4">Welcome to Stat Attack</h1>
+        <p class="lead">
+            Outsmart your friends. Dominate with data. <br>
+            Stat Attack is the only card game where knowledge <em>is</em> power —
+            and a walrus can beat a robot (depending on the stats).
+        </p>
+        <a href="/game/new" th:href="@{/game/new}" class="btn btn-light btn-lg me-2">Start Game</a>
+        <a href="javascript:void(0)" onclick="openTuto()" class="btn btn-outline-light btn-lg">How to Play</a>
+    </section>
 
         <!-- Featured Card Sets -->
         <section>
@@ -122,11 +129,15 @@
                 </div>
             </div>
 
-        </section>
-    </main>
+    </section>
+</main>
+</div>
 
-    <div th:insert="~{fragments/footer :: footer}"></div>
-    <div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+<!--    Footer and tutorial modal    -->
+<div th:insert="~{fragments/footer :: footer}"></div>
+<div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
+
+<!--    Bootstrap script for navbar dropdown    -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -6,123 +6,132 @@
     <link rel="stylesheet" th:href="@{/css/fragments.css}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/card.css}">
+    <link rel="stylesheet" th:href="@{/css/compare.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/SA-Flare.png">
 </head>
-<body class="text-center">
+<body class="d-flex flex-column min-vh-100 text-center">
 
-    <div th:insert="~{fragments/header :: header}"></div>
+<!--    Header and sidebar    -->
+<div th:insert="~{fragments/header :: header}"></div>
+<div th:insert="~{fragments/sidebar :: sidebar}"></div>
+
+<!--    Main Content    -->
+<div class="container-fluid flex-grow-1">
     <div class="container my-4">
-
         <h1>Compare</h1>
         <h5 class="mb-4">Select any two cards to compare</h5>
 
+        <!--    Select two cards to compare   -->
         <div class="d-flex flex-wrap justify-content-center">
             <form th:action="@{/decks/compare}" method="post" class="d-flex gap-3">
+                <!--    First card form   -->
                 <div class="d-flex flex-column">
                     <label for="card1" class="mb-1">First Card:</label>
-                        <select name="card1" id="card1" class="form-control" required>
+                    <select name="card1" id="card1" class="form-control" required>
                         <option value="" disabled selected>Select Card</option>
                         <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.deck.name} + ' - ' + ${card.name}"></option>
                     </select>
                 </div>
-
-            <div class="d-flex flex-column">
-                <label for="card2" class="mb-1">Second Card:</label>
-                <select name="card2" id="card2" class="form-control" required>
-                    <option value="" disabled selected>Select Card</option>
-                    <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.deck.name} + ' - ' + ${card.name}"></option>
-                </select>
-            </div>
-
-            <div class="align-self-end">
-                <button type="submit" class="btn btn-primary mt-2">Compare</button>
-            </div>
-        </form>
-    </div>
-
-    <div class="d-flex flex-wrap justify-content-center">
-
-        <!--  Card1  -->
-        <div class="p-3 mt-3 ma-3 compare-card-spacing">
-        <div class="card-wrap" th:classappend="${card1.deck.name == 'The Simpsons' ? ' simpson' :
-                                                     card1.deck.name == 'Harry Potter' ? ' hp' :
-                                                     card1.deck.name == 'Marvel' ? ' marvel' :
-                                                     card1.deck.name == 'Disney' ? ' disney' :
-                                                     card1.deck.name == 'Pop-culture' ? ' pop-culture' :
-                                                     card1.deck.name == 'Brit-tv' ? ' brit-tv' :
-                                                     card1.deck.name == 'Kids-tv' ? ' kids-tv' :
-                                                     card1.deck.name == 'Anime' ? ' anime' : ''}">
-            <!--  Card name  -->
-            <strong class="card-name" th:text="${#strings.toUpperCase(card1.name)}"></strong>
-            <div class="card-image-box">
-                <!--  Card image  -->
-                <img th:src="${card1.imageSource}" alt="Card image" width="220"/>
-            </div>
-            <div class="card-text-box card-box-style">
-                <!--  Flavour text  -->
-                <span th:text="${card1.flavourText}"></span>
-            </div>
-
-            <!--  Card Stats  -->
-            <div class="stat-row">
-                <div class="stat-text-box card-box-style" th:classappend="${card1.strength >= 90 ? ' card-box-rare' : ''}"><span> Strength:  <strong th:text="${card1.strength}"></strong></span></div>
-                <div class="stat-text-box card-box-style" th:classappend="${card1.wisdom >= 90 ? ' card-box-rare' : ''}"><span> Wisdom:  <strong th:text="${card1.wisdom}"></strong></span></div>
-            </div>
-            <div class="stat-row">
-                <div class="stat-text-box card-box-style" th:classappend="${card1.defence >= 90 ? ' card-box-rare' : ''}"> <span> Defence:  <strong th:text="${card1.defence}"></strong></span></div>
-                <div class="stat-text-box card-box-style" th:classappend="${card1.luck >= 90 ? ' card-box-rare' : ''}"><span> Luck:  <strong th:text="${card1.luck}"></strong></span></div>
-            </div>
-            <!--  Populates unique stat name from deck table  -->
-            <div class="unique-stat-box card-box-style text-nowrap" th:classappend="${card1.customStat >= 90 ? ' card-box-rare' : ''}">
-                <span><span th:text="' ' + ${card1.deck.uniqueStatName} + ': '"></span><strong th:text="${card1.customStat}"></strong></span>
-            </div>
-        </div>
+                <!--    Second card form    -->
+                <div class="d-flex flex-column">
+                    <label for="card2" class="mb-1">Second Card:</label>
+                    <select name="card2" id="card2" class="form-control" required>
+                        <option value="" disabled selected>Select Card</option>
+                        <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.deck.name} + ' - ' + ${card.name}"></option>
+                    </select>
+                </div>
+                <!--    Submit button to compare  -->
+                <div class="align-self-end">
+                    <button type="submit" class="btn main-button-neutral mt-2">Compare</button>
+                </div>
+            </form>
         </div>
 
-        <!--  Card2  -->
-        <div class="p-3 mt-3 compare-card-spacing">
-        <div class="card-wrap" th:classappend="${card2.deck.name == 'The Simpsons' ? ' simpson' :
-                                                     card2.deck.name == 'Harry Potter' ? ' hp' :
-                                                     card2.deck.name == 'Marvel' ? ' marvel' :
-                                                     card2.deck.name == 'Disney' ? ' disney' :
-                                                     card2.deck.name == 'Pop-culture' ? ' pop-culture' :
-                                                     card2.deck.name == 'Brit-tv' ? ' brit-tv' :
-                                                     card2.deck.name == 'Kids-tv' ? ' kids-tv' :
-                                                     card2.deck.name == 'Anime' ? ' anime' : ''}">
-            <!--  Card name  -->
-            <strong class="card-name" th:text="${#strings.toUpperCase(card2.name)}"></strong>
-            <div class="card-image-box">
-                <!--  Card image  -->
-                <img th:src="${card2.imageSource}" alt="Card image" width="220"/>
-            </div>
-            <div class="card-text-box card-box-style">
-                <!--  Flavour text  -->
-                <span th:text="${card2.flavourText}"></span>
+        <div class="d-flex flex-wrap justify-content-center">
+
+            <!--  Card1  -->
+            <div class="p-3 mt-3 ma-3 compare-card-spacing">
+                <div class="card-wrap" th:classappend="${card1.deck.name == 'The Simpsons' ? ' simpson' :
+                                                         card1.deck.name == 'Harry Potter' ? ' hp' :
+                                                         card1.deck.name == 'Marvel' ? ' marvel' :
+                                                         card1.deck.name == 'Disney' ? ' disney' :
+                                                         card1.deck.name == 'Pop-culture' ? ' pop-culture' :
+                                                         card1.deck.name == 'Brit-tv' ? ' brit-tv' :
+                                                         card1.deck.name == 'Kids-tv' ? ' kids-tv' :
+                                                         card1.deck.name == 'Anime' ? ' anime' : ''}">
+                    <!--  Card name  -->
+                    <strong class="card-name" th:text="${#strings.toUpperCase(card1.name)}"></strong>
+                    <div class="card-image-box">
+                        <!--  Card image  -->
+                        <img th:src="${card1.imageSource}" alt="Card image" width="220"/>
+                    </div>
+                    <div class="card-text-box card-box-style">
+                        <!--  Flavour text  -->
+                        <span th:text="${card1.flavourText}"></span>
+                    </div>
+
+                    <!--  Card Stats  -->
+                    <div class="stat-row">
+                        <div class="stat-text-box card-box-style" th:classappend="${card1.strength >= 90 ? ' card-box-rare' : ''}"><span> Strength:  <strong th:text="${card1.strength}"></strong></span></div>
+                        <div class="stat-text-box card-box-style" th:classappend="${card1.wisdom >= 90 ? ' card-box-rare' : ''}"><span> Wisdom:  <strong th:text="${card1.wisdom}"></strong></span></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-text-box card-box-style" th:classappend="${card1.defence >= 90 ? ' card-box-rare' : ''}"> <span> Defence:  <strong th:text="${card1.defence}"></strong></span></div>
+                        <div class="stat-text-box card-box-style" th:classappend="${card1.luck >= 90 ? ' card-box-rare' : ''}"><span> Luck:  <strong th:text="${card1.luck}"></strong></span></div>
+                    </div>
+                    <!--  Populates unique stat name from deck table  -->
+                    <div class="unique-stat-box card-box-style text-nowrap" th:classappend="${card1.customStat >= 90 ? ' card-box-rare' : ''}">
+                        <span><span th:text="' ' + ${card1.deck.uniqueStatName} + ': '"></span><strong th:text="${card1.customStat}"></strong></span>
+                    </div>
+                </div>
             </div>
 
-            <!--  Card Stats  -->
-            <div class="stat-row">
-                <div class="stat-text-box card-box-style" th:classappend="${card2.strength >= 90 ? ' card-box-rare' : ''}"><span> Strength:  <strong th:text="${card2.strength}"></strong></span></div>
-                <div class="stat-text-box card-box-style" th:classappend="${card2.wisdom >= 90 ? ' card-box-rare' : ''}"><span> Wisdom:  <strong th:text="${card2.wisdom}"></strong></span></div>
+            <!--  Card2  -->
+            <div class="p-3 mt-3 compare-card-spacing">
+                <div class="card-wrap" th:classappend="${card2.deck.name == 'The Simpsons' ? ' simpson' :
+                                                             card2.deck.name == 'Harry Potter' ? ' hp' :
+                                                             card2.deck.name == 'Marvel' ? ' marvel' :
+                                                             card2.deck.name == 'Disney' ? ' disney' :
+                                                             card2.deck.name == 'Pop-culture' ? ' pop-culture' :
+                                                             card2.deck.name == 'Brit-tv' ? ' brit-tv' :
+                                                             card2.deck.name == 'Kids-tv' ? ' kids-tv' :
+                                                             card2.deck.name == 'Anime' ? ' anime' : ''}">
+                    <!--  Card name  -->
+                    <strong class="card-name" th:text="${#strings.toUpperCase(card2.name)}"></strong>
+                    <div class="card-image-box">
+                        <!--  Card image  -->
+                        <img th:src="${card2.imageSource}" alt="Card image" width="220"/>
+                    </div>
+                    <div class="card-text-box card-box-style">
+                        <!--  Flavour text  -->
+                        <span th:text="${card2.flavourText}"></span>
+                    </div>
+
+                    <!--  Card Stats  -->
+                    <div class="stat-row">
+                        <div class="stat-text-box card-box-style" th:classappend="${card2.strength >= 90 ? ' card-box-rare' : ''}"><span> Strength:  <strong th:text="${card2.strength}"></strong></span></div>
+                        <div class="stat-text-box card-box-style" th:classappend="${card2.wisdom >= 90 ? ' card-box-rare' : ''}"><span> Wisdom:  <strong th:text="${card2.wisdom}"></strong></span></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-text-box card-box-style" th:classappend="${card2.defence >= 90 ? ' card-box-rare' : ''}"> <span> Defence:  <strong th:text="${card2.defence}"></strong></span></div>
+                        <div class="stat-text-box card-box-style" th:classappend="${card2.luck >= 90 ? ' card-box-rare' : ''}"><span> Luck:  <strong th:text="${card2.luck}"></strong></span></div>
+                    </div>
+                    <!--  Populates unique stat name from deck table  -->
+                    <div class="unique-stat-box card-box-style text-nowrap" th:classappend="${card2.customStat >= 90 ? ' card-box-rare' : ''}">
+                        <span><span th:text="' ' + ${card2.deck.uniqueStatName} + ': '"></span><strong th:text="${card2.customStat}"></strong></span>
+                    </div>
+                </div>
             </div>
-            <div class="stat-row">
-                <div class="stat-text-box card-box-style" th:classappend="${card2.defence >= 90 ? ' card-box-rare' : ''}"> <span> Defence:  <strong th:text="${card2.defence}"></strong></span></div>
-                <div class="stat-text-box card-box-style" th:classappend="${card2.luck >= 90 ? ' card-box-rare' : ''}"><span> Luck:  <strong th:text="${card2.luck}"></strong></span></div>
-            </div>
-            <!--  Populates unique stat name from deck table  -->
-            <div class="unique-stat-box card-box-style text-nowrap" th:classappend="${card2.customStat >= 90 ? ' card-box-rare' : ''}">
-                <span><span th:text="' ' + ${card2.deck.uniqueStatName} + ': '"></span><strong th:text="${card2.customStat}"></strong></span>
-            </div>
-        </div>
         </div>
     </div>
 </div>
 
-
-</div>
+<!--    Footer and tutorial modal    -->
 <div th:replace="~{fragments/footer :: footer}"></div>
 <div th:replace="~{fragments/tutorial :: tutorialModal}"></div>
+
+<!--    Bootstrap script for navbar dropdown    -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
