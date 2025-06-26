@@ -9,37 +9,51 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/SA-Flare.png">
 </head>
-<body class="text-center">
+<body class="d-flex flex-column min-vh-100 text-center">
+
+<!--    Header and sidebar    -->
 <div th:insert="~{fragments/header :: header}"></div>
-<div class="container my-4">
-    <h1>Compare</h1>
-    <h5 class="mb-4">Select any two cards to compare</h5>
-    <div class="d-flex flex-wrap justify-content-center">
-    <form th:action="@{/decks/compare}" method="post" class="d-flex gap-3">
-        <div class="d-flex flex-column">
-            <label for="card1" class="mb-1">First Card:</label>
-            <select name="card1" id="card1" class="form-control" required>
-                <option value="" disabled selected>Select Card</option>
-                <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.deck.name} + ' - ' + ${card.name}" ></option>
-            </select>
+<div th:insert="~{fragments/sidebar :: sidebar}"></div>
+
+<!--    Main Content    -->
+<div class="container-fluid flex-grow-1">
+    <div class="container my-4">
+        <h1>Compare</h1>
+        <h5 class="mb-4">Select any two cards to compare</h5>
+
+        <!--    Select two cards to compare   -->
+        <div class="d-flex flex-wrap justify-content-center">
+            <form th:action="@{/decks/compare}" method="post" class="d-flex gap-3">
+                <!--    First card form   -->
+                <div class="d-flex flex-column">
+                    <label for="card1" class="mb-1">First Card:</label>
+                    <select name="card1" id="card1" class="form-control" required>
+                        <option value="" disabled selected>Select Card</option>
+                        <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.deck.name} + ' - ' + ${card.name}" ></option>
+                    </select>
+                </div>
+                <!--    Second card form    -->
+                <div class="d-flex flex-column">
+                    <label for="card2" class="mb-1">Second Card:</label>
+                    <select name="card2" id="card2" class="form-control" required>
+                        <option value="" disabled selected>Select Card</option>
+                        <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.deck.name} + ' - ' + ${card.name}"></option>
+                    </select>
+                </div>
+                <!--    Submit button to compare  -->
+                <div class="align-self-end">
+                <button type="submit" class="btn main-button-neutral mt-2">Compare</button>
+                </div>
+            </form>
         </div>
-        <div class="d-flex flex-column">
-            <label for="card2" class="mb-1">Second Card:</label>
-            <select name="card2" id="card2" class="form-control" required>
-                <option value="" disabled selected>Select Card</option>
-                <option th:each="card : ${cards}" th:value="${card.id}" th:text="${card.deck.name} + ' - ' + ${card.name}"></option>
-            </select>
-        </div>
-        <div class="align-self-end">
-            <button type="submit" class="btn main-button-neutral mt-2">Compare</button>
-        </div>
-    </form>
     </div>
-
-
 </div>
+
+<!--    Footer and tutorial modal    -->
 <div th:replace="~{fragments/footer :: footer}"></div>
 <div th:replace="~{fragments/tutorial :: tutorialModal}"></div>
+
+<!--    Bootstrap script for navbar dropdown    -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
