@@ -77,10 +77,10 @@ public class Project3ApplicationAutomationTests {
         assertTrue(headerText.contains("Game Over!"));
 
         //your reveal
-        WebElement yourValueElem = driver.findElement(By.cssSelector("div[style*='text-align: left'] p:nth-of-type(3) strong"));
+        WebElement yourValueElem = driver.findElement(By.cssSelector(".reveal p:nth-of-type(3) strong"));
         int yourValue = Integer.parseInt(yourValueElem.getText());
         //player 2's reveal
-        WebElement opponentValueElem = driver.findElement(By.cssSelector("div[style*='float: right'] p:nth-of-type(3) strong"));
+        WebElement opponentValueElem = driver.findElement(By.cssSelector("div.reveal:has(h2:contains(\"Player 2's Reveal\")) p:nth-of-type(2) strong"));
         int opponentValue = Integer.parseInt(opponentValueElem.getText());
         WebElement winnerIs = driver.findElement(By.cssSelector("div.game-result-container p"));
         System.out.println(winnerIs.getText());
@@ -92,10 +92,10 @@ public class Project3ApplicationAutomationTests {
             assertTrue(winnerIs.getText().contains("Player 2 has won the game."));
         }
     }
-    @AfterEach
-    public void exitBrowser() {
-        driver.quit();
-    }
+//    @AfterEach
+//    public void exitBrowser() {
+//        driver.quit();
+//    }
 
 
 }
