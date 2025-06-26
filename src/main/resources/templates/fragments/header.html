@@ -1,4 +1,4 @@
-<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
     <header>
 <!--        <div class="header-container">-->
 <!--            <a class="stat-attack-logo" href="/homepage" th:href="@{/homepage}">-->
@@ -17,7 +17,9 @@
             <div class="nav-links align-items-center">
                 <a href="/game/new" th:href="@{/game/new}" class="me-5"><i class="bi bi-controller"></i> PLAY</a>
                 <a href="/decks" th:href="@{/decks}" class="ms-3 me-5"><i class="bi bi-view-stacked"></i> DECKS</a>
-                <a href="javascript:void(0)" onclick="openTuto()" class="ms-3"><i class="bi bi-journal-text"></i> TUTORIALS</a>
+                <a href="javascript:void(0)" onclick="openTuto()" class="ms-3 me-5"><i class="bi bi-journal-text"></i> TUTORIALS</a>
+                <a href="#" onclick="confirmLogout(event)" class="ms-3" th:if="${currentUser == null}">LOGOUT</a>
+
 <!--                <a href="/settings" th:href="@{/settings}" class="ms-3 me-3">SETTINGS</a>-->
             </div>
 
@@ -31,11 +33,11 @@
 <!--                <a href="#" onclick="confirmLogout(event)" class="logout-btn">Logout</a>-->
 <!--            </div>-->
 
-            <li class="nav-links dropdown d-none d-md-block">
+            <li class="nav-links dropdown d-none d-md-block" th:if="${currentUser != null}">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img class="rounded-circle me-2" th:src="@{${currentUser.imageSource}}" style="width: 40px; height: 40px; object-fit: cover;" >
                 </a>
-                <div class="dropdown-menu dropdown-menu-end navbar-dropdown">
+                <div class="dropdown-menu dropdown-menu-end navbar-dropdown" th:if="${currentUser != null}">
                     <div class="d-flex flex-column align-items-center">
                         <div class="dropdown-list-image mr-3">
                             <img class="rounded-circle" th:src="@{${currentUser.imageSource}}" style="width: 50px; height: 50px; object-fit: cover;">
