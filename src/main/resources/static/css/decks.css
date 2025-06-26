@@ -65,32 +65,3 @@ body.dark-theme .deck {
     transform: scale(1.02);
     opacity: 0.8;
 }
-
-.main-button-neutral {
-    background: linear-gradient(-45deg, rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
-    color: black;
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    padding: 0.5rem 1rem;
-    font-weight: bold;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease-in-out;
-}
-
-body.dark-theme .main-button-neutral {
-    background: linear-gradient(90deg,rgba(53, 103, 220, 1) 0%, rgba(220, 53, 69, 1) 100%);
-    color: white;
-    border-color: rgba(255, 255, 255, 0.2);
-}
-
-.main-button-neutral:hover {
-    transform: translateY(-2px);
-    opacity: 0.95;
-    border-color: rgba(0, 0, 0, 0.4);
-    color: black;
-}
-
-body.dark-theme .main-button-neutral:hover {
-    border-color: rgba(255, 255, 255, 0.4);
-    color: white;
-}
