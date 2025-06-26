@@ -106,30 +106,23 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
-//    @ExceptionHandler(NoSuchDeckExistsException.class)
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public String handleNoSuchDeckExistsException(Model model, NoSuchDeckExistsException exception){
-//        makeModel(model);
-//        model.addAttribute("errorMessage", exception.getMessage());
-//        System.out.println("Database Error : " + exception);
-//        return "error";
-//    }
-
     @ExceptionHandler(NoSuchEntityExistsException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNoSuchEntityExistsException(Model model, NoSuchEntityExistsException exception){
         makeModel(model);
-        model.addAttribute("errorMessage", "Database Error:: " + exception.getMessage());
-        System.out.println("Database Error : " + exception);
+        model.addAttribute("errorMessage", exception.getMessage());
+        System.out.println("No Such Entity Exists Error : " + exception);
         return "error";
     }
 
-//    private void makeModelAndView(ModelAndView modelAndView, HttpServletRequest request){
-//        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
-//        modelAndView.addObject("currentUser", currentUser);
-//        modelAndView.addObject("requestUri", request.getRequestURI());
-//        modelAndView.addObject("httpStatusError", HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+    @ExceptionHandler(EntityAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleEntityAlreadyExistsException(Model model, EntityAlreadyExistsException exception) {
+        makeModel(model);
+        model.addAttribute("errorMessage", exception.getMessage());
+        System.out.println("Entity Already Exists Error: " + exception);
+        return "error";
+    }
 
     private void makeModel(Model model) {
         User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
