@@ -24,8 +24,8 @@ public class Project3ApplicationAutomationTestsPage {
     public void login() {
         driver.get("http://localhost:8080/");
         driver.findElement(By.cssSelector("a[href='/homepage']")).click();
-        driver.findElement(By.id("username")).sendKeys("user123@gmail.com");
-        driver.findElement(By.id("password")).sendKeys("Password123");
+        driver.findElement(By.id("username")).sendKeys("examp1e@nationwide.com");
+        driver.findElement(By.id("password")).sendKeys("Example!!!");
         driver.findElement(By.name("action")).click();
     }
 
