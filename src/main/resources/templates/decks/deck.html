@@ -31,7 +31,7 @@
                                                          deck.name == 'Kids-tv' ? ' kids-tv' :
                                                          deck.name == 'Anime' ? ' anime' : ''}">
                     <!--  Card name  -->
-                    <strong class="card-name" th:text="${#strings.toUpperCase(card.name)}"></strong>
+                    <strong class="card-name"th:text="${#strings.toUpperCase(card.name)}"></strong>
                     <div class="card-image-box">
                         <!--  Card image  -->
                         <img th:src="${card.imageSource}" alt="Card image" width="220"/>

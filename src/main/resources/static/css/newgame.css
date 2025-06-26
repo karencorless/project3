@@ -42,6 +42,11 @@ body {
     overflow-x: auto;
 }
 
+body.dark-theme .all-decks {
+    background: #2e2e2e;
+    border-color: #2e2e2e;
+}
+
 .all-decks::-webkit-scrollbar {
     width: 8px;
 }
@@ -51,14 +56,23 @@ body {
 }
 
 .all-decks::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #3567dc;
+    background: linear-gradient(20deg,rgba(151, 185, 235, 1) 0%, rgba(218, 133, 151, 1) 100%);
     border-radius: 20px;
+}
+
+body.dark-theme .all-decks::-webkit-scrollbar-thumb {
+    background: linear-gradient(20deg,rgba(53, 103, 220, 1) 0%, rgba(220, 53, 69, 1) 100%);
 }
 
 .deck img {
     width: 250px;
     height: 250px;
     border-bottom: 1px solid #ccc;
+}
+
+body.dark-theme .deck img {
+    border-bottom: 1px solid #3a3a3a;
 }
 
 .deck label {
@@ -68,6 +82,11 @@ body {
     width: 250px;
     font-size: 22px;
     background: white;
+}
+
+body.dark-theme .deck label {
+    color: #e7e7e7;
+    background: #505050;
 }
 
 .deck {
@@ -81,6 +100,10 @@ body {
     flex-wrap: wrap;
     float: center;
     flex: 0 0 auto;
+}
+
+body.dark-theme .deck {
+    border: 1.5px solid #3a3a3a;
 }
 
 input[type="checkbox"] {
@@ -116,6 +139,12 @@ input[type="checkbox"] {
     height: 3em;
 }
 
+body.dark-theme #buttons #submit {
+    box-shadow: rgba(135, 155, 199, 0.2) 0 -25px 18px -14px inset,rgba(135, 155, 199, 0.15) 0 1px 2px,rgba(135, 155, 199, 0.15) 0 2px 4px,rgba(135, 155, 199, 0.15) 0 4px 8px,rgba(135, 155, 199, 0.15) 0 8px 16px,rgba(135, 155, 199, 0.15) 0 16px 32px;
+    background-color: rgb(87, 52, 185);
+    color: #d2e4ee;
+}
+
 #buttons #reset {
     margin-top: 15px;
     border-radius: 100px;
@@ -137,12 +166,18 @@ input[type="checkbox"] {
     height: 3em;
 }
 
+body.dark-theme #buttons #reset {
+    box-shadow: rgba(229, 69, 0, .2) 0 -25px 18px -14px inset,rgba(229, 69, 0, .15) 0 1px 2px,rgba(229, 69, 0, .15) 0 2px 4px,rgba(229, 69, 0, .15) 0 4px 8px,rgba(229, 69, 0, .15) 0 8px 16px,rgba(229, 69, 0, .15) 0 16px 32px;
+    background-color: rgb(187, 62, 93);
+    color: #eed2d2;
+}
+
 #buttons #submit:hover {
     box-shadow: rgba(61, 42, 150, .35) 0 -25px 18px -14px inset,rgba(61, 42, 150, .25) 0 1px 2px,rgba(61, 42, 150, .25) 0 2px 4px,rgba(61, 42, 150, .25) 0 4px 8px,rgba(61, 42, 150, .25) 0 8px 16px,rgba(61, 42, 150, .25) 0 16px 32px;
     transform: scale(1.05) rotate(-1deg);
 }
 
- #buttons #reset:hover {
+#buttons #reset:hover {
     box-shadow: rgba(229, 69, 0, .35) 0 -25px 18px -14px inset,rgba(229, 69, 0, .25) 0 1px 2px,rgba(229, 69, 0, .25) 0 2px 4px,rgba(229, 69, 0, .25) 0 4px 8px,rgba(229, 69, 0, .25) 0 8px 16px,rgba(229, 69, 0, .25) 0 16px 32px;
     transform: scale(1.05) rotate(1deg);
- }
+}

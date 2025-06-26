@@ -30,7 +30,9 @@
                         <!--        Deck thumbnail image    -->
                         <img th:src="${deck.thumbnail}" alt="Deck thumbnail" class="mb-1"/>
                         <!--    Deck Name    -->
-                        <strong th:text="${deck.name}"></strong><br>
+                        <div class="text-center mb-2">
+                            <strong th:text="${deck.name}"></strong>
+                        </div>
                         <input type="checkbox" id="check" name="check" th:id="'deck-' + ${deck.id}" th:name="chosenDeckIds" th:value="${deck.id}"/>
                     </label>
                 </div>
@@ -46,8 +48,8 @@
 
             <div id="buttons" class="mt-3">
                 <!--        <input type="button" id="select-all" value="Select All">-->
-                <input type="submit" id="submit" name="submit" value="Start Game" class="me-3">
-                <input type="reset" id="reset" name="reset" value="Clear Choices">
+                <input type="submit" id="submit" name="submit" value="Start Game" class="me-3 btn-blue">
+                <input type="reset" id="reset" name="reset" value="Clear Choices" class="btn-red">
                 <!--    buttons: start game,  clear choices-->
             </div>
         </form>
