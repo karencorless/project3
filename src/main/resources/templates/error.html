@@ -9,15 +9,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/SA-Flare.png">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
-    <div th:insert="~{fragments/header :: header}"></div>
+<!--    Header and sidebar    -->
+<div th:insert="~{fragments/header :: header}"></div>
+<div th:insert="~{fragments/sidebar :: sidebar}"></div>
 
+<!--    Main Content    -->
+<div class="container-fluid flex-grow-1">
+    <!--    Error message displayed   -->
     <h2 th:text="'Error:  ' + ${errorMessage}"></h2>
     <strong th:text="${httpStatusError}"></strong>
     <!--<p th:text="${requestUri}"></p>-->
+</div>
 
-    <div th:insert="~{fragments/footer :: footer}"></div>
-    <div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+<!--    Footer and tutorial modal    -->
+<div th:insert="~{fragments/footer :: footer}"></div>
+<div th:insert="~{fragments/tutorial :: tutorialModal}"></div>
+
+<!--    Bootstrap script for navbar dropdown    -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>

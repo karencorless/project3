@@ -1,0 +1,30 @@
+.main-button-neutral {
+    background: linear-gradient(-45deg, rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
+    transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+    }
+
+.main-button-neutral:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+    border-color: rgba(0, 0, 0, 0.4);
+    }
+
+button.main-button-neutral:hover {
+    border-color: rgba(0, 0, 0, 0.4);
+    }
+
+.main-button-neutral:focus {
+    outline: none;
+    }
+
+.main-button-neutral:active {
+    transform: translateY(0);
+    }

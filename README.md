@@ -1,6 +1,6 @@
 # 🃏 Stat Attack – A Top Trumps-Style Game
 
-Stat Attack is a web-based card game inspired by **Top Trumps**. Players compare character stats in rounds to win cards and ultimately the game. Built using **Spring Boot**, **Thymeleaf**, **Selenium** for testing, and **Maven** for project management.
+Stat Attack is a web-based card game inspired by **Top Trumps**. Players compare character stats in rounds to win points and ultimately the game. Built using **Spring Boot**, **Thymeleaf**, **Selenium** for testing, and **Maven** for project management.
 
 ---
 
