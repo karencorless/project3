@@ -1,6 +1,10 @@
 body {
     text-align: center;
-}
+    justify-content: center;
+    color: rgb(59, 47, 93, .85);
+    }
+
+
 
 .all-decks {
     display: flex;

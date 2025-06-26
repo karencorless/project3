@@ -220,6 +220,7 @@ body.dark-theme .sidebar-title {
 }
 
 /* Sections inside sidebar */
+
 .sidebar-section {
     margin-bottom: 2.5rem;
 }
@@ -227,7 +228,7 @@ body.dark-theme .sidebar-title {
 .sidebar-section-title {
     font-size: 1.4rem;
     font-weight: 600;
-    color: #333;
+    color: rgb(59, 47, 93, .90);
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
@@ -257,7 +258,7 @@ body.dark-theme .sidebar-section-title:before {
     display: block;
     padding: 0.8rem 1rem;
     margin: 0.5rem 0;
-    color: #555;
+    color: rgb(59, 47, 93, .90);
     text-decoration: none;
     font-size: 1.2rem;
     border-radius: 4px;
@@ -271,7 +272,7 @@ body.dark-theme .sidebar-link {
 .sidebar-link:hover {
     background: #C2F9FF;
     background: linear-gradient(-45deg,rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
-    color: #000;
+    color: rgb(59, 47, 93, .90);
     font-weight: 600;
 }
 
@@ -318,7 +319,7 @@ body.dark-theme .sidebar-toggle {
 
 body.dark-theme .sidebar-toggle:hover {
     background-color: #ca5100;
-}   
+}
 
 /* Toggle button when sidebar is collapsed */
 .sidebar-toggle.collapsed {
@@ -351,7 +352,7 @@ body.dark-theme .stat-item {
 .stat-label {
     font-size: 1.2rem;
     font-weight: 500;
-    color: #555;
+    color: rgb(59, 47, 93, .80);
 }
 
 body.dark-theme .stat-label {
@@ -361,7 +362,7 @@ body.dark-theme .stat-label {
 .stat-value {
     font-size: 1.3rem;
     font-weight: 600;
-    color: #000;
+   color: rgb(59, 47, 93, .90);
     background: #fff;
     background: linear-gradient(-45deg,rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
     padding: 0.2rem 0.6rem;

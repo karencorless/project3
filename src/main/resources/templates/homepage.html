@@ -13,6 +13,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/images/SA-Flare.png">
 
     <style>
+        body {
+        color: rgb(59, 47, 93, .85);
+        font-family: "Arial";
+        }
+
         .hero {
             background: #3567dc;
             background: linear-gradient(-45deg, rgb(151, 197, 235) 0%, rgb(218, 133, 147) 100%);
@@ -34,9 +39,28 @@
         .card-preview:hover {
             transform: scale(1.05);
         }
+
         h1{
             font-family: Impact;
-            weight: 0;
+            color: white;
+        }
+
+        .shimmer {
+              color: linear-gradient(
+                    90deg,
+                    #EDEDED 30%,
+                    #DCDCDC 50%,
+                    #EDEDED 70%);
+              display: inline-block;
+              mask: linear-gradient(-60deg, #000 30%, #0005, #000 70%) right/350% 100%;
+              animation: shimmer 2.5s;
+
+        }
+
+        @keyframes shimmer {
+              100% {
+                mask-position: left
+              }
         }
 
         .top-player {
@@ -70,7 +94,7 @@
 <main class="main-content container mt-4">
     <!-- Main Banner -->
     <section class="hero">
-        <h1 class="display-4">Welcome to Stat Attack</h1>
+        <h1 class="display-4 shimmer">Welcome to Stat Attack</h1>
         <p class="lead">
             Outsmart your friends. Dominate with data. <br>
             Stat Attack is the only card game where knowledge <em>is</em> power —

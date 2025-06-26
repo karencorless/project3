@@ -6,22 +6,16 @@ import com.makers.project3.model.Card;
 import com.makers.project3.model.Deck;
 import com.makers.project3.model.Game;
 import com.makers.project3.model.User;
-import com.makers.project3.repository.DeckRepository;
-import com.makers.project3.repository.GameRepository;
-import com.makers.project3.repository.PlayerCardRepository;
-import com.makers.project3.repository.PlayerRepository;
-import com.makers.project3.repository.UserRepository;
+import com.makers.project3.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.*;
+import java.util.List;
 
 @Controller
 public class GameController {
@@ -153,7 +147,7 @@ public class GameController {
     @PostMapping("/game/play/p1-attack-2")
     public String selectP1Stat(@RequestParam("cardId") Long cardId, @RequestParam("chosenStat") String chosenStat,
                                Model model) {
-        System.out.println("Received chosenStat: " + chosenStat);
+//        System.out.println("Received chosenStat: " + chosenStat);
 
 
         //Get current game object
@@ -211,7 +205,7 @@ public class GameController {
 
         // Apply points:
         if (compareStatsResult == null) {
-            System.out.println("Stat values are equal, round result is a draw. No points awarded.");
+//            System.out.println("Stat values are equal, round result is a draw. No points awarded.");
         }
         else if (compareStatsResult) {
             gameService.winPoint(currentPlayerId);
@@ -260,13 +254,13 @@ public class GameController {
 //        model.addAttribute("cpuCustomStatName", gameService.getCardCustomStatName(cpuCard).substring(0,1).toUpperCase() + gameService.getCardCustomStatName(cpuCard).substring(1));
         model.addAttribute("pointsToWin", game.getPointsToWin());
 
-        System.out.println("Player's card deck stat name: " + gameService.getCardCustomStatName(playedCard));
-        System.out.println("CPU's card deck stat name: " + cpuCard.getDeck().getUniqueStatName());
-        System.out.println("Player's card deck id: " + playedCard.getDeck().getId());
-        System.out.println("CPU's card deck id: " + cpuCard.getDeck().getId());
-        System.out.println("CPU card id: " + cpuCard.getId());
-        System.out.println("Player card id: " + playedCard.getId());
-        System.out.println("Chosen stat passed to model: " + chosenStat);
+//        System.out.println("Player's card deck stat name: " + gameService.getCardCustomStatName(playedCard));
+//        System.out.println("CPU's card deck stat name: " + cpuCard.getDeck().getUniqueStatName());
+//        System.out.println("Player's card deck id: " + playedCard.getDeck().getId());
+//        System.out.println("CPU's card deck id: " + cpuCard.getDeck().getId());
+//        System.out.println("CPU card id: " + cpuCard.getId());
+//        System.out.println("Player card id: " + playedCard.getId());
+//        System.out.println("Chosen stat passed to model: " + chosenStat);
 
 
 //        // Game logs for easier reading and debugs
@@ -344,7 +338,7 @@ public class GameController {
         Card cpuCard = gameService.getCpuCard(cpuId);
         String cpuStat = gameService.getNameOfMaxStatOnCard(cpuCard);
 
-        System.out.println("This is the cpu's chosen stat: " + cpuStat);
+//        System.out.println("This is the cpu's chosen stat: " + cpuStat);
 
         // Get the cpu's stat value.
         int cpuStatValue = gameService.getMaxStatValueOnACard(cpuCard);
@@ -367,7 +361,7 @@ public class GameController {
 
         // Apply points:
         if (compareStatsResult == null) {
-            System.out.println("Stat values are equal, round result is a draw. No points awarded.");
+//            System.out.println("Stat values are equal, round result is a draw. No points awarded.");
         }
         else if (compareStatsResult) {
             gameService.winPoint(currentPlayerId);
