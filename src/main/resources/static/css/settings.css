@@ -1,6 +1,15 @@
 body {
-            text-align: center;
-            justify-content: center;
+    text-align: center;
+    justify-content: center;
+    }
+
+        h1 {
+            font-weight: 500;
+            color: rgb(59, 47, 93, .85);
+        }
+
+        body {
+            color: rgb(59, 47, 93, .9);
         }
 
 #buttons #submit {

@@ -1,17 +1,8 @@
 package com.makers.project3.Service;
 
 import com.makers.project3.exception.NoSuchEntityExistsException;
-import com.makers.project3.model.PlayerCard;
-import com.makers.project3.model.Player;
-import com.makers.project3.model.Game;
-import com.makers.project3.model.Card;
-import com.makers.project3.model.User;
-import com.makers.project3.repository.PlayerCardRepository;
-import com.makers.project3.repository.PlayerRepository;
-import com.makers.project3.repository.GameRepository;
-import com.makers.project3.repository.UserRepository;
-import com.makers.project3.repository.CardRepository;
-
+import com.makers.project3.model.*;
+import com.makers.project3.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -153,7 +144,7 @@ public class GameService {
     public Card pickCardFromHand(Long playerId, Long selectedCardId) {
         // Makes sure player id and card id are valid
         if (playerId == null || selectedCardId == null) {
-            System.out.println("Error: Player ID or Selected Card ID is null in pickCardFromHand.");
+//            System.out.println("Error: Player ID or Selected Card ID is null in pickCardFromHand.");
             return null;
         }
 
@@ -170,7 +161,7 @@ public class GameService {
 
         // If card not found, prints warning
         if (selectedCardInPlayerCards == null) {
-            System.out.println("Warning: Card with ID " + selectedCardId + " not found in hand for player " + playerId);
+//            System.out.println("Warning: Card with ID " + selectedCardId + " not found in hand for player " + playerId);
             return null;
         }
 
@@ -182,7 +173,7 @@ public class GameService {
         currentPlayer.setCurrentCardId(selectedCardId);
         selectedCardInPlayerCards.setDiscarded(true);
 
-        System.out.println("This is P1's current hand: " + playerCardsActiveInHand);
+//        System.out.println("This is P1's current hand: " + playerCardsActiveInHand);
 
         return playedCard;
     }
@@ -201,9 +192,9 @@ public class GameService {
         if (player != null) {
             player.setCurrentScore(player.getCurrentScore() + 1);
             playerRepository.save(player);
-            System.out.println("Manually incremented score for playerId: " + playerId + ", new score: " + player.getCurrentScore());
+//            System.out.println("Manually incremented score for playerId: " + playerId + ", new score: " + player.getCurrentScore());
         } else {
-            System.out.println("Player not found with id: " + playerId);
+//            System.out.println("Player not found with id: " + playerId);
         }
     }
 
@@ -382,7 +373,7 @@ public class GameService {
                 break;
             }
             else {
-                System.out.println("Error removing card with ID " + cardId + "from CPU hand.");
+//                System.out.println("Error removing card with ID " + cardId + "from CPU hand.");
             }
         }
 
@@ -394,7 +385,7 @@ public class GameService {
             }
         }
 
-        System.out.println("This is the CPU's current hand :" + cpuHand);
+//        System.out.println("This is the CPU's current hand :" + cpuHand);
     }
 
     // Get P1's selected cards custom stat name
