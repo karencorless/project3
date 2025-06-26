@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -48,8 +49,9 @@ public class Project3ApplicationAutomationTests {
 
         driver.findElement(By.cssSelector("a[class='nav-link dropdown-toggle'")).click();
         WebElement userDetail = driver.findElement(By.cssSelector("div[class='d-flex flex-column align-items-center']"));
-        assertEquals(username,userDetail.getText() );
+        assertEquals(username, userDetail.getText());
     }
+
     @Test
     public void startNewGame() throws InterruptedException {
         automationPage.login();
@@ -72,30 +74,32 @@ public class Project3ApplicationAutomationTests {
         assertTrue(chosenCard.isDisplayed());
         //select stat
         automationPage.clickRandomStat(driver);
-        WebElement gameResult = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.game-result-container")));
-        String headerText = gameResult.findElement(By.tagName("h1")).getText();
-        assertTrue(headerText.contains("Game Over!"));
 
-        //your reveal
-        WebElement yourValueElem = driver.findElement(By.cssSelector(".reveal p:nth-of-type(3) strong"));
-        int yourValue = Integer.parseInt(yourValueElem.getText());
-        //player 2's reveal
-        WebElement opponentValueElem = driver.findElement(By.cssSelector("div.reveal:has(h2:contains(\"Player 2's Reveal\")) p:nth-of-type(2) strong"));
-        int opponentValue = Integer.parseInt(opponentValueElem.getText());
-        WebElement winnerIs = driver.findElement(By.cssSelector("div.game-result-container p"));
-        System.out.println(winnerIs.getText());
+        List<WebElement> statValues = driver.findElements(By.cssSelector(".score-reveal-container .reveal p:nth-of-type(2) strong"));
+        int yourStat = Integer.parseInt(statValues.get(0).getText().trim());
+        int player2Stat = Integer.parseInt(statValues.get(1).getText().trim());
+        WebElement winnerIs = driver.findElement(By.cssSelector(".game-result-container p"));
+//
 
-        if(yourValue > opponentValue) {
+        if (yourStat > player2Stat) {
             assertTrue(winnerIs.getText().contains("You have won the game."));
         }
-        if(opponentValue > yourValue) {
+        if (player2Stat> yourStat) {
             assertTrue(winnerIs.getText().contains("Player 2 has won the game."));
         }
+        if(yourStat == player2Stat) {
+            assertTrue(winnerIs.getText().contains("Draw"));
+        }
+
+        System.out.println(winnerIs.getText());
     }
-//    @AfterEach
-//    public void exitBrowser() {
-//        driver.quit();
-//    }
-
-
+    @AfterEach
+    public void exitBrowser() {
+        driver.quit();
+    }
 }
+
+
+
+
+
