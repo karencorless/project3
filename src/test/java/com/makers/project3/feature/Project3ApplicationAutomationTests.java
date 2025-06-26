@@ -27,6 +27,7 @@ public class Project3ApplicationAutomationTests {
     public void setup() {
         faker = new Faker();
         driver = new ChromeDriver();
+        driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         automationPage = new Project3ApplicationAutomationTestsPage(driver);
     }
@@ -42,8 +43,7 @@ public class Project3ApplicationAutomationTests {
         driver.findElement(By.name("email")).sendKeys(email);
         driver.findElement(By.name("password")).sendKeys("P@55qw0rd");
         driver.findElement(By.name("action")).click();
-        WebElement secondActionButton = wait.until(
-                ExpectedConditions.elementToBeClickable(By.name("action")));
+        WebElement secondActionButton = wait.until(ExpectedConditions.elementToBeClickable(By.name("action")));
         secondActionButton.click();
 
         driver.findElement(By.cssSelector("a[class='nav-link dropdown-toggle'")).click();
@@ -53,7 +53,8 @@ public class Project3ApplicationAutomationTests {
     @Test
     public void startNewGame() throws InterruptedException {
         automationPage.login();
-        driver.findElement(By.linkText("Start Game")).click();
+        WebElement newGame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Start Game")));
+        newGame.click();
         //choose decks
         automationPage.chooseDeck(2);
         assertTrue(driver.findElement(By.id("deck-2")).isSelected());
@@ -61,20 +62,39 @@ public class Project3ApplicationAutomationTests {
         automationPage.pointsToWin(driver, "pointsToWin", 1);
         WebElement output = driver.findElement(By.cssSelector("#pointsToWin + output"));
         assertEquals("1", output.getText());
-
+        //start game
         WebElement startGame = wait.until(ExpectedConditions.elementToBeClickable(By.id("submit")));
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView({block: 'center'}); arguments[0].click();", startGame);
-
+        //select a card
         automationPage.selectACard(driver);
         WebElement chosenCard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".final-card-container .card-wrap.hp")));
         assertTrue(chosenCard.isDisplayed());
-
+        //select stat
         automationPage.clickRandomStat(driver);
         WebElement gameResult = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.game-result-container")));
         String headerText = gameResult.findElement(By.tagName("h1")).getText();
         assertTrue(headerText.contains("Game Over!"));
 
+        //your reveal
+        WebElement yourValueElem = driver.findElement(By.cssSelector("div[style*='text-align: left'] p:nth-of-type(3) strong"));
+        int yourValue = Integer.parseInt(yourValueElem.getText());
+        //player 2's reveal
+        WebElement opponentValueElem = driver.findElement(By.cssSelector("div[style*='float: right'] p:nth-of-type(3) strong"));
+        int opponentValue = Integer.parseInt(opponentValueElem.getText());
+        WebElement winnerIs = driver.findElement(By.cssSelector("div.game-result-container p"));
+        System.out.println(winnerIs.getText());
+
+        if(yourValue > opponentValue) {
+            assertTrue(winnerIs.getText().contains("You have won the game."));
+        }
+        if(opponentValue > yourValue) {
+            assertTrue(winnerIs.getText().contains("Player 2 has won the game."));
+        }
+    }
+    @AfterEach
+    public void exitBrowser() {
+        driver.quit();
     }
 
 
