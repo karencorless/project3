@@ -69,7 +69,8 @@
                              playedCard.deck.name == 'Disney' ? ' disney' :
                              playedCard.deck.name == 'Pop-culture' ? ' pop-culture' :
                              playedCard.deck.name == 'Brit-tv' ? ' brit-tv' :
-                             playedCard.deck.name == 'Kids-tv' ? ' kids-tv' : ''}">
+                             playedCard.deck.name == 'Kids-tv' ? ' kids-tv' :
+                             playedCard.deck.name == 'Anime' ? ' anime' : ''}">
             <strong class="card-name" th:text="${#strings.toUpperCase(playedCard.name)}"></strong>
             <div class="card-image-box">
                 <img th:src="${playedCard.imageSource}" alt="Card image" width="220"/>
@@ -157,7 +158,8 @@
                              cpuPlayedCard.deck.name == 'Disney' ? ' disney' :
                              cpuPlayedCard.deck.name == 'Pop-culture' ? ' pop-culture' :
                              cpuPlayedCard.deck.name == 'Brit-tv' ? ' brit-tv' :
-                             cpuPlayedCard.deck.name == 'Kids-tv' ? ' kids-tv' : ''}">
+                             cpuPlayedCard.deck.name == 'Kids-tv' ? ' kids-tv' :
+                             cpuPlayedCard.deck.name == 'Anime' ? ' anime' : ''}">
             <strong class="card-name" th:text="${#strings.toUpperCase(cpuPlayedCard.name)}"></strong>
             <div class="card-image-box">
                 <img th:src="${cpuPlayedCard.imageSource}" alt="Card image" width="220"/>
@@ -261,7 +263,8 @@
                                          card.deck.name == 'Disney' ? ' disney' :
                                          card.deck.name == 'Pop-culture' ? ' pop-culture' :
                                          card.deck.name == 'Brit-tv' ? ' brit-tv' :
-                                         card.deck.name == 'Kids-tv' ? ' kids-tv' : ''}">
+                                         card.deck.name == 'Kids-tv' ? ' kids-tv' :
+                                         card.deck.name == 'Anime' ? ' anime' : ''}">
                             <strong class="card-name" th:text="${#strings.toUpperCase(card.name)}"></strong>
                             <div class="card-image-box">
                                 <img th:src="${card.imageSource}" alt="Card image" width="220"/>
@@ -311,7 +314,8 @@
                                      card.deck.name == 'Disney' ? ' disney' :
                                      card.deck.name == 'Pop-culture' ? ' pop-culture' :
                                      card.deck.name == 'Brit-tv' ? ' brit-tv' :
-                                     card.deck.name == 'Kids-tv' ? ' kids-tv' : ''}">
+                                     card.deck.name == 'Kids-tv' ? ' kids-tv' :
+                                     card.deck.name == 'Anime' ? ' anime' : ''}">
                     <strong class="card-name" th:text="${#strings.toUpperCase(card.name)}"></strong>
                     <div class="card-image-box">
                         <img th:src="${card.imageSource}" alt="Card image" width="220"/>
