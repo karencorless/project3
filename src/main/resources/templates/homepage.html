@@ -3,24 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Stat Attack | Home</title>
-    <link rel="stylesheet" th:href="@{/css/fragments.css}">
-    <link rel="stylesheet" th:href="@{/css/decks.css}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" th:href="@{/css/decks.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments.css}">
+
     <link rel="icon" type="image/png" sizes="16x16" href="/images/SA-Flare.png">
+
     <style>
         .hero {
             background: #3567dc;
-            background: linear-gradient(350deg,rgba(53, 103, 220, 1) 0%, rgba(220, 53, 69, 1) 100%);
+            background: linear-gradient(-45deg, rgb(151, 197, 235) 0%, rgb(218, 133, 147) 100%);
             color: white;
             padding: 4rem 2rem;
             text-align: center;
             border-radius: 0.5rem;
             margin-bottom: 2rem;
         }
+
+        body.dark-theme .hero {
+            background: linear-gradient(-45deg,rgba(53, 103, 220, 1) 0%, rgba(220, 53, 69, 1) 100%);
+        }
+
         .card-preview {
             transition: transform 0.2s ease;
         }
+
         .card-preview:hover {
             transform: scale(1.05);
         }
@@ -29,7 +39,24 @@
             weight: 0;
         }
 
+        .top-player {
+            border: 5px solid transparent;
+            border-radius: 1rem;
+            background-image:
+            linear-gradient(-45deg,rgba(194, 249, 255, 1) 0%, rgba(255, 194, 194, 1) 100%);
+            linear-gradient(#fff, #fff);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+        }
 
+        body.dark-theme .top-player {
+            background-image:
+                linear-gradient(350deg,rgba(53, 103, 220, 1) 0%, rgba(220, 53, 69, 1) 100%);
+        }
+
+        body.dark-theme .top-text {
+            color: rgb(190, 208, 219);
+        }
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -53,50 +80,54 @@
         <a href="javascript:void(0)" onclick="openTuto()" class="btn btn-outline-light btn-lg">How to Play</a>
     </section>
 
-    <!-- Featured Card Sets -->
-    <section>
-        <h2 class="mb-4">Featured Decks</h2>
-        <div class="all-decks">
-            <!--    Displays a list of decks in the database showing the name and thumbnail image for each deck    -->
-            <div th:each="deck: ${decks}" class="deck">
-                <!--    Link to an individual deck to view cards    -->
-                <a th:href="@{/decks/{name}(name=${deck.name})}" class="text-decoration-none text-reset">
-                    <!--        Deck thumbnail image    -->
-                    <img th:src="${deck.thumbnail}" alt="Deck thumbnail" width="100" class="mb-1"/>
-                    <!--    Deck Name    -->
-                    <strong th:text="${deck.name}"></strong>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <!-- Leaderboard: Top Players by Wins -->
-        <div class="container mt-4">
-            <h2 class="mb-4">Top Players</h2>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                <div class="col" th:each="user, iterStat : ${playersMostWins}">
-                    <div class="card top-player border-5">
-                        <div class="card-body d-flex align-items-center">
-                            <img th:src="${user.imageSource}" alt="Profile Picture"
-                                 class="rounded-circle me-3"
-                                 style="width: 60px; height: 60px; object-fit: cover;">
-
-                            <div class="flex-grow-1">
-                                <h5 class="card-title mb-1" th:text="${user.username}">Username</h5>
-                                <p class="card-text mb-0 text-muted" th:text="'Wins: ' + ${user.gamesWon}">Wins: 0</p>
+        <!-- Featured Card Sets -->
+        <section>
+            <h2 class="mb-4">Featured Decks</h2>
+            <div class="all-decks">
+                <!--    Displays a list of decks in the database showing the name and thumbnail image for each deck    -->
+                <div th:each="deck: ${decks}" class="deck">
+                    <!--    Link to an individual deck to view cards    -->
+                    <label>
+                        <a th:href="@{/decks/{name}(name=${deck.name})}" class="text-decoration-none text-reset">
+                            <!--        Deck thumbnail image    -->
+                            <img th:src="${deck.thumbnail}" alt="Deck thumbnail" width="100" class="mb-1"/>
+                            <!--    Deck Name    -->
+                            <div class="text-center mb-2">
+                                <strong th:text="${deck.name}"></strong>
                             </div>
+                        </a>
+                    </label>
+                </div>
+            </div>
+        </section>
 
-                            <div class="fs-3 ms-2">
-                                <span th:if="${iterStat.index == 0}">🥇</span>
-                                <span th:if="${iterStat.index == 1}">🥈</span>
-                                <span th:if="${iterStat.index == 2}">🥉</span>
+        <section>
+            <!-- Leaderboard: Top Players by Wins -->
+            <div class="container mt-4">
+                <h2 class="mb-4">Top Players</h2>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <div class="col" th:each="user, iterStat : ${playersMostWins}">
+                        <div class="card top-player border-5">
+                            <div class="card-body d-flex align-items-center">
+                                <img th:src="${user.imageSource}" alt="Profile Picture"
+                                     class="rounded-circle me-3"
+                                     style="width: 60px; height: 60px; object-fit: cover;">
+
+                                <div class="flex-grow-1">
+                                    <h5 class="card-title mb-1 top-text" th:text="${user.username}">Username</h5>
+                                    <p class="card-text top-text mb-0" th:text="'Wins: ' + ${user.gamesWon}">Wins: 0</p>
+                                </div>
+
+                                <div class="fs-3 ms-2">
+                                    <span th:if="${iterStat.index == 0}">🥇</span>
+                                    <span th:if="${iterStat.index == 1}">🥈</span>
+                                    <span th:if="${iterStat.index == 2}">🥉</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
     </section>
 </main>
