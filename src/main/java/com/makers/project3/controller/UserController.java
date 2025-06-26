@@ -66,4 +66,11 @@ public class UserController {
         model.addAttribute("currentUser", currentUser);
         return "cookies";
     }
+
+    @GetMapping("/contact")
+    public String contactUs(Model model) {
+        User currentUser = (userRepository.findById(userService.getCurrentUserId())).orElse(null);
+        model.addAttribute("currentUser", currentUser);
+        return "contactus";
+    }
 }
