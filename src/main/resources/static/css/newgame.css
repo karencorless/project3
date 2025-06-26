@@ -1,11 +1,12 @@
 h1 {
 font-weight: 500;
-color: #3b2f5d;
+color: rgb(59, 47, 93, .9);
 }
 
 body {
     text-align: center;
     max-width: 100%;
+    color: rgb(59, 47, 93, .85);
 }
 
 .game-setup {
